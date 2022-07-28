@@ -212,15 +212,16 @@ int main()
 	//	-0.5f, -0.5f, 0.0f,	//bottom left
 	//	-0.5f, 0.5f, 0.0f	//top left
 	//};
-	//unsigned int indices[] = {
-	//	0, 1, 3,
-	//	1, 2, 3
-	//};
+	unsigned int indices[] = {
+		0, 1, 2,
+		2, 3, 0
+	};
 	float vertices[] = {
 		//position			//color
-		-0.9f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-		-0.45f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f
+		-0.9f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,	//0
+		0.0f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,	//1
+		-0.45f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,	//2
+		-0.9f, 0.3f, 0.0f, 0.5f, 0.4f, 0.1f,	//3
 	};
 	float vertices2[] = {
 		0.0f, -0.5f, 0.0f,
@@ -229,8 +230,7 @@ int main()
 	};
 	//unsigned int VAO, VBO, EBO;
 	//unsigned int VAOs[2], VBOs[2];
-	unsigned int VBO;
-	unsigned int VAO;
+	unsigned int VAO, VBO, EBO;
 	/*glGenVertexArrays(2, VAOs);
 	glGenBuffers(2, VBOs);*/
 	glGenVertexArrays(1, &VAO);
@@ -242,7 +242,9 @@ int main()
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-	//glGenBuffers(1, &EBO);
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	/*glBindVertexArray(VAOs[0]);
@@ -283,11 +285,11 @@ int main()
 		// draw our first triangle
 		glUseProgram(shaderProgram);
 		//glBindVertexArray(VAOs[0]);// seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		/*glUseProgram(shaderProgram2);
 		glBindVertexArray(VAOs[1]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);*/
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		glfwPollEvents();
@@ -299,7 +301,7 @@ int main()
 	glDeleteBuffers(2, VBOs);*/
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	//glDeleteBuffers(1, &EBO);
+	glDeleteBuffers(1, &EBO);
 	glDeleteProgram(shaderProgram);
 	//glDeleteProgram(shaderProgram2);
 
