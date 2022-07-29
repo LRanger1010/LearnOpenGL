@@ -5,6 +5,11 @@
 #include<sstream>
 #include<string>
 
+#define ASSERT(x) if(!(x)) __debugbreak();
+#define GLCALL(x) GLClearErrors();\
+	x;\
+	ASSERT(GLLogCall(#x, __FILE__, __LINE__))
+
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
 
@@ -38,6 +43,21 @@ const std::string shaderExt = ".shader";
 //"{\n"
 //"FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"
 //"}\0";
+
+static void GLClearErrors()
+{
+	while (glGetError());
+}
+
+static bool GLLogCall(const char* funcName, const char* fileName, int line)
+{
+	while (GLenum error = glGetError())
+	{
+		std::cout << "[OpenGL Error] (" << error << "): " << funcName << " " << fileName << ":" << line << std::endl;
+		return false;
+	}
+	return true;
+}
 
 struct ShaderSource
 {
@@ -289,7 +309,8 @@ int main()
 		/*glUseProgram(shaderProgram2);
 		glBindVertexArray(VAOs[1]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);*/
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		GLCALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		glfwPollEvents();
