@@ -4,6 +4,7 @@
 #include<fstream>
 #include<sstream>
 #include<string>
+#include<stdio.h>
 
 #define ASSERT(x) if(!(x)) __debugbreak();
 #define GLCALL(x) GLClearErrors();\
@@ -154,6 +155,7 @@ int main()
 	}
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSwapInterval(5);
 
 	// glad: load all OpenGL function pointers
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -250,13 +252,13 @@ int main()
 	};
 	//unsigned int VAO, VBO, EBO;
 	//unsigned int VAOs[2], VBOs[2];
-	unsigned int VAO, VBO, EBO;
+	unsigned int VAOs[2], VBOs[2], EBO;
 	/*glGenVertexArrays(2, VAOs);
 	glGenBuffers(2, VBOs);*/
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glGenVertexArrays(2, VAOs);
+	glGenBuffers(2, VBOs);
+	glBindVertexArray(VAOs[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void*)0);
 	glEnableVertexAttribArray(0);
@@ -265,6 +267,12 @@ int main()
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	glBindVertexArray(VAOs[1]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (const void*)0);
+	glEnableVertexAttribArray(0);
 
 	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	/*glBindVertexArray(VAOs[0]);
@@ -292,6 +300,10 @@ int main()
 	// uncomment this call to draw in wireframe polygons.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+	int location = glGetUniformLocation(shaderProgram, "u_Color");
+	ASSERT(location != -1);
+	float r = 0.5f;
+	float inc = 0.05f;
 	// render loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -304,14 +316,22 @@ int main()
 
 		// draw our first triangle
 		glUseProgram(shaderProgram);
-		//glBindVertexArray(VAOs[0]);// seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+		if (r > 1.0f)
+			inc = -0.05f;
+		else if (r < 0.0f)
+			inc = 0.05f;
+		r += inc;
+		GLCALL(glUniform3f(location, r, 0.2f, 0.8f));
+		
+		GLCALL(glBindVertexArray(VAOs[0]));// seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		/*glUseProgram(shaderProgram2);
 		glBindVertexArray(VAOs[1]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);*/
-
 		GLCALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
 
+		GLCALL(glBindVertexArray(VAOs[1]));
+		GLCALL(glDrawArrays(GL_TRIANGLES, 0, 3));
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		glfwPollEvents();
 		glfwSwapBuffers(window);
@@ -320,8 +340,8 @@ int main()
 	// optional: de-allocate all resources once they've outlived their purpose:
 	/*glDeleteVertexArrays(2, VAOs);
 	glDeleteBuffers(2, VBOs);*/
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
+	glDeleteVertexArrays(2, VAOs);
+	glDeleteBuffers(2, VBOs);
 	glDeleteBuffers(1, &EBO);
 	glDeleteProgram(shaderProgram);
 	//glDeleteProgram(shaderProgram2);
