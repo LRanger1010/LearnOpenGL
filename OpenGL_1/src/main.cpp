@@ -2,8 +2,8 @@
 #include<glfw3.h>
 #include<iostream>
 #include<stdio.h>
-#include "Render.h"
 #include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
@@ -220,34 +220,36 @@ int main()
 		Shader shader("basic");
 		float r = 0.5f;
 		float inc = 0.05f;
+		Renderer renderer;
 		// render loop
 		while (!glfwWindowShouldClose(window))
 		{
 			// render
-			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			renderer.Clear();
 
 			// input
 			processInput(window);
 
 			// draw our first triangle
-			shader.Bind();
 			if (r > 1.0f)
 				inc = -0.05f;
 			else if (r < 0.0f)
 				inc = 0.05f;
 			r += inc;
+			shader.Bind();
 			shader.SetUniform3f("u_Color", r, 0.2f, 0.8f);
 
-			VA1.Bind();// seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-			GLCALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
+			//VA1.Bind();// seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+			//GLCALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
 			/*glDrawArrays(GL_TRIANGLES, 0, 3);
 			glUseProgram(shaderProgram2);
 			glBindVertexArray(VAOs[1]);
 			glDrawArrays(GL_TRIANGLES, 0, 3);*/
+			renderer.Draw(VA1, IB, shader);
 
-			VA2.Bind();
-			GLCALL(glDrawArrays(GL_TRIANGLES, 0, 3));
+			/*VA2.Bind();
+			GLCALL(glDrawArrays(GL_TRIANGLES, 0, 3));*/
+			renderer.Draw(VA2, shader);
 			// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 			glfwPollEvents();
 			glfwSwapBuffers(window);

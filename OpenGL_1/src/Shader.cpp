@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include "Renderer.h"
 
 const std::string shaderDir = "res/shaders/";
 const std::string shaderExt = ".shader";
