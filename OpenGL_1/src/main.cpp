@@ -1,23 +1,18 @@
 #include<glad\glad.h>
 #include<glfw3.h>
 #include<iostream>
-#include<fstream>
-#include<sstream>
-#include<string>
 #include<stdio.h>
 #include "Render.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
+#include "Shader.h"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
 
 const unsigned int width = 800;
 const unsigned int height = 600;
-
-const std::string shaderDir = "res/shaders/";
-const std::string shaderExt = ".shader";
 
 //const char* vertexShaderSource = "#version 330 core\n"
 //"layout (location = 0) in vec3 aPos;\n"
@@ -43,85 +38,6 @@ const std::string shaderExt = ".shader";
 //"{\n"
 //"FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"
 //"}\0";
-
-
-struct ShaderSource
-{
-	std::string vertexShaderSource;
-	std::string fragmentShaderSource;
-};
-
-static ShaderSource ParseShader(const std::string& filepath)
-{
-	std::ifstream stream(filepath);
-	std::string line;
-	std::stringstream ss[2];
-	enum class ShaderType {
-		NONE = -1,
-		VERTEX = 0,
-		FRAGMENT = 1,
-	};
-	ShaderType type = ShaderType::NONE;
-	while (std::getline(stream, line))
-	{
-		if (line.find("#shader") != std::string::npos)
-		{
-			if (line.find("vertex") != std::string::npos)
-				type = ShaderType::VERTEX;
-			else if (line.find("fragment") != std::string::npos)
-				type = ShaderType::FRAGMENT;
-		}
-		else
-		{
-			ss[(int)type] << line << '\n';
-		}
-	}
-	return{ ss[0].str(), ss[1].str() };
-}
-
-static unsigned int CompileShader(unsigned int type, const std::string& source)
-{
-	unsigned int id = glCreateShader(type);
-	const char* src = source.c_str();
-	glShaderSource(id, 1, &src, NULL);
-	glCompileShader(id);
-
-	int result;
-	glGetShaderiv(id, GL_COMPILE_STATUS, &result);
-	if (result == GL_FALSE)
-	{
-		int length;
-		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-		char* message = (char*)alloca(length * sizeof(char));
-		glGetShaderInfoLog(id, length, &length, message);
-		std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << "Shader!" << std::endl;
-		std::cout << message << std::endl;
-	}
-
-	return id;
-}
-
-static unsigned int CreateShader(const std::string& vertexShaderSource, const std::string& fragmentShaderSource)
-{
-	unsigned int program = glCreateProgram();
-	unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);
-	unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
-	glAttachShader(program, vs);
-	glAttachShader(program, fs);
-	glLinkProgram(program);
-	glValidateProgram(program);
-
-	glDeleteShader(vs);
-	glDeleteShader(fs);
-
-	return program;
-}
-
-static ShaderSource FindShader(const std::string& shaderName)
-{
-	std::string filepath = shaderDir + shaderName + shaderExt;
-	return ParseShader(filepath);
-}
 
 int main()
 {
@@ -207,9 +123,6 @@ int main()
 	//glDeleteShader(fragmentShader);
 	//glDeleteShader(fragmentShader2);
 	{
-		ShaderSource source = FindShader("basic");
-		unsigned int shaderProgram = CreateShader(source.vertexShaderSource, source.fragmentShaderSource);
-
 		// set up vertex data (and buffer(s)) and configure vertex attributes
 		//float vertices[] = {
 		//	-0.5f, -0.5f, 0.0f,	//left
@@ -304,8 +217,7 @@ int main()
 		// uncomment this call to draw in wireframe polygons.
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-		int location = glGetUniformLocation(shaderProgram, "u_Color");
-		ASSERT(location != -1);
+		Shader shader("basic");
 		float r = 0.5f;
 		float inc = 0.05f;
 		// render loop
@@ -319,13 +231,13 @@ int main()
 			processInput(window);
 
 			// draw our first triangle
-			glUseProgram(shaderProgram);
+			shader.Bind();
 			if (r > 1.0f)
 				inc = -0.05f;
 			else if (r < 0.0f)
 				inc = 0.05f;
 			r += inc;
-			GLCALL(glUniform3f(location, r, 0.2f, 0.8f));
+			shader.SetUniform3f("u_Color", r, 0.2f, 0.8f);
 
 			VA1.Bind();// seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 			GLCALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
@@ -346,9 +258,8 @@ int main()
 		glDeleteBuffers(2, VBOs);
 		glDeleteVertexArrays(2, VAOs);
 		glDeleteBuffers(2, VBOs);
-		glDeleteBuffers(1, &EBO);*/
-		glDeleteProgram(shaderProgram);
-		//glDeleteProgram(shaderProgram2);
+		glDeleteBuffers(1, &EBO);
+		glDeleteProgram(shaderProgram2);*/
 
 	}
 	// glfw: terminate, clearing all previously allocated GLFW resources.
