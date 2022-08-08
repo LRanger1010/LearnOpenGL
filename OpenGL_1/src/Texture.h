@@ -1,5 +1,5 @@
 #pragma once
-#include "vendor\stb_image.h"
+#include "stb_image/stb_image.h"
 #include "Renderer.h"
 
 class Texture

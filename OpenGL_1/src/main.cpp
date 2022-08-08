@@ -8,6 +8,8 @@
 #include "VertexArray.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -235,6 +237,8 @@ int main()
 		Texture texture("res/textures/cherno.jpg");
 		texture.Bind();
 		shader.SetUniform1i("u_Texture", 0);
+		glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f);
+		shader.SetUniformMat4f("u_MVP", proj);
 
 		/*float r = 0.5f;
 		float inc = 0.05f;*/
