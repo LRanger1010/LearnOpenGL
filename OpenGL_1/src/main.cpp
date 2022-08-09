@@ -10,6 +10,8 @@
 #include "Texture.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw_gl3.h"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -238,8 +240,14 @@ int main()
 		texture.Bind();
 		shader.SetUniform1i("u_Texture", 0);
 		glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f);
-		shader.SetUniformMat4f("u_MVP", proj);
+		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+		
 
+		ImGui::CreateContext();
+		ImGui_ImplGlfwGL3_Init(window, true);
+		ImGui::StyleColorsDark();
+
+		glm::vec3 translation(0.0f, 0.0f, 0.0f);
 		/*float r = 0.5f;
 		float inc = 0.05f;*/
 		Renderer renderer;
@@ -251,6 +259,20 @@ int main()
 
 			// input
 			processInput(window);
+
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), translation);
+			shader.SetUniformMat4f("u_MVP", proj * view * model);
+
+			ImGui_ImplGlfwGL3_NewFrame();
+
+			{
+				ImGui::Text("Hello, world!");                           // Display some text (you can use a format string too)
+				ImGui::SliderFloat3("Translation", &translation.x, -2.0f, 2.0f);            // Edit 1 float using a slider from 0.0f to 1.0f    
+
+				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			}
+
+
 
 			// draw our first triangle
 			/*if (r > 1.0f)
@@ -269,6 +291,9 @@ int main()
 			glDrawArrays(GL_TRIANGLES, 0, 3);*/
 			renderer.Draw(VA1, IB, shader);
 
+			ImGui::Render();
+			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+
 			/*VA2.Bind();
 			GLCALL(glDrawArrays(GL_TRIANGLES, 0, 3));*/
 			//renderer.Draw(VA2, shader);
@@ -286,6 +311,8 @@ int main()
 		glDeleteProgram(shaderProgram2);*/
 
 	}
+	ImGui_ImplGlfwGL3_Shutdown();
+	ImGui::DestroyContext();
 	// glfw: terminate, clearing all previously allocated GLFW resources.
 	glfwTerminate();
 	return 0;
