@@ -12,6 +12,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw_gl3.h"
+#include "tests/TestMenu.h"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -72,78 +73,11 @@ int main()
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	
-	// build and compile our shader program
-	// ------------------------------------
-	// vertex shader
-	//unsigned int vertexShader;
-	//vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	//glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	//glCompileShader(vertexShader);
-	//// check for shader compile errors
-	//int success;
-	//char infoLog[512];
-	//glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	//if (!success)
-	//{
-	//	glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-	//	std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	//}
-
-	//// fragment shader
-	//unsigned int fragmentShader, fragmentShader2;
-	//fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	//fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER);
-	//glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	//glShaderSource(fragmentShader2, 1, &fragmentShaderSource2, NULL);
-	//glCompileShader(fragmentShader);
-	//glCompileShader(fragmentShader2);
-	//// check for shader compile errors
-	//glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	//if (!success)
-	//{
-	//	glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-	//	std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	//}
-
-	//// link shaders
-	//unsigned int shaderProgram, shaderProgram2;
-	//shaderProgram = glCreateProgram();
-	//shaderProgram2 = glCreateProgram();
-	//glAttachShader(shaderProgram, vertexShader);
-	//glAttachShader(shaderProgram, fragmentShader);
-	//glLinkProgram(shaderProgram);
-	//
-	//glAttachShader(shaderProgram2, vertexShader);
-	//glAttachShader(shaderProgram2, fragmentShader2);
-	//glLinkProgram(shaderProgram2);
-	//// check for linking errors
-	//glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	//if (!success)
-	//{
-	//	glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-	//	std::cout << "ERROR::PROGRAM::LINK_FAILED\n" << infoLog << std::endl;
-	//}
-	//
-	//glDeleteShader(vertexShader);
-	//glDeleteShader(fragmentShader);
-	//glDeleteShader(fragmentShader2);
 	{
-		// set up vertex data (and buffer(s)) and configure vertex attributes
-		//float vertices[] = {
-		//	-0.5f, -0.5f, 0.0f,	//left
-		//	0.5f, -0.5f, 0.0f,	//right
-		//	0.0f,  0.5f, 0.0f	//top
-		//};
-		//float vertices[] = {
-		//	0.5f, 0.5f, 0.0f,	//top right
-		//	0.5f, -0.5f, 0.0f,	//bottom right
-		//	-0.5f, -0.5f, 0.0f,	//bottom left
-		//	-0.5f, 0.5f, 0.0f	//top left
-		//};
-		unsigned int indices[] = {
+		/*unsigned int indices[] = {
 			0, 1, 2,
 			2, 3, 0
-		};
+		};*/
 		//float vertices[] = {
 		//	//position			//color
 		//	-0.9f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,	//0
@@ -151,164 +85,39 @@ int main()
 		//	-0.45f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,	//2
 		//	-0.9f, 0.3f, 0.0f, 0.5f, 0.4f, 0.1f,	//3
 		//};
-		float vertices[] = {
-			//position(must be 2d coordinates!!!)			
-							//texture coord
-			-0.5f, -0.5f, 0.0f, 0.0f,	//0
-			0.5f, -0.5f, 1.0f, 0.0f,	//1
-			0.5f, 0.5f, 1.0f, 1.0f,		//2
-			-0.5f, 0.5f, 0.0f, 1.0f,	//3
-		};
-		float vertices2[] = {
-			0.0f, -0.5f, 0.0f,
-			0.9f, -0.5f, 0.0f,
-			0.45f, 0.5f, 0.0f
-		};
-		/*unsigned int VAO, VBO, EBO;
-		unsigned int VAOs[2], VBOs[2];
-		unsigned int VAOs[2], VBOs[2], EBO;
-		glGenVertexArrays(2, VAOs);
-		glGenBuffers(2, VBOs);*/
-
-		VertexArray VA1;
-		VertexBuffer VB1(vertices, sizeof(vertices));
-		/*glGenBuffers(2, VBOs);
-		glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void*)0);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);*/
-
-		{
-			VertexBufferLayout layout;
-			layout.Push(GL_FLOAT, 2);
-			layout.Push(GL_FLOAT, 2);
-			VA1.AddBuffer(VB1, layout);
-		}
-		IndexBuffer IB(indices, 6);
-		/*glGenBuffers(1, &EBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);*/
-
-		VertexArray VA2;
-		VertexBuffer VB2(vertices2, sizeof(vertices2));
-		/*glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (const void*)0);
-		glEnableVertexAttribArray(0);*/
-
-		{
-			VertexBufferLayout layout;
-			layout.Push(GL_FLOAT, 3);
-			VA2.AddBuffer(VB2, layout);
-		}
-
-		// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-		/*glBindVertexArray(VAOs[0]);
-		glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
-		glBindVertexArray(VAOs[1]);
-		glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);*/
-
-
-		// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-		//glBindBuffer(GL_ARRAY_BUFFER, 0);
-		// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-		// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-		//glBindVertexArray(0);
-
-		// uncomment this call to draw in wireframe polygons.
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		
 		GLCALL(glEnable(GL_BLEND));
 		GLCALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-
-		Shader shader("texture");
-		shader.Bind();
-
-		Texture texture("res/textures/cherno.jpg");
-		texture.Bind();
-		shader.SetUniform1i("u_Texture", 0);
-		glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f);
-		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		
 
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(window, true);
 		ImGui::StyleColorsDark();
 
-		glm::vec3 translation(0.0f, 0.0f, 0.0f);
-		/*float r = 0.5f;
-		float inc = 0.05f;*/
+		test::TestMenu testMenu;
 		Renderer renderer;
 		// render loop
 		while (!glfwWindowShouldClose(window))
 		{
+			testMenu.OnUpdate(0.0f);
 			// render
 			renderer.Clear();
+			testMenu.OnRender();
 
 			// input
 			processInput(window);
 
-			glm::mat4 model = glm::translate(glm::mat4(1.0f), translation);
-			shader.SetUniformMat4f("u_MVP", proj * view * model);
-
 			ImGui_ImplGlfwGL3_NewFrame();
 
-			{
-				ImGui::Text("Hello, world!");                           // Display some text (you can use a format string too)
-				ImGui::SliderFloat3("Translation", &translation.x, -2.0f, 2.0f);            // Edit 1 float using a slider from 0.0f to 1.0f    
-
-				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			}
-
-
-
-			// draw our first triangle
-			/*if (r > 1.0f)
-				inc = -0.05f;
-			else if (r < 0.0f)
-				inc = 0.05f;
-			r += inc;
-			shader.Bind();
-			shader.SetUniform3f("u_Color", r, 0.2f, 0.8f);*/
-
-			/*VA1.Bind();// seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-			GLCALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
-			glDrawArrays(GL_TRIANGLES, 0, 3);
-			glUseProgram(shaderProgram2);
-			glBindVertexArray(VAOs[1]);
-			glDrawArrays(GL_TRIANGLES, 0, 3);*/
-			renderer.Draw(VA1, IB, shader);
-
+			testMenu.OnGUI();
 			ImGui::Render();
 			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
-			/*VA2.Bind();
-			GLCALL(glDrawArrays(GL_TRIANGLES, 0, 3));*/
-			//renderer.Draw(VA2, shader);
 			// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 			glfwPollEvents();
 			glfwSwapBuffers(window);
 		}
 
 		// optional: de-allocate all resources once they've outlived their purpose:
-		/*glDeleteVertexArrays(2, VAOs);
-		glDeleteBuffers(2, VBOs);
-		glDeleteVertexArrays(2, VAOs);
-		glDeleteBuffers(2, VBOs);
-		glDeleteBuffers(1, &EBO);
-		glDeleteProgram(shaderProgram2);*/
 
 	}
 	ImGui_ImplGlfwGL3_Shutdown();
