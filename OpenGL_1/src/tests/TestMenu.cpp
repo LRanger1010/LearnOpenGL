@@ -17,17 +17,6 @@ namespace test {
 	{
 		if (m_Test != nullptr)
 			m_Test->OnUpdate(deltaTime);
-		else
-		{
-			switch (m_TestFlag)
-			{
-			case 1:
-				m_Test = new TestClearColor;
-				break;
-			default:
-				break;
-			}
-		}
 	}
 
 	void TestMenu::OnRender()
@@ -56,6 +45,14 @@ namespace test {
 	void TestMenu::StartTest(int flag)
 	{
 		m_TestFlag = flag;
+		switch (flag)
+		{
+		case 1:
+			m_Test = new TestClearColor;
+			break;
+		default:
+			break;
+		}
 	}
 
 	void TestMenu::EndTest()
