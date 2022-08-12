@@ -1,5 +1,4 @@
 #include "TestMenu.h"
-#include "TestClearColor.h"
 
 namespace test {
 
@@ -31,38 +30,21 @@ namespace test {
 		{
 			m_Test->OnGUI();
 			if (ImGui::Button("Back"))
-				EndTest();
+			{
+				delete m_Test;
+				m_Test = nullptr;
+			}
 		}
 		else
 		{
-			if (ImGui::Button("1.Start TestClearColor"))
-				StartTest(1);
+			for (auto& test : m_TestList)
+			{
+				if (ImGui::Button(test.first.c_str()))
+					m_Test = test.second();
+			}
 			
 		}
 		
-	}
-
-	void TestMenu::StartTest(int flag)
-	{
-		m_TestFlag = flag;
-		switch (flag)
-		{
-		case 1:
-			m_Test = new TestClearColor;
-			break;
-		default:
-			break;
-		}
-	}
-
-	void TestMenu::EndTest()
-	{
-		if (m_Test != nullptr)
-		{
-			delete m_Test;
-			m_Test = nullptr;
-			m_TestFlag = 0;
-		}
 	}
 
 }

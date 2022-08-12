@@ -1,5 +1,5 @@
-#include<glad\glad.h>
-#include<glfw3.h>
+#include "GLFW/glad/glad.h"
+#include "GLFW/glfw3.h"
 #include<iostream>
 #include<stdio.h>
 #include "VertexBuffer.h"
@@ -94,6 +94,7 @@ int main()
 		ImGui::StyleColorsDark();
 
 		test::TestMenu testMenu;
+		testMenu.RegisterTest<test::TestClearColor>("Clear Color");
 		Renderer renderer;
 		// render loop
 		while (!glfwWindowShouldClose(window))
