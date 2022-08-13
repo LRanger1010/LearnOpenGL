@@ -9,7 +9,6 @@ public:
 	Texture(const std::string& path);
 	~Texture();
 
-	void CreateTexture(const std::string& path);
 	void Bind(unsigned int slot = 0) const;
 	void Unbind() const;
 	inline int GetWith() const { return m_Width; }

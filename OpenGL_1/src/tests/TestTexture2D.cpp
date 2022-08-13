@@ -1,5 +1,6 @@
 #include "TestTexture2D.h"
 #include "VertexBufferLayout.h"
+#include "glm/gtc/matrix_transform.hpp"
 
 namespace test {
 
@@ -19,11 +20,20 @@ namespace test {
 	};
 
 	TestTexture2D::TestTexture2D()
-		:m_Inited(false)
+		:m_Translation(0.0f, 0.0f, 0.0f), m_Inited(false)
 	{
 		m_VBO = std::make_unique<VertexBuffer>(vertices, sizeof(vertices));
+		{
+			VertexBufferLayout layout;
+			layout.Push(GL_FLOAT, 2);
+			layout.Push(GL_FLOAT, 2);
+			m_VAO.AddBuffer(*m_VBO, layout);
+		}
 		m_IBO = std::make_unique<IndexBuffer>(indice, 6);
 		m_Shader = std::make_unique<Shader>("texture");
+
+		m_Proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f);
+		m_View = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 	}
 
 	TestTexture2D::~TestTexture2D()
@@ -38,7 +48,10 @@ namespace test {
 
 	void TestTexture2D::OnRender()
 	{
+		if (!m_Inited) return;
 		m_Renderer.Clear();
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Translation);
+		m_Shader->SetUniformMat4f("u_MVP", m_Proj * m_View * model);
 		m_Renderer.Draw(m_VAO, *m_IBO, *m_Shader);
 	}
 
@@ -54,14 +67,14 @@ namespace test {
 				m_CreateTexture(path);
 			}
 		}
+		else
+		{
+			ImGui::SliderFloat3("Translation", &m_Translation.x, -2.0f, 2.0f);
+		}
 	}
 
 	void TestTexture2D::m_CreateTexture(const std::string& path)
 	{
-		VertexBufferLayout layout;
-		layout.Push(GL_FLOAT, 2);
-		layout.Push(GL_FLOAT, 2);
-		m_VAO.AddBuffer(*m_VBO, layout);
 		m_Shader->Bind();
 		m_Texture = std::make_unique<Texture>(path);
 		m_Texture->Bind(0);

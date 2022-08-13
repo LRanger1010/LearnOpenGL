@@ -74,10 +74,6 @@ int main()
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	
 	{
-		/*unsigned int indices[] = {
-			0, 1, 2,
-			2, 3, 0
-		};*/
 		//float vertices[] = {
 		//	//position			//color
 		//	-0.9f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,	//0
@@ -85,7 +81,7 @@ int main()
 		//	-0.45f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,	//2
 		//	-0.9f, 0.3f, 0.0f, 0.5f, 0.4f, 0.1f,	//3
 		//};
-		
+
 		GLCALL(glEnable(GL_BLEND));
 		GLCALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
