@@ -121,7 +121,7 @@ ShaderSource Shader::m_FindShader(const std::string& shaderName)
 	return m_ParseShader(filepath);
 }
 
-int Shader::m_GetUniformLocation(const std::string& name)
+int Shader::m_GetUniformLocation(const std::string& name) const
 {
 	if (m_uniformLocationMap.find(name) != m_uniformLocationMap.end())
 		return m_uniformLocationMap[name];

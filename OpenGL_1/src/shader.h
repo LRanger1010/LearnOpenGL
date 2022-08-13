@@ -27,11 +27,11 @@ public:
 
 private:
 	unsigned int m_RenderID;
-	std::unordered_map<std::string, int> m_uniformLocationMap;
+	mutable std::unordered_map<std::string, int> m_uniformLocationMap;
 
 	unsigned int m_CreateShader(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);
 	ShaderSource m_ParseShader(const std::string& filepath);
 	unsigned int m_CompileShader(unsigned int type, const std::string& source);
 	ShaderSource m_FindShader(const std::string& shaderName);
-	int m_GetUniformLocation(const std::string& name);
+	int m_GetUniformLocation(const std::string& name) const;
 };
