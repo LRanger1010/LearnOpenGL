@@ -17,11 +17,13 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 	vb.Bind();
 	const auto& attribs = layout.GetAttribs();
 	unsigned int stride = layout.GetStride();
+	unsigned int offset = 0;
 	for (unsigned int i = 0;i < attribs.size();i++)
 	{
 		const auto& attrib = attribs[i];
 		GLCALL(glEnableVertexAttribArray(i));
-		GLCALL(glVertexAttribPointer(i, attrib.count, attrib.type, attrib.normalized, stride, (const void*)(i * attrib.count * VertexAttrib::GetSizeOfType(attrib.type))));
+		GLCALL(glVertexAttribPointer(i, attrib.count, attrib.type, attrib.normalized, stride, (const void*)offset));
+		offset += attrib.count * VertexAttrib::GetSizeOfType(attrib.type);
 	}
 	
 }

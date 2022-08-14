@@ -8,10 +8,10 @@ namespace test {
 
 	static const float vertices[] = {
 		//position	  //texture coord
-		-0.5f, -0.5f, 0.0f, 0.0f,	//0
-		0.5f, -0.5f, 1.0f, 0.0f,	//1
-		0.5f, 0.5f, 1.0f, 1.0f,		//2
-		-0.5f, 0.5f, 0.0f, 1.0f,	//3
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,	//0
+		0.5f, -0.5f, 0.0f, 1.0f, 0.0f,	//1
+		0.5f, 0.5f, 0.0f, 1.0f, 1.0f,		//2
+		-0.5f, 0.5f, 0.0f, 0.0f, 1.0f,	//3
 	};
 
 	static const unsigned int indice[] = {
@@ -25,14 +25,14 @@ namespace test {
 		m_VBO = std::make_unique<VertexBuffer>(vertices, sizeof(vertices));
 		{
 			VertexBufferLayout layout;
-			layout.Push(GL_FLOAT, 2);
+			layout.Push(GL_FLOAT, 3);
 			layout.Push(GL_FLOAT, 2);
 			m_VAO.AddBuffer(*m_VBO, layout);
 		}
 		m_IBO = std::make_unique<IndexBuffer>(indice, 6);
 		m_Shader = std::make_unique<Shader>("texture");
 
-		m_Proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f);
+		m_Proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
 		m_View = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 	}
 
