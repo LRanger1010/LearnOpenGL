@@ -30,6 +30,8 @@ void Texture::Bind(unsigned int slot /*= 0*/) const
 {
 	GLCALL(glActiveTexture(GL_TEXTURE0 + slot));
 	GLCALL(glBindTexture(GL_TEXTURE_2D, m_RenderID));
+
+	//glBindTextureUnit(GLuint slot, GLuint textureId); OpenGL 4.5 support
 }
 
 void Texture::Unbind() const

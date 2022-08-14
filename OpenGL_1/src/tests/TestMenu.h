@@ -2,6 +2,7 @@
 #include "Test.h"
 #include "TestClearColor.h"
 #include "TestTexture2D.h"
+#include "TestBatchRenderingTexture2D.h"
 #include <vector>
 #include <functional>
 #include <string>

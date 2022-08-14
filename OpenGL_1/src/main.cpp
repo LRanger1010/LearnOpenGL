@@ -84,6 +84,7 @@ int main()
 		test::TestMenu testMenu;
 		testMenu.RegisterTest<test::TestClearColor>("Clear Color");
 		testMenu.RegisterTest<test::TestTexture2D>("2D Texture");
+		testMenu.RegisterTest<test::TestBatchRenderingTexture2D>("Batch Rendering Texture");
 		Renderer renderer;
 		// render loop
 		while (!glfwWindowShouldClose(window))
