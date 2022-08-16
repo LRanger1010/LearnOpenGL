@@ -85,11 +85,12 @@ int main()
 		testMenu.RegisterTest<test::TestClearColor>("Clear Color");
 		testMenu.RegisterTest<test::TestTexture2D>("2D Texture");
 		testMenu.RegisterTest<test::TestBatchRenderingTexture2D>("Batch Rendering Texture");
+		testMenu.RegisterTest<test::TestDynamicBatching>("Dynamic Batching");
 		Renderer renderer;
 		// render loop
 		while (!glfwWindowShouldClose(window))
 		{
-			testMenu.OnUpdate(0.0f);
+			testMenu.OnUpdate(0.0166f);
 			// render
 			renderer.Clear();
 			testMenu.OnRender();

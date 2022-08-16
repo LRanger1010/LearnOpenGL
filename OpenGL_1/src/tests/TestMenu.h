@@ -3,6 +3,7 @@
 #include "TestClearColor.h"
 #include "TestTexture2D.h"
 #include "TestBatchRenderingTexture2D.h"
+#include "TestDynamicBatching.h"
 #include <vector>
 #include <functional>
 #include <string>
