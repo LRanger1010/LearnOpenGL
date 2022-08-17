@@ -9,12 +9,10 @@ namespace test {
 	const static unsigned int MaxVertexCount = MaxQuadCount * 4;
 	const static unsigned int MaxIndexCount = MaxQuadCount * 6;
 
-	static const unsigned int indice[] = {
-		0, 1, 2,
-		2, 3, 0,
-		4, 5, 6,
-		6, 7, 4
-	};
+	/*static const unsigned int indice[] = {
+		0, 1, 2, 2, 3, 0,
+		4, 5, 6, 6, 7, 4
+	};*/
 
 	//static const float vertices[] = {
 	//	//position	  //texture coord	//index
@@ -31,14 +29,19 @@ namespace test {
 
 	static const int samplers[] = { 0,1 };
 
-	static std::array<Vertex, 4> CreateQuad(float x, float y, float texId)
+	static Vertex* CreateQuad(Vertex* target, float x, float y, float texId)
 	{
 		float size = 1.0f;
-		Vertex v0(glm::vec3( x, y, 0.0f ), glm::vec2( 0.0f, 0.0f ), texId);
-		Vertex v1(glm::vec3(x + size, y, 0.0f ), glm::vec2( 1.0f, 0.0f ), texId);
-		Vertex v2(glm::vec3(x + size, y + size, 0.0f ), glm::vec2(1.0f, 1.0f ), texId);
-		Vertex v3(glm::vec3(x, y + size, 0.0f ), glm::vec2(0.0f, 1.0f ), texId);
-		return{ v0, v1, v2, v3 };
+		*target = Vertex(glm::vec3( x, y, 0.0f ), glm::vec2( 0.0f, 0.0f ), texId);
+		target++;
+		*target = Vertex(glm::vec3(x + size, y, 0.0f ), glm::vec2( 1.0f, 0.0f ), texId);
+		target++;
+		*target = Vertex(glm::vec3(x + size, y + size, 0.0f ), glm::vec2(1.0f, 1.0f ), texId);
+		target++;
+		*target = Vertex(glm::vec3(x, y + size, 0.0f ), glm::vec2(0.0f, 1.0f ), texId);
+		target++;
+
+		return target;
 	}
 
 	TestDynamicBatching::TestDynamicBatching()
@@ -53,7 +56,21 @@ namespace test {
 		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexIndex));
 
-		m_IBO = std::make_unique<IndexBuffer>(indice, 12);
+		unsigned int indice[MaxIndexCount];
+		unsigned int offset = 0;
+		for (int i = 0; i < MaxIndexCount; i += 6)
+		{
+			indice[i] = offset;
+			indice[i + 1] = offset + 1;
+			indice[i + 2] = offset + 2;
+			indice[i + 3] = offset + 2;
+			indice[i + 4] = offset + 3;
+			indice[i + 5] = offset;
+
+			offset += 4;
+		}
+
+		m_IBO = std::make_unique<IndexBuffer>(indice, MaxIndexCount);
 		m_Shader = std::make_unique<Shader>("batchTexture");
 
 		m_Proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
@@ -72,11 +89,23 @@ namespace test {
 		if (m_x > 2.0f)
 			m_x = -2.0f;
 		m_x += deltaTime;
-		auto q0 = CreateQuad(m_x, -0.5f, 0.0f);
-		auto q1 = CreateQuad(0.5f, -0.5f, 1.0f);
-		Vertex vertices[8];
-		memcpy(vertices, q0.data(), q0.size() * sizeof(Vertex));
-		memcpy(vertices + q0.size(), q1.data(), q1.size() * sizeof(Vertex));
+
+		if (m_y > 1.5f)
+			m_y = -1.5f;
+		m_y += deltaTime;
+
+		const unsigned int vertexCount = 1000;
+		Vertex vertices[vertexCount];
+		Vertex* buffer = vertices;
+		for (float y = -1.5f; y < 1.5f; y ++)
+		{
+			for (float x = -2.0f; x < 2.0f; x++)
+			{
+				buffer = CreateQuad(buffer, x, y, 0.0f);
+			}
+		}
+		buffer = CreateQuad(buffer, m_x, m_y, 0.0f);
+
 		m_VBO->Bind(vertices, sizeof(vertices));
 	}
 

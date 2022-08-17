@@ -26,5 +26,6 @@ namespace test {
 		std::unique_ptr<Texture> m_Tex2;
 		glm::mat4 m_Proj;
 		float m_x = -2.0f;
+		float m_y = -1.5f;
 	};
 }
