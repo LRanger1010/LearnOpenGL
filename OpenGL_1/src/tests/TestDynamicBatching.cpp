@@ -44,7 +44,6 @@ namespace test {
 	TestDynamicBatching::TestDynamicBatching()
 	{
 		m_VBO = std::make_unique<VertexBuffer>(MaxVertexCount * sizeof(Vertex));
-		m_VAO.Bind();
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Position));
 
