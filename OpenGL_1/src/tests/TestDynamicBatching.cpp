@@ -16,21 +16,35 @@ namespace test {
 		6, 7, 4
 	};
 
+	//static const float vertices[] = {
+	//	//position	  //texture coord	//index
+	//	-1.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f,	//0
+	//	-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,	//1
+	//	-0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f,		//2
+	//	-1.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,	//3
+
+	//	0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,	//4
+	//	1.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f,	//5
+	//	1.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f,		//6
+	//	0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f,	//7
+	//};
+
 	static const int samplers[] = { 0,1 };
 
 	static std::array<Vertex, 4> CreateQuad(float x, float y, float texId)
 	{
 		float size = 1.0f;
-		Vertex v0({ x, y, 0.0f }, { 0.0f, 0.0f }, texId);
-		Vertex v1({ x + size, y, 0.0f }, { 1.0f, 0.0f }, texId);
-		Vertex v2({ x + size, y + size, 0.0f }, { 1.0f, 1.0f }, texId);
-		Vertex v3({ x, y + size, 0.0f }, { 0.0f, 1.0f }, texId);
+		Vertex v0(glm::vec3( x, y, 0.0f ), glm::vec2( 0.0f, 0.0f ), texId);
+		Vertex v1(glm::vec3(x + size, y, 0.0f ), glm::vec2( 1.0f, 0.0f ), texId);
+		Vertex v2(glm::vec3(x + size, y + size, 0.0f ), glm::vec2(1.0f, 1.0f ), texId);
+		Vertex v3(glm::vec3(x, y + size, 0.0f ), glm::vec2(0.0f, 1.0f ), texId);
 		return{ v0, v1, v2, v3 };
 	}
 
 	TestDynamicBatching::TestDynamicBatching()
 	{
 		m_VBO = std::make_unique<VertexBuffer>(MaxVertexCount * sizeof(Vertex));
+		m_VAO.Bind();
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Position));
 
@@ -64,7 +78,7 @@ namespace test {
 		Vertex vertices[8];
 		memcpy(vertices, q0.data(), q0.size() * sizeof(Vertex));
 		memcpy(vertices + q0.size(), q1.data(), q1.size() * sizeof(Vertex));
-		m_VBO->Bind(vertices);
+		m_VBO->Bind(vertices, sizeof(vertices));
 	}
 
 	void TestDynamicBatching::OnRender()

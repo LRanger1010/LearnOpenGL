@@ -25,10 +25,10 @@ void VertexBuffer::Bind() const
 	GLCALL(glBindBuffer(GL_ARRAY_BUFFER, m_RenderID));
 }
 
-void VertexBuffer::Bind(const void* data) const
+void VertexBuffer::Bind(const void* data, unsigned int size) const
 {
 	GLCALL(glBindBuffer(GL_ARRAY_BUFFER, m_RenderID));
-	GLCALL(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(data), data));
+	GLCALL(glBufferSubData(GL_ARRAY_BUFFER, 0, size, data));
 }
 
 void VertexBuffer::Unbind() const
