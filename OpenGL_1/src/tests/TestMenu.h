@@ -4,6 +4,7 @@
 #include "TestTexture2D.h"
 #include "TestBatchRenderingTexture2D.h"
 #include "TestDynamicBatching.h"
+#include "Test3DModel.h"
 #include <vector>
 #include <functional>
 #include <string>

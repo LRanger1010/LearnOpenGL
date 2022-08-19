@@ -86,6 +86,7 @@ int main()
 		testMenu.RegisterTest<test::TestTexture2D>("2D Texture");
 		testMenu.RegisterTest<test::TestBatchRenderingTexture2D>("Batch Rendering Texture");
 		testMenu.RegisterTest<test::TestDynamicBatching>("Dynamic Batching");
+		testMenu.RegisterTest<test::Test3DModel>("3D Model");
 		Renderer renderer;
 		// render loop
 		while (!glfwWindowShouldClose(window))
