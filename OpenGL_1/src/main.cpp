@@ -76,6 +76,7 @@ int main()
 	{
 		GLCALL(glEnable(GL_BLEND));
 		GLCALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		GLCALL(glEnable(GL_DEPTH_TEST));
 
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(window, true);
