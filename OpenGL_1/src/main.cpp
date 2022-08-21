@@ -13,6 +13,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw_gl3.h"
 #include "tests/TestMenu.h"
+#include "camera/Camera.h"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -78,6 +79,8 @@ int main()
 		GLCALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 		GLCALL(glEnable(GL_DEPTH_TEST));
 
+		CameraController cameraController(window);
+
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(window, true);
 		ImGui::StyleColorsDark();
@@ -89,16 +92,27 @@ int main()
 		testMenu.RegisterTest<test::TestDynamicBatching>("Dynamic Batching");
 		testMenu.RegisterTest<test::Test3DModel>("3D Model");
 		Renderer renderer;
+
+		float deltaTime = 0;
+		float lastFrame = 0;
+
 		// render loop
 		while (!glfwWindowShouldClose(window))
 		{
-			testMenu.OnUpdate(0.0166f);
+			float curFrame = (float)glfwGetTime();
+			deltaTime = curFrame - lastFrame;
+			lastFrame = curFrame;
+			testMenu.OnUpdate(deltaTime);
+
+			// camera update + input
+			cameraController.Update(deltaTime);
+
 			// render
 			renderer.Clear();
 			testMenu.OnRender();
 
 			// input
-			processInput(window);
+			//processInput(window);
 
 			ImGui_ImplGlfwGL3_NewFrame();
 
