@@ -49,7 +49,7 @@ CameraController::CameraController(GLFWwindow* win)
 	window = win;
 	camera = m_Camera;
 	//glfwSetCursorPosCallback(win, mouse_callback);
-	glfwSetScrollCallback(win, scroll_callback);
+	//glfwSetScrollCallback(win, scroll_callback);
 }
 
 CameraController::~CameraController()
@@ -104,6 +104,22 @@ void CameraController::processInput()
 		{
 			yaw += m_CameraSpeed;
 			camera->UpdateCameraDir(pitch, yaw);
+		}
+		if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
+		{
+			float fov = camera->GetCameraFov();
+			if (fov >= 1.0f && fov <= 45.0f)
+				fov -= m_CameraSpeed;
+			fov = glm::clamp(fov, 1.0f, 45.0f);
+			camera->UpdateCameraFov(fov);
+		}
+		if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+		{
+			float fov = camera->GetCameraFov();
+			if (fov >= 1.0f && fov <= 45.0f)
+				fov += m_CameraSpeed;
+			fov = glm::clamp(fov, 1.0f, 45.0f);
+			camera->UpdateCameraFov(fov);
 		}
 	}
 }
