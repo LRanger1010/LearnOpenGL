@@ -4,6 +4,7 @@
 #include "GLFW/glfw3.h"
 #define MATRIX_VP GetVP()
 #define WINDOW GetWindow()
+#define CAMERA_POS GetCameraPosition()
 
 static glm::mat4 matrix_vp;
 static GLFWwindow* window = nullptr;
@@ -16,6 +17,7 @@ static float mouseSensitivity = 0.05f;
 
 glm::mat4 GetVP();
 GLFWwindow* GetWindow();
+glm::vec3 GetCameraPosition();
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 class Camera
@@ -68,5 +70,6 @@ public:
 private:
 	Camera* m_Camera;
 	float m_CameraSpeed;
+	float m_CameraRotateSpeed;
 	void processInput();
 };

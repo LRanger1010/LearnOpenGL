@@ -5,6 +5,11 @@ GLFWwindow* GetWindow()
 	return window;
 }
 
+glm::vec3 GetCameraPosition()
+{
+	return camera->GetCameraPos();
+}
+
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	if (camera)
@@ -43,7 +48,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 }
 
 CameraController::CameraController(GLFWwindow* win)
-	:m_CameraSpeed(0)
+	:m_CameraSpeed(0), m_CameraRotateSpeed(0)
 {
 	m_Camera = new Camera;
 	window = win;
@@ -63,6 +68,7 @@ CameraController::~CameraController()
 void CameraController::Update(float deltaTime)
 {
 	m_CameraSpeed = 2.5f * deltaTime;
+	m_CameraRotateSpeed = 5.0f * deltaTime;
 	processInput();
 }
 
@@ -85,24 +91,24 @@ void CameraController::processInput()
 
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
-			pitch += m_CameraSpeed;
+			pitch += m_CameraRotateSpeed;
 			pitch = glm::clamp(pitch, -89.0f, 89.0f);
 			camera->UpdateCameraDir(pitch, yaw);
 		}
 		if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
 		{
-			pitch -= m_CameraSpeed;
+			pitch -= m_CameraRotateSpeed;
 			pitch = glm::clamp(pitch, -89.0f, 89.0f);
 			camera->UpdateCameraDir(pitch, yaw);
 		}
 		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
 		{
-			yaw -= m_CameraSpeed;
+			yaw -= m_CameraRotateSpeed;
 			camera->UpdateCameraDir(pitch, yaw);
 		}
 		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 		{
-			yaw += m_CameraSpeed;
+			yaw += m_CameraRotateSpeed;
 			camera->UpdateCameraDir(pitch, yaw);
 		}
 		if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)

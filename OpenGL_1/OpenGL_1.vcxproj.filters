@@ -84,6 +84,9 @@
     <ClCompile Include="src\camera\CameraController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\TestPhongShading.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\VertexBuffer.h">
@@ -1004,6 +1007,9 @@
     <ClInclude Include="src\camera\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\tests\TestPhongShading.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\basic.shader" />
@@ -1417,6 +1423,7 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="res\shaders\batchTexture.shader" />
+    <None Include="res\shaders\BlinnPhong.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\sky.jpg">

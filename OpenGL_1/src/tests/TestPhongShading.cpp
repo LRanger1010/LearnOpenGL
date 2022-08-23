@@ -1,0 +1,104 @@
+#include "TestPhongShading.h"
+#include "VertexBufferLayout.h"
+#include "glm/gtc/matrix_transform.hpp"
+#include "camera/Camera.h"
+
+namespace test
+{
+
+	static const unsigned int MaxQuadCount = 6;
+	static const unsigned int MaxVertexCount = 4 * MaxQuadCount;
+	static const unsigned int MaxIndexCount = 6 * MaxQuadCount;
+
+	static const float vertices[] = {
+		//position			//normal
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,	//0
+		0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 	//1
+		0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,	//2
+		-0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,	//3
+
+		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,	//4
+		0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f,	//5
+		0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 0.0f,	//6
+		0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,	//7
+
+		-0.5f, -0.5f, 1.0f, 0.0f, 0.0f, -1.0f,	//8
+		0.5f, -0.5f, 1.0f, 0.0f, 0.0f, -1.0f,	//9
+		0.5f, 0.5f, 1.0f, 0.0f, 0.0f, -1.0f,	//10
+		-0.5f, 0.5f, 1.0f, 0.0f, 0.0f, -1.0f,	//11
+
+		-0.5f, -0.5f, 1.0f, -1.0f, 0.0f, 0.0f,	//12
+		-0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f,	//13
+		-0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 0.0f,	//14
+		-0.5f, 0.5f, 1.0f, -1.0f, 0.0f, 0.0f,	//15
+
+		-0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,	//16
+		0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,	//17
+		0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 0.0f,	//18
+		-0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 0.0f,	//19
+
+		-0.5f, -0.5f, 1.0f, 0.0f, -1.0f, 0.0f,	//20
+		0.5f, -0.5f, 1.0f, 0.0f, -1.0f, 0.0f,	//21
+		0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f,	//22
+		-0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f,	//23
+	};
+
+	TestPhoneShading::TestPhoneShading()
+		:m_lightPos(1.2f, 1.0f, 2.0f)
+	{
+		m_VBO = std::make_unique<VertexBuffer>(vertices, sizeof(vertices));
+		{
+			VertexBufferLayout layout;
+			layout.Push(GL_FLOAT, 3);
+			layout.Push(GL_FLOAT, 3);
+			m_VAO.AddBuffer(*m_VBO, layout);
+		}
+
+		unsigned int indice[MaxIndexCount];
+		unsigned int offset = 0;
+		for (int i = 0; i < MaxIndexCount; i += 6)
+		{
+			indice[i] = offset;
+			indice[i + 1] = offset + 1;
+			indice[i + 2] = offset + 2;
+			indice[i + 3] = offset + 2;
+			indice[i + 4] = offset + 3;
+			indice[i + 5] = offset;
+
+			offset += 4;
+		}
+
+		m_IBO = std::make_unique<IndexBuffer>(indice, MaxIndexCount);
+		m_Shader = std::make_unique<Shader>("BlinnPhong");
+		m_Shader->Bind();
+		m_Shader->SetUniform3f("objectColor", 1.0f, 0.5f, 0.3f);
+		m_Shader->SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);
+	}
+
+	TestPhoneShading::~TestPhoneShading()
+	{
+
+	}
+
+	void TestPhoneShading::OnUpdate(float deltaTime)
+	{
+		glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		m_MVP = MATRIX_VP * model;
+		m_Shader->SetUniformMat4f("u_Model", model);
+		m_Shader->SetUniformMat4f("u_MVP", m_MVP);
+		m_Shader->SetUniform3fv("viewPos", CAMERA_POS);
+		m_Shader->SetUniform3fv("lightPos", m_lightPos);
+	}
+
+	void TestPhoneShading::OnRender()
+	{
+		m_Renderer.Clear();
+		m_Renderer.Draw(m_VAO, *m_IBO, *m_Shader);
+	}
+
+	void TestPhoneShading::OnGUI()
+	{
+		ImGui::SliderFloat3("lightPos", &m_lightPos.x, -2.0f, 2.0f);
+	}
+
+}
