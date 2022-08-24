@@ -20,22 +20,40 @@ in vec3 v_normal;
 in vec3 v_worldPos;
 uniform vec3 objectColor;
 uniform vec3 lightColor;
-uniform vec3 lightPos;
 uniform vec3 viewPos;
+
+struct Light
+{
+	vec3 pos;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
+uniform Light light;
+
+struct Material
+{
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	float shininess;
+};
+uniform Material material;
+
 void main()
 {
-	vec3 ambient = lightColor * 0.1;
+	vec3 ambient = light.ambient * material.ambient;
 
-	vec3 lightDir = normalize(lightPos - v_worldPos);
+	vec3 lightDir = normalize(light.pos - v_worldPos);
 	vec3 norm = normalize(v_normal);
 	float diff = max(dot(lightDir, norm), 0);
-	vec3 diffuse = diff * lightColor;
+	vec3 diffuse = diff * light.diffuse * material.diffuse;
 
 	vec3 viewDir = normalize(viewPos - v_worldPos);
 	vec3 reflectDir = reflect(-lightDir, norm);
-	float spec = pow(max(dot(reflectDir, viewDir), 0), 32);
-	vec3 specular = spec * lightColor;
+	float spec = pow(max(dot(reflectDir, viewDir), 0), material.shininess);
+	vec3 specular = spec * light.specular * material.specular;
 
-	vec3 fragColor = (ambient + diffuse + specular) * objectColor;
+	vec3 fragColor = ambient + diffuse + specular;
 	color = vec4(fragColor, 1.0);
 };

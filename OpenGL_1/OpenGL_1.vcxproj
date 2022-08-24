@@ -179,6 +179,8 @@
   <ItemGroup>
     <ClInclude Include="src\camera\Camera.h" />
     <ClInclude Include="src\IndexBuffer.h" />
+    <ClInclude Include="src\Light.h" />
+    <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\tests\Test.h" />

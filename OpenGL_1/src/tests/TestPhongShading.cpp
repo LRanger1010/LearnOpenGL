@@ -44,7 +44,6 @@ namespace test
 	};
 
 	TestPhoneShading::TestPhoneShading()
-		:m_lightPos(1.2f, 1.0f, 2.0f)
 	{
 		m_VBO = std::make_unique<VertexBuffer>(vertices, sizeof(vertices));
 		{
@@ -70,9 +69,6 @@ namespace test
 
 		m_IBO = std::make_unique<IndexBuffer>(indice, MaxIndexCount);
 		m_Shader = std::make_unique<Shader>("BlinnPhong");
-		m_Shader->Bind();
-		m_Shader->SetUniform3f("objectColor", 1.0f, 0.5f, 0.3f);
-		m_Shader->SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);
 	}
 
 	TestPhoneShading::~TestPhoneShading()
@@ -82,12 +78,20 @@ namespace test
 
 	void TestPhoneShading::OnUpdate(float deltaTime)
 	{
-		glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		m_Shader->Bind();
+		m_Shader->SetUniform3fv("material.ambient", m_Material.ambient);
+		m_Shader->SetUniform3fv("material.diffuse", m_Material.diffuse);
+		m_Shader->SetUniform3fv("material.specular", m_Material.specular);
+		m_Shader->SetUniform1f("material.shininess", m_Material.shininess);
+		m_Shader->SetUniform3fv("light.ambient", m_Light.ambient);
+		m_Shader->SetUniform3fv("light.diffuse", m_Light.diffuse);
+		m_Shader->SetUniform3fv("light.specular", m_Light.specular);
+		m_Shader->SetUniform3fv("light.pos", m_Light.position);
+		glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians((float)glfwGetTime() * 50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 		m_MVP = MATRIX_VP * model;
 		m_Shader->SetUniformMat4f("u_Model", model);
 		m_Shader->SetUniformMat4f("u_MVP", m_MVP);
 		m_Shader->SetUniform3fv("viewPos", CAMERA_POS);
-		m_Shader->SetUniform3fv("lightPos", m_lightPos);
 	}
 
 	void TestPhoneShading::OnRender()
@@ -98,7 +102,13 @@ namespace test
 
 	void TestPhoneShading::OnGUI()
 	{
-		ImGui::SliderFloat3("lightPos", &m_lightPos.x, -2.0f, 2.0f);
+		ImGui::SliderFloat3("material ambient", &m_Material.ambient.x, 0.0f, 1.0f);
+		ImGui::SliderFloat3("material diffuse", &m_Material.diffuse.x, 0.0f, 1.0f);
+		ImGui::SliderFloat3("material specular", &m_Material.specular.x, 0.0f, 1.0f);
+		ImGui::SliderFloat3("light position", &m_Light.position.x, -2.0f, 2.0f);
+		ImGui::SliderFloat3("light ambient", &m_Light.ambient.x, 0.0f, 1.0f);
+		ImGui::SliderFloat3("light diffuse", &m_Light.diffuse.x, 0.0f, 1.0f);
+		ImGui::SliderFloat3("light specular", &m_Light.specular.x, 0.0f, 1.0f);
 	}
 
 }

@@ -2,6 +2,8 @@
 #include "Test.h"
 #include "Renderer.h"
 #include "glm/glm.hpp"
+#include "Material.h"
+#include "Light.h"
 #include <memory>
 
 namespace test
@@ -23,7 +25,8 @@ namespace test
 		std::unique_ptr<IndexBuffer> m_IBO;
 		std::unique_ptr<Shader> m_Shader;
 		glm::mat4 m_MVP;
-		glm::vec3 m_lightPos;
+		Material m_Material;
+		Light m_Light;
 	};
 }
 
