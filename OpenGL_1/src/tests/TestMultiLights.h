@@ -1,0 +1,33 @@
+#pragma once
+#include "Test.h"
+#include "Renderer.h"
+#include "glm/glm.hpp"
+#include "Material.h"
+#include "Light.h"
+#include "Texture.h"
+#include <memory>
+
+namespace test
+{
+	class TestMultiLights : public Test
+	{
+	public:
+		TestMultiLights();
+		~TestMultiLights();
+
+		void OnUpdate(float deltaTime) override;
+		void OnRender() override;
+		void OnGUI() override;
+
+	private:
+		Renderer m_Renderer;
+		VertexArray m_VAO;
+		std::unique_ptr<VertexBuffer> m_VBO;
+		std::unique_ptr<IndexBuffer> m_IBO;
+		std::unique_ptr<Shader> m_Shader;
+		std::unique_ptr<Texture> m_MainTex;
+		std::unique_ptr<Texture> m_specTex;
+		glm::mat4 m_MVP;
+		Material m_Material;
+	};
+}

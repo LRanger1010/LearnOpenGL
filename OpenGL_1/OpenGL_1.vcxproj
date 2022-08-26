@@ -163,6 +163,7 @@
     <ClCompile Include="src\tests\TestClearColor.cpp" />
     <ClCompile Include="src\tests\TestDynamicBatching.cpp" />
     <ClCompile Include="src\tests\TestMenu.cpp" />
+    <ClCompile Include="src\tests\TestMultiLights.cpp" />
     <ClCompile Include="src\tests\TestTexture2D.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="src\tests\TestClearColor.h" />
     <ClInclude Include="src\tests\TestDynamicBatching.h" />
     <ClInclude Include="src\tests\TestMenu.h" />
+    <ClInclude Include="src\tests\TestMultiLights.h" />
     <ClInclude Include="src\tests\TestTexture2D.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
@@ -631,6 +633,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\cherno.jpg" />
+    <Image Include="res\textures\container2.png" />
+    <Image Include="res\textures\container2_specular.png" />
     <Image Include="res\textures\sky.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

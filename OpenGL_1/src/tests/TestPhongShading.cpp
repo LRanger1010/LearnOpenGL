@@ -102,13 +102,13 @@ namespace test
 
 	void TestPhoneShading::OnGUI()
 	{
-		ImGui::SliderFloat3("material ambient", &m_Material.ambient.x, 0.0f, 1.0f);
-		ImGui::SliderFloat3("material diffuse", &m_Material.diffuse.x, 0.0f, 1.0f);
-		ImGui::SliderFloat3("material specular", &m_Material.specular.x, 0.0f, 1.0f);
+		ImGui::ColorEdit3("material ambient", &m_Material.ambient.x);
+		ImGui::ColorEdit3("material diffuse", &m_Material.diffuse.x);
+		ImGui::ColorEdit3("material specular", &m_Material.specular.x);
 		ImGui::SliderFloat3("light position", &m_Light.position.x, -2.0f, 2.0f);
-		ImGui::SliderFloat3("light ambient", &m_Light.ambient.x, 0.0f, 1.0f);
-		ImGui::SliderFloat3("light diffuse", &m_Light.diffuse.x, 0.0f, 1.0f);
-		ImGui::SliderFloat3("light specular", &m_Light.specular.x, 0.0f, 1.0f);
+		ImGui::ColorEdit3("light ambient", &m_Light.ambient.x);
+		ImGui::ColorEdit3("light diffuse", &m_Light.diffuse.x);
+		ImGui::ColorEdit3("light specular", &m_Light.specular.x);
 	}
 
 }

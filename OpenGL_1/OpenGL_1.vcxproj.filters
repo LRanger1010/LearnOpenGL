@@ -87,6 +87,9 @@
     <ClCompile Include="src\tests\TestPhongShading.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\TestMultiLights.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\VertexBuffer.h">
@@ -1016,6 +1019,9 @@
     <ClInclude Include="src\Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\tests\TestMultiLights.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\basic.shader" />
@@ -1436,6 +1442,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\textures\cherno.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\container2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\container2_specular.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
