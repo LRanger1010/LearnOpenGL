@@ -1436,6 +1436,7 @@
     </None>
     <None Include="res\shaders\batchTexture.shader" />
     <None Include="res\shaders\BlinnPhong.shader" />
+    <None Include="res\shaders\MultiLights.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\sky.jpg">

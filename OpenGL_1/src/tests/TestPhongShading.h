@@ -26,7 +26,7 @@ namespace test
 		std::unique_ptr<Shader> m_Shader;
 		glm::mat4 m_MVP;
 		Material m_Material;
-		Light m_Light;
+		PointLight m_Light;
 	};
 }
 

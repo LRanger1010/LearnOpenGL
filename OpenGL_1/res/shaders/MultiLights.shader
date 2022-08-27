@@ -43,13 +43,15 @@ struct PointLight
 	vec3 diffuse;
 	vec3 specular;
 };
-uniform PointLight pointLight;
+#define pointLightCount 2
+uniform PointLight pointLights[pointLightCount];
 
 struct SpotLight
 {
 	vec3 pos;
 	vec3 dir;
 	float cutOff;
+	float outterCutOff;
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
@@ -58,26 +60,86 @@ uniform SpotLight spotLight;
 
 struct Material
 {
-	sampler2D diffuse;
-	sampler2D specular;
+	sampler2D mainTex;
+	sampler2D specTex;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
 	float shininess;
 };
 uniform Material material;
 
+vec3 calcDirLightCol(DirLight light, vec3 norm, vec3 viewDir);
+vec3 calcPointLightCol(PointLight light, vec3 norm, vec3 worldPos, vec3 viewDir);
+vec3 calcSpotLightCol(SpotLight light, vec3 norm, vec3 worldPos, vec3 viewDir);
+
 void main()
 {
-	vec3 ambient = light.ambient * material.ambient;
-
-	vec3 lightDir = normalize(light.pos - v_worldPos);
 	vec3 norm = normalize(v_normal);
-	float diff = max(dot(lightDir, norm), 0);
-	vec3 diffuse = diff * light.diffuse * material.diffuse;
-
 	vec3 viewDir = normalize(viewPos - v_worldPos);
-	vec3 reflectDir = reflect(-lightDir, norm);
-	float spec = pow(max(dot(reflectDir, viewDir), 0), material.shininess);
-	vec3 specular = spec * light.specular * material.specular;
+	vec3 fragColor = calcDirLightCol(dirLight, norm, viewDir);
+	for (int i = 0; i < pointLightCount; i++)
+	{
+		fragColor += calcPointLightCol(pointLights[i], norm, v_worldPos, viewDir);
+	}
+	fragColor += calcSpotLightCol(spotLight, norm, v_worldPos, viewDir);
 
-	vec3 fragColor = ambient + diffuse + specular;
 	color = vec4(fragColor, 1.0);
 };
+
+vec3 calcDirLightCol(DirLight light, vec3 norm, vec3 viewDir)
+{
+	vec3 ambient = light.ambient * vec3(texture(material.mainTex, v_texCoords)) * material.ambient;
+	vec3 lightDir = normalize(-light.dir);
+	float diff = max(dot(lightDir, norm), 0);
+	vec3 diffuse = diff * light.diffuse * vec3(texture(material.mainTex, v_texCoords)) * material.diffuse;
+
+	vec3 reflectDir = reflect(-lightDir, norm);
+	float spec = pow(max(dot(reflectDir, viewDir), 0), material.shininess);
+	vec3 specular = spec * light.specular * vec3(texture(material.specTex, v_texCoords)) * material.specular;
+
+	vec3 fragColor = ambient + diffuse + specular;
+	return fragColor;
+}
+
+vec3 calcPointLightCol(PointLight light, vec3 norm, vec3 worldPos, vec3 viewDir)
+{
+	vec3 ambient = light.ambient * vec3(texture(material.mainTex, v_texCoords)) * material.ambient;
+	vec3 lightDir = normalize(light.pos - worldPos);
+	float diff = max(dot(lightDir, norm), 0);
+	vec3 diffuse = diff * light.diffuse * vec3(texture(material.mainTex, v_texCoords)) * material.diffuse;
+
+	vec3 reflectDir = reflect(-lightDir, norm);
+	float spec = pow(max(dot(reflectDir, viewDir), 0), material.shininess);
+	vec3 specular = spec * light.specular * vec3(texture(material.specTex, v_texCoords)) * material.specular;
+
+	float distance = length(light.pos - worldPos);
+	float atten = 1.0 / (light.constant + light.linear * distance + light.quadratic * distance * distance);
+	ambient *= atten;
+	diffuse *= atten;
+	specular *= atten;
+
+	vec3 fragColor = ambient + diffuse + specular;
+	return fragColor;
+}
+
+vec3 calcSpotLightCol(SpotLight light, vec3 norm, vec3 worldPos, vec3 viewDir)
+{
+	vec3 ambient = light.ambient * vec3(texture(material.mainTex, v_texCoords)) * material.ambient;
+	vec3 lightDir = normalize(light.pos - worldPos);
+	float diff = max(dot(lightDir, norm), 0);
+	vec3 diffuse = diff * light.diffuse * vec3(texture(material.mainTex, v_texCoords)) * material.diffuse;
+
+	vec3 reflectDir = reflect(-lightDir, norm);
+	float spec = pow(max(dot(reflectDir, viewDir), 0), material.shininess);
+	vec3 specular = spec * light.specular * vec3(texture(material.specTex, v_texCoords)) * material.specular;
+
+	float theta = dot(lightDir, normalize(-light.dir));
+	float epsilon = light.cutOff - light.outterCutOff;
+	float intensity = clamp((theta - light.outterCutOff) / epsilon, 0.0, 1.0);
+	diffuse *= intensity;
+	specular *= intensity;
+
+	vec3 fragColor = ambient + diffuse + specular;
+	return fragColor;
+}

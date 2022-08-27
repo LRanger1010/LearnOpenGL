@@ -22,7 +22,7 @@ struct Color
 	Color(float r, float g, float b, float a) :red(r), green(g), blue(b), alpha(a) {};
 };
 
-const Color background = Color(0.2f, 0.3f, 0.3f, 1.0f);
+const Color background = Color(0.1f, 0.1f, 0.1f, 1.0f);
 
 Renderer::Renderer()
 {

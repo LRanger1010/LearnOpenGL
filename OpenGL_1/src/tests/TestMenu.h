@@ -6,6 +6,7 @@
 #include "TestDynamicBatching.h"
 #include "Test3DModel.h"
 #include "TestPhongShading.h"
+#include "TestMultiLights.h"
 #include <vector>
 #include <functional>
 #include <string>

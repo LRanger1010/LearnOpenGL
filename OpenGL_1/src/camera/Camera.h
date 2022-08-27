@@ -5,6 +5,7 @@
 #define MATRIX_VP GetVP()
 #define WINDOW GetWindow()
 #define CAMERA_POS GetCameraPosition()
+#define CAMERA_DIR GetCameraDirection()
 
 static glm::mat4 matrix_vp;
 static GLFWwindow* window = nullptr;
@@ -18,6 +19,7 @@ static float mouseSensitivity = 0.05f;
 glm::mat4 GetVP();
 GLFWwindow* GetWindow();
 glm::vec3 GetCameraPosition();
+glm::vec3 GetCameraDirection();
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 class Camera

@@ -68,7 +68,9 @@ namespace test
 		}
 
 		m_IBO = std::make_unique<IndexBuffer>(indice, MaxIndexCount);
-		m_Shader = std::make_unique<Shader>("BlinnPhong");
+		m_Shader = std::make_unique<Shader>("MultiLights");
+		m_MainTex = std::make_unique<Texture>("res/textures/container2.png");
+		m_specTex = std::make_unique<Texture>("res/textures/container2_specular.png");
 	}
 
 	TestMultiLights::~TestMultiLights()
@@ -78,17 +80,69 @@ namespace test
 
 	void TestMultiLights::OnUpdate(float deltaTime)
 	{
+		//TODO:set spotLight's pos and dir
+		m_SpotLight.position = CAMERA_POS;
+		m_SpotLight.direction = CAMERA_DIR;
 
+		m_Shader->Bind();
+		m_MainTex->Bind(m_Material.mainTex);
+		m_specTex->Bind(m_Material.specTex);
+		m_Shader->SetUniform3fv("material.ambient", m_Material.ambient);
+		m_Shader->SetUniform3fv("material.diffuse", m_Material.diffuse);
+		m_Shader->SetUniform3fv("material.specular", m_Material.specular);
+		m_Shader->SetUniform1f("material.shininess", m_Material.shininess);
+		m_Shader->SetUniform1i("material.mainTex", m_Material.mainTex);
+		m_Shader->SetUniform1i("material.specTex", m_Material.specTex);
+
+		m_Shader->SetUniform3fv("dirLight.ambient", m_DirLight.ambient);
+		m_Shader->SetUniform3fv("dirLight.diffuse", m_DirLight.diffuse);
+		m_Shader->SetUniform3fv("dirLight.specular", m_DirLight.specular);
+		m_Shader->SetUniform3fv("dirLight.dir", m_DirLight.direction);
+
+		m_Shader->SetUniform3fv("pointLights[0].ambient", m_PointLights[0].ambient);
+		m_Shader->SetUniform3fv("pointLights[0].diffuse", m_PointLights[0].diffuse);
+		m_Shader->SetUniform3fv("pointLights[0].specular", m_PointLights[0].specular);
+		m_Shader->SetUniform3fv("pointLights[0].pos", m_PointLights[0].position);
+		m_Shader->SetUniform1f("pointLights[0].constant", m_PointLights[0].constant);
+		m_Shader->SetUniform1f("pointLights[0].linear", m_PointLights[0].linear);
+		m_Shader->SetUniform1f("pointLights[0].quadratic", m_PointLights[0].quadratic);
+
+		m_Shader->SetUniform3fv("pointLights[1].ambient", m_PointLights[1].ambient);
+		m_Shader->SetUniform3fv("pointLights[1].diffuse", m_PointLights[1].diffuse);
+		m_Shader->SetUniform3fv("pointLights[1].specular", m_PointLights[1].specular);
+		m_Shader->SetUniform3fv("pointLights[1].pos", m_PointLights[1].position);
+		m_Shader->SetUniform1f("pointLights[1].constant", m_PointLights[1].constant);
+		m_Shader->SetUniform1f("pointLights[1].linear", m_PointLights[1].linear);
+		m_Shader->SetUniform1f("pointLights[1].quadratic", m_PointLights[1].quadratic);
+
+		m_Shader->SetUniform3fv("spotLight.ambient", m_SpotLight.ambient);
+		m_Shader->SetUniform3fv("spotLight.diffuse", m_SpotLight.diffuse);
+		m_Shader->SetUniform3fv("spotLight.specular", m_SpotLight.specular);
+		m_Shader->SetUniform3fv("spotLight.pos", m_SpotLight.position);
+		m_Shader->SetUniform3fv("spotLight.dir", m_SpotLight.direction);
+		m_Shader->SetUniform1f("spotLight.cutOff", m_SpotLight.cutOff);
+		m_Shader->SetUniform1f("spotLight.outterCutOff", m_SpotLight.outterCutOff);
+		
+		glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians((float)glfwGetTime() * 50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		m_MVP = MATRIX_VP * model;
+		m_Shader->SetUniformMat4f("u_Model", model);
+		m_Shader->SetUniformMat4f("u_MVP", m_MVP);
+		m_Shader->SetUniform3fv("viewPos", CAMERA_POS);
 	}
 
 	void TestMultiLights::OnRender()
 	{
-
+		m_Renderer.Clear();
+		m_Renderer.Draw(m_VAO, *m_IBO, *m_Shader);
 	}
 
 	void TestMultiLights::OnGUI()
 	{
-
+		ImGui::ColorEdit3("material ambient", &m_Material.ambient.x);
+		ImGui::ColorEdit3("material diffuse", &m_Material.diffuse.x);
+		ImGui::ColorEdit3("material specular", &m_Material.specular.x);
+		ImGui::SliderFloat3("pointLight1 position", &m_PointLights[0].position.x, -2.0f, 2.0f);
+		ImGui::SliderFloat3("pointLight2 position", &m_PointLights[1].position.x, -2.0f, 2.0f);
 	}
 
 }

@@ -67,6 +67,7 @@ int main()
 		testMenu.RegisterTest<test::TestDynamicBatching>("Dynamic Batching");
 		testMenu.RegisterTest<test::Test3DModel>("3D Model");
 		testMenu.RegisterTest<test::TestPhoneShading>("Blinn-Phong Shading");
+		testMenu.RegisterTest<test::TestMultiLights>("Multi-Lights");
 		Renderer renderer;
 
 		float deltaTime = 0;

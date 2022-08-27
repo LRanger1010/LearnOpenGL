@@ -493,6 +493,7 @@
     <None Include="res\shaders\basic.shader" />
     <None Include="res\shaders\batchTexture.shader" />
     <None Include="res\shaders\BlinnPhong.shader" />
+    <None Include="res\shaders\MultiLights.shader" />
     <None Include="res\shaders\texture.shader" />
     <None Include="src\vendor\glm\detail\func_common.inl" />
     <None Include="src\vendor\glm\detail\func_common_simd.inl" />

@@ -10,6 +10,11 @@ glm::vec3 GetCameraPosition()
 	return camera->GetCameraPos();
 }
 
+glm::vec3 GetCameraDirection()
+{
+	return camera->GetCameraDirection();
+}
+
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	if (camera)

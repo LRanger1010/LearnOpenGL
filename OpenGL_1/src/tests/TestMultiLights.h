@@ -29,5 +29,8 @@ namespace test
 		std::unique_ptr<Texture> m_specTex;
 		glm::mat4 m_MVP;
 		Material m_Material;
+		DirLight m_DirLight;
+		PointLight m_PointLights[2];
+		SpotLight m_SpotLight;
 	};
 }
