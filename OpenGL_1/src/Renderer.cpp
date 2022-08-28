@@ -16,14 +16,6 @@ bool GLLogCall(const char* funcName, const char* fileName, int line)
 	return true;
 }
 
-struct Color
-{
-	float red, green, blue, alpha;
-	Color(float r, float g, float b, float a) :red(r), green(g), blue(b), alpha(a) {};
-};
-
-const Color background = Color(0.1f, 0.1f, 0.1f, 1.0f);
-
 Renderer::Renderer()
 {
 
@@ -49,8 +41,8 @@ void Renderer::Draw(const VertexArray& va, const Shader& shader) const
 	GLCALL(glDrawArrays(GL_TRIANGLES, 0, 3));
 }
 
-void Renderer::Clear() const
+void Renderer::Clear(float v0, float v1, float v2, float v3) const
 {
-	glClearColor(background.red, background.green, background.blue, background.alpha);
+	glClearColor(v0, v1, v2, v3);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

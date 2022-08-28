@@ -49,7 +49,6 @@ namespace test {
 	void TestTexture2D::OnRender()
 	{
 		if (!m_Inited) return;
-		m_Renderer.Clear();
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Translation);
 		m_Shader->SetUniformMat4f("u_MVP", m_Proj * m_View * model);
 		m_Renderer.Draw(m_VAO, *m_IBO, *m_Shader);

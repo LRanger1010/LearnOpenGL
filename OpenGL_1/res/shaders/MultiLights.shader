@@ -7,12 +7,13 @@ out vec3 v_normal;
 out vec3 v_worldPos;
 out vec2 v_texCoords;
 uniform mat4 u_Model;
+uniform mat4 u_NormalMatrix;
 uniform mat4 u_MVP;
 void main()
 {
 	gl_Position = u_MVP * position;
 	v_worldPos = vec3(u_Model * position);
-	v_normal = aNormal;
+	v_normal = mat3(u_NormalMatrix) * aNormal;
 	v_texCoords = aTexCoords;
 };
 

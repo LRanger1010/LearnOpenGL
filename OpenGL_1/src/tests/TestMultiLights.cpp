@@ -17,27 +17,27 @@ namespace test
 		-0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,	//3
 
 		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,	//4
-		0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,	//5
-		0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,	//6
+		0.5f, -0.5f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,	//5
+		0.5f, 0.5f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,	//6
 		0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,	//7
 
-		-0.5f, -0.5f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,	//8
-		0.5f, -0.5f, 1.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,	//9
-		0.5f, 0.5f, 1.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,	//10
-		-0.5f, 0.5f, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,	//11
+		-0.5f, -0.5f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,	//8
+		0.5f, -0.5f, -1.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,	//9
+		0.5f, 0.5f, -1.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,	//10
+		-0.5f, 0.5f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,	//11
 
-		-0.5f, -0.5f, 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,	//12
+		-0.5f, -0.5f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,	//12
 		-0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,	//13
 		-0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f,	//14
-		-0.5f, 0.5f, 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,	//15
+		-0.5f, 0.5f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,	//15
 
 		-0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,	//16
 		0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,	//17
-		0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,	//18
-		-0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,	//19
+		0.5f, 0.5f, -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,	//18
+		-0.5f, 0.5f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,	//19
 
-		-0.5f, -0.5f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,	//20
-		0.5f, -0.5f, 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,	//21
+		-0.5f, -0.5f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,	//20
+		0.5f, -0.5f, -1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,	//21
 		0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f,	//22
 		-0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,	//23
 	};
@@ -71,6 +71,8 @@ namespace test
 		m_Shader = std::make_unique<Shader>("MultiLights");
 		m_MainTex = std::make_unique<Texture>("res/textures/container2.png");
 		m_specTex = std::make_unique<Texture>("res/textures/container2_specular.png");
+		m_MainTex->Bind(m_Material.mainTex);
+		m_specTex->Bind(m_Material.specTex);
 	}
 
 	TestMultiLights::~TestMultiLights()
@@ -85,8 +87,6 @@ namespace test
 		m_SpotLight.direction = CAMERA_DIR;
 
 		m_Shader->Bind();
-		m_MainTex->Bind(m_Material.mainTex);
-		m_specTex->Bind(m_Material.specTex);
 		m_Shader->SetUniform3fv("material.ambient", m_Material.ambient);
 		m_Shader->SetUniform3fv("material.diffuse", m_Material.diffuse);
 		m_Shader->SetUniform3fv("material.specular", m_Material.specular);
@@ -123,16 +123,16 @@ namespace test
 		m_Shader->SetUniform1f("spotLight.cutOff", m_SpotLight.cutOff);
 		m_Shader->SetUniform1f("spotLight.outterCutOff", m_SpotLight.outterCutOff);
 		
-		glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians((float)glfwGetTime() * 50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians((float)glfwGetTime() * 30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		m_MVP = MATRIX_VP * model;
 		m_Shader->SetUniformMat4f("u_Model", model);
+		m_Shader->SetUniformMat4f("u_NormalMatrix", glm::transpose(glm::inverse(model)));
 		m_Shader->SetUniformMat4f("u_MVP", m_MVP);
 		m_Shader->SetUniform3fv("viewPos", CAMERA_POS);
 	}
 
 	void TestMultiLights::OnRender()
 	{
-		m_Renderer.Clear();
 		m_Renderer.Draw(m_VAO, *m_IBO, *m_Shader);
 	}
 

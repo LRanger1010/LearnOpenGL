@@ -63,7 +63,6 @@ namespace test {
 
 	void TestBatchRenderingTexture2D::OnRender()
 	{
-		m_Renderer.Clear();
 		m_Renderer.Draw(m_VAO, *m_IBO, *m_Shader);
 	}
 

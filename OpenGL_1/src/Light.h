@@ -47,6 +47,7 @@ struct SpotLight : Light
 	float outterCutOff;
 	SpotLight()
 	{
+		diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
 		position = glm::vec3(0.0f, 0.0f, 0.0f);
 		direction = glm::vec3(0.0f, 0.0f, -1.0f);
 		cutOff = glm::cos(glm::radians(12.5f));

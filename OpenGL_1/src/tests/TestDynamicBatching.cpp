@@ -111,7 +111,6 @@ namespace test {
 
 	void TestDynamicBatching::OnRender()
 	{
-		m_Renderer.Clear();
 		m_Shader->Bind();
 		m_Tex1->Bind(0);
 		m_Tex2->Bind(1);

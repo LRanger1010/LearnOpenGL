@@ -73,6 +73,8 @@ int main()
 		float deltaTime = 0;
 		float lastFrame = 0;
 
+		float clearColor[4] = { 0.1f,0.1f,0.1f,1.0f };
+
 		// render loop
 		while (!glfwWindowShouldClose(window))
 		{
@@ -85,7 +87,7 @@ int main()
 			cameraController.Update(deltaTime);
 
 			// render
-			renderer.Clear();
+			renderer.Clear(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
 			testMenu.OnRender();
 
 			// input
@@ -94,6 +96,7 @@ int main()
 			ImGui_ImplGlfwGL3_NewFrame();
 
 			testMenu.OnGUI();
+			ImGui::ColorEdit4("clear color", clearColor);
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::Render();
 			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
