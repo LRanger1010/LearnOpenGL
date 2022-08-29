@@ -1,5 +1,5 @@
-#include "GLFW/glad/glad.h"
-#include "GLFW/glfw3.h"
+#include <glad/glad.h>
+#include <glfw3.h>
 #include<iostream>
 #include<stdio.h>
 #include "VertexBuffer.h"

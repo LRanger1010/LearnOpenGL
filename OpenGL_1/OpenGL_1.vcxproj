@@ -91,7 +91,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;src/vendor;$(SolutionDir)Dependencies\GLFW\Include;$(SolutionDir)Dependencies\GLEW\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src/vendor;$(SolutionDir)Dependencies\GLFW\Include\GLFW;$(SolutionDir)Dependencies\GLEW\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32.lib;</AdditionalDependencies>
@@ -121,7 +121,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;src/vendor;$(SolutionDir)Dependencies\GLFW\Include;$(SolutionDir)Dependencies\GLEW\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src/vendor;$(SolutionDir)Dependencies\GLFW\Include\GLFW;$(SolutionDir)Dependencies\GLEW\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
