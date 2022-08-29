@@ -1,9 +1,8 @@
 #pragma once
+#include "pch.h"
 #include "Test.h"
 #include "Renderer.h"
 #include "Texture.h"
-#include "glm/glm.hpp"
-#include <memory>
 
 namespace test {
 	class Test3DModel : public Test

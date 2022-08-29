@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Camera.h"
 
 glm::mat4 GetVP()

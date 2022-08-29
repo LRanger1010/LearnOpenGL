@@ -1,6 +1,6 @@
+#include "pch.h"
 #include "Test3DModel.h"
 #include "VertexBufferLayout.h"
-#include "glm/gtc/matrix_transform.hpp"
 #include "camera/Camera.h"
 
 namespace test {

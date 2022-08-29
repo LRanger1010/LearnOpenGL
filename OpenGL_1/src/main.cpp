@@ -1,17 +1,10 @@
-#include <glad/glad.h>
-#include <glfw3.h>
-#include<iostream>
-#include<stdio.h>
+#include "pch.h"
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
 #include "Texture.h"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw_gl3.h"
 #include "tests/TestMenu.h"
 #include "camera/Camera.h"
 
@@ -61,7 +54,6 @@ int main()
 		ImGui::StyleColorsDark();
 
 		test::TestMenu testMenu;
-		testMenu.RegisterTest<test::TestClearColor>("Clear Color");
 		testMenu.RegisterTest<test::TestTexture2D>("2D Texture");
 		testMenu.RegisterTest<test::TestBatchRenderingTexture2D>("Batch Rendering Texture");
 		testMenu.RegisterTest<test::TestDynamicBatching>("Dynamic Batching");

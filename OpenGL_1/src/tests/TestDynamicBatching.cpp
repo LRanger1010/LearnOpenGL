@@ -1,7 +1,6 @@
+#include "pch.h"
 #include "TestDynamicBatching.h"
-#include "glm/gtc/matrix_transform.hpp"
 #include "Vertex.h"
-#include <array>
 
 namespace test {
 
@@ -88,11 +87,11 @@ namespace test {
 	{
 		if (m_x > 2.0f)
 			m_x = -2.0f;
-		m_x += deltaTime;
+		m_x += deltaTime * 0.01f;
 
 		if (m_y > 1.5f)
 			m_y = -1.5f;
-		m_y += deltaTime;
+		m_y += deltaTime * 0.01f;
 
 		const unsigned int vertexCount = 1000;
 		Vertex vertices[vertexCount];

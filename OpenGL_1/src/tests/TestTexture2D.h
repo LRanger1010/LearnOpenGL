@@ -1,9 +1,9 @@
 #pragma once
+#include "pch.h"
 #include "Test.h"
 #include "Texture.h"
 #include "Renderer.h"
 #include "Shader.h"
-#include <memory>
 
 namespace test {
 

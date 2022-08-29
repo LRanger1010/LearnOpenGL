@@ -1,7 +1,5 @@
 #pragma once
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include <glfw3.h>
+#include "pch.h"
 #define MATRIX_VP GetVP()
 #define WINDOW GetWindow()
 #define CAMERA_POS GetCameraPosition()

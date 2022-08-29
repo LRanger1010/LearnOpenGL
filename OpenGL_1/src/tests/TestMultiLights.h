@@ -1,11 +1,10 @@
 #pragma once
+#include "pch.h"
 #include "Test.h"
 #include "Renderer.h"
-#include "glm/glm.hpp"
 #include "Material.h"
 #include "Light.h"
 #include "Texture.h"
-#include <memory>
 
 namespace test
 {

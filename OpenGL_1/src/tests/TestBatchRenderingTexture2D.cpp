@@ -1,6 +1,6 @@
+#include "pch.h"
 #include "TestBatchRenderingTexture2D.h"
 #include "VertexBufferLayout.h"
-#include "glm/gtc/matrix_transform.hpp"
 
 namespace test {
 
