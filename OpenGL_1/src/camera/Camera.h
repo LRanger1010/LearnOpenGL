@@ -1,5 +1,4 @@
 #pragma once
-#include "pch.h"
 #define MATRIX_VP GetVP()
 #define WINDOW GetWindow()
 #define CAMERA_POS GetCameraPosition()

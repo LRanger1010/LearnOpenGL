@@ -3,7 +3,6 @@
 #include "Renderer.h"
 #include "Texture.h"
 #include "Shader.h"
-#include <memory>
 
 namespace test {
 	class TestBatchRenderingTexture2D : public Test

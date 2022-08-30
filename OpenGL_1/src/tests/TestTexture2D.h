@@ -1,5 +1,4 @@
 #pragma once
-#include "pch.h"
 #include "Test.h"
 #include "Texture.h"
 #include "Renderer.h"

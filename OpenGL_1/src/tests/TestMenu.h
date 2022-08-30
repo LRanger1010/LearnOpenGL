@@ -7,9 +7,6 @@
 #include "Test3DModel.h"
 #include "TestPhongShading.h"
 #include "TestMultiLights.h"
-#include <vector>
-#include <functional>
-#include <string>
 
 namespace test {
 	class TestMenu : public Test
