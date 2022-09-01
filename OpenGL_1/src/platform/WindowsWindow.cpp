@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "WindowsWindow.h"
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 Window* Window::Create(const WindowProp& prop)
 {
@@ -40,7 +40,7 @@ void WindowsWindow::OnUpdate()
 		m_TestMenu->OnRender();
 
 		// input
-		//processInput(window);
+		ProcessInput();
 
 		ImGui_ImplGlfwGL3_NewFrame();
 
@@ -84,7 +84,9 @@ void WindowsWindow::Init()
 		return;
 	}
 	glfwMakeContextCurrent(m_Window);
-	glfwSetFramebufferSizeCallback(m_Window, framebuffer_size_callback);
+	glfwSetFramebufferSizeCallback(m_Window, WindowsWindow::framebuffer_size_callback);
+	/*glfwSetCursorPosCallback(m_Window, WindowsWindow::mouse_callback);
+	glfwSetScrollCallback(m_Window, WindowsWindow::scroll_callback);*/
 	SetVSync(true);
 
 	// glad: load all OpenGL function pointers
@@ -103,7 +105,7 @@ void WindowsWindow::Init()
 	InitImGui();
 	InitTest();
 	m_Renderer = std::make_unique<Renderer>();
-	m_CameraController = std::make_unique<CameraController>(m_Window);
+	m_CameraController = std::make_unique<CameraController>();
 }
 
 void WindowsWindow::Shutdown()
@@ -132,7 +134,108 @@ void WindowsWindow::InitImGui()
 	ImGui::StyleColorsDark();
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void WindowsWindow::ProcessInput()
+{
+	if (glfwGetKey(m_Window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(m_Window, true);
+	}
+	if (m_CameraController)
+	{
+		auto camera = m_CameraController->GetCamera();
+		float speed = m_CameraController->GetCameraSpeed();
+		float rotateSpeed = m_CameraController->GetCameraRotateSpeed();
+		float& pitch = m_CameraController->GetCameraPitch();
+		float& yaw = m_CameraController->GetCameraYaw();
+
+		if (glfwGetKey(m_Window, GLFW_KEY_W) == GLFW_PRESS)
+			m_CameraController->UpdateCameraPos(speed * camera->GetCameraDirection());
+		if (glfwGetKey(m_Window, GLFW_KEY_S) == GLFW_PRESS)
+			m_CameraController->UpdateCameraPos(-speed * camera->GetCameraDirection());
+		if (glfwGetKey(m_Window, GLFW_KEY_A) == GLFW_PRESS)
+			m_CameraController->UpdateCameraPos(glm::normalize(glm::cross(camera->GetCameraUp(), camera->GetCameraDirection())) * speed);
+		if (glfwGetKey(m_Window, GLFW_KEY_D) == GLFW_PRESS)
+			m_CameraController->UpdateCameraPos(glm::normalize(glm::cross(camera->GetCameraDirection(), camera->GetCameraUp())) * speed);
+
+		if (glfwGetKey(m_Window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		{
+ 			pitch += rotateSpeed;
+			pitch = glm::clamp(pitch, -89.0f, 89.0f);
+			m_CameraController->UpdateCameraDir(pitch, yaw);
+		}
+		if (glfwGetKey(m_Window, GLFW_KEY_C) == GLFW_PRESS)
+		{
+			pitch -= rotateSpeed;
+			pitch = glm::clamp(pitch, -89.0f, 89.0f);
+			m_CameraController->UpdateCameraDir(pitch, yaw);
+		}
+		if (glfwGetKey(m_Window, GLFW_KEY_Q) == GLFW_PRESS)
+		{
+			yaw -= rotateSpeed;
+			m_CameraController->UpdateCameraDir(pitch, yaw);
+		}
+		if (glfwGetKey(m_Window, GLFW_KEY_E) == GLFW_PRESS)
+		{
+			yaw += rotateSpeed;
+			m_CameraController->UpdateCameraDir(pitch, yaw);
+		}
+		if (glfwGetKey(m_Window, GLFW_KEY_Z) == GLFW_PRESS)
+		{
+			float fov = camera->GetCameraFov();
+			if (fov >= 1.0f && fov <= 45.0f)
+				fov -= speed;
+			fov = glm::clamp(fov, 1.0f, 45.0f);
+			m_CameraController->UpdateCameraFov(fov);
+		}
+		if (glfwGetKey(m_Window, GLFW_KEY_X) == GLFW_PRESS)
+		{
+			float fov = camera->GetCameraFov();
+			if (fov >= 1.0f && fov <= 45.0f)
+				fov += speed;
+			fov = glm::clamp(fov, 1.0f, 45.0f);
+			m_CameraController->UpdateCameraFov(fov);
+		}
+	}
+}
+
+void WindowsWindow::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+}
+
+void WindowsWindow::mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (camera)
+	{
+		if (isFirstMouse)
+		{
+			lastX = xpos;
+			lastY = ypos;
+			isFirstMouse = false;
+		}
+		float xOffset = xpos - lastX;
+		float yOffset = ypos - lastY;
+
+		xOffset *= mouseSensitivity;
+		yOffset *= mouseSensitivity;
+
+		pitch += yOffset;
+		yaw += xOffset;
+
+		pitch = glm::clamp(pitch, -89.0f, 89.0f);
+
+		camera->UpdateCameraDir(pitch, yaw);
+	}
+}
+
+void WindowsWindow::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	if (camera)
+	{
+		float fov = camera->GetCameraFov();
+		if (fov >= 1.0f && fov <= 45.0f)
+			fov -= yoffset;
+		fov = glm::clamp(fov, 1.0f, 45.0f);
+		camera->UpdateCameraFov(fov);
+	}
 }

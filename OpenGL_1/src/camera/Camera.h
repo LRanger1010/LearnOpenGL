@@ -1,11 +1,9 @@
 #pragma once
 #define MATRIX_VP GetVP()
-#define WINDOW GetWindow()
 #define CAMERA_POS GetCameraPosition()
 #define CAMERA_DIR GetCameraDirection()
 
 static glm::mat4 matrix_vp;
-static GLFWwindow* window = nullptr;
 static float pitch = 0;
 static float yaw = 0;
 static bool isFirstMouse = true;
@@ -14,10 +12,8 @@ static float lastY = 300.0f;
 static float mouseSensitivity = 0.05f;
 
 glm::mat4 GetVP();
-GLFWwindow* GetWindow();
 glm::vec3 GetCameraPosition();
 glm::vec3 GetCameraDirection();
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 class Camera
 {
@@ -59,16 +55,24 @@ static Camera* camera = nullptr;
 class CameraController
 {
 public:
-	CameraController(GLFWwindow* win);
+	CameraController();
 	~CameraController();
 
 	inline Camera* GetCamera() const{ return m_Camera; }
+	inline float GetCameraSpeed() const { return m_CameraSpeed; }
+	inline float GetCameraRotateSpeed() const { return m_CameraRotateSpeed; }
+	inline float& GetCameraPitch() { return m_Pitch; }
+	inline float& GetCameraYaw() { return m_Yaw; }
 
 	void Update(float deltaTime);
+	void UpdateCameraPos(const glm::vec3& deltaPos);
+	void UpdateCameraDir(float pitch, float yaw);
+	void UpdateCameraFov(float fov);
 
 private:
 	Camera* m_Camera;
 	float m_CameraSpeed;
 	float m_CameraRotateSpeed;
-	void processInput();
+	float m_Pitch;
+	float m_Yaw;
 };
