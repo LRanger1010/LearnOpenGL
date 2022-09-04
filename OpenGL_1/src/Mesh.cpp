@@ -2,8 +2,18 @@
 #include "Mesh.h"
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
-	:m_Vertices(vertices), m_Indices(indices), m_Textures(textures)
 {
+	m_Vertices = vertices;
+	m_Indices = indices;
+	m_Textures = textures;
+	SetMesh();
+}
+
+Mesh::Mesh(const Mesh& mesh)
+{
+	m_Vertices = mesh.GetVertices();
+	m_Indices = mesh.GetIndices();
+	m_Textures = mesh.GetTextures();
 	SetMesh();
 }
 

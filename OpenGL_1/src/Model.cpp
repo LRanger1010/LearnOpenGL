@@ -8,7 +8,7 @@ Model::~Model()
 
 void Model::Draw(Shader& shader)
 {
-	for (int i = 0; i < m_Meshes.size(); i++)
+	for (unsigned int i = 0; i < m_Meshes.size(); i++)
 	{
 		m_Meshes[i].Draw(shader);
 	}
@@ -17,8 +17,8 @@ void Model::Draw(Shader& shader)
 void Model::LoadModel(const std::string& path)
 {
 	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
-	if (!scene || scene->mFlags | AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
 		std::cout << "error:" << importer.GetErrorString() << std::endl;
 		return;
@@ -29,23 +29,41 @@ void Model::LoadModel(const std::string& path)
 
 void Model::ProcessNode(aiNode* node, const aiScene* scene)
 {
-	for (int i = 0; i < node->mNumMeshes; i++)
+	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		auto mesh = scene->mMeshes[node->mMeshes[i]];
-		m_Meshes.push_back(ProcessMesh(mesh, scene));
+		//m_Meshes.push_back(ProcessMesh(mesh, scene));
+		ProcessMesh(mesh, scene);
+	}
+
+	for (unsigned int i = 0; i < node->mNumChildren; i++)
+	{
+		ProcessNode(node->mChildren[i], scene);
 	}
 }
 
-Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+void Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
-	for (int i = 0; i < mesh->mNumVertices; i++)
+	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
 		Vertex vertex;
 		glm::vec3 pos(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
-		glm::vec3 norm(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+		glm::vec3 norm;
+		if (mesh->HasNormals())
+		{
+			norm.x = mesh->mNormals[i].x;
+			norm.y = mesh->mNormals[i].y;
+			norm.z = mesh->mNormals[i].z;
+		}
+		else
+		{
+			norm.x = 0.0f;
+			norm.y = 0.0f;
+			norm.z = 0.0f;
+		}
 		glm::vec2 texCoord;
 		if (mesh->mTextureCoords[0])
 		{
@@ -61,32 +79,32 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 		vertex.Normal = norm;
 		vertex.TexCoord = texCoord;
 		vertices.push_back(vertex);
-
-		for (int i = 0; i < mesh->mNumFaces; i++)
+	}
+	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+	{
+		auto face = mesh->mFaces[i];
+		for (unsigned int j = 0; j < face.mNumIndices; j++)
 		{
-			auto face = mesh->mFaces[i];
-			for (int j = 0; j < face.mNumIndices; j++)
-			{
-				indices.push_back(face.mIndices[j]);
-			}
-		}
-
-		if (mesh->mMaterialIndex > 0)
-		{
-			auto mat = scene->mMaterials[mesh->mMaterialIndex];
-			auto diffuseList = LoadMaterialTextures(mat, aiTextureType_DIFFUSE, "diffuse");
-			textures.insert(textures.end(), diffuseList.begin(), diffuseList.end());
-			auto specularList = LoadMaterialTextures(mat, aiTextureType_SPECULAR, "specular");
-			textures.insert(textures.end(), specularList.begin(), specularList.end());
+			indices.push_back(face.mIndices[j]);
 		}
 	}
-	return Mesh(vertices, indices, textures);
+
+	if (mesh->mMaterialIndex > 0)
+	{
+		auto mat = scene->mMaterials[mesh->mMaterialIndex];
+		auto diffuseList = LoadMaterialTextures(mat, aiTextureType_DIFFUSE, "diffuse");
+		textures.insert(textures.end(), diffuseList.begin(), diffuseList.end());
+		auto specularList = LoadMaterialTextures(mat, aiTextureType_SPECULAR, "specular");
+		textures.insert(textures.end(), specularList.begin(), specularList.end());
+	}
+	m_Meshes.push_back(Mesh(vertices, indices, textures));
+	//return Mesh(vertices, indices, textures);
 }
 
 std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)
 {
 	std::vector<Texture> textures;
-	for (int i = 0; i < mat->GetTextureCount(type); i++)
+	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
 	{
 		aiString str;
 		mat->GetTexture(type, i, &str);

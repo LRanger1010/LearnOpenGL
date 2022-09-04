@@ -7,12 +7,13 @@
 class Mesh
 {
 public:
-	Mesh(const Mesh& mesh){}
+	Mesh(const Mesh& mesh);
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
 	~Mesh();
 
-	inline std::vector<Vertex> GetVertices() { return m_Vertices; }
-	inline std::vector<unsigned int> GetIndices() { return m_Indices; }
+	inline std::vector<Vertex> GetVertices() const { return m_Vertices; }
+	inline std::vector<unsigned int> GetIndices() const { return m_Indices; }
+	inline std::vector<Texture> GetTextures() const { return m_Textures; }
 	void Draw(Shader& shader);
 
 private:
