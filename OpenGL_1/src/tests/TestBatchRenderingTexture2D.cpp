@@ -42,8 +42,8 @@ namespace test {
 		m_Proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
 
 		m_Shader->Bind();
-		m_Tex1 = std::make_unique<Texture>("res/textures/cherno.jpg");
-		m_Tex2 = std::make_unique<Texture>("res/textures/sky.jpg");
+		m_Tex1 = std::make_unique<Image>("res/textures/cherno.jpg");
+		m_Tex2 = std::make_unique<Image>("res/textures/sky.jpg");
 		m_Tex1->Bind(0);
 		m_Tex2->Bind(1);
 		m_Shader->SetUniform1iv("u_Textures", 2, samplers);

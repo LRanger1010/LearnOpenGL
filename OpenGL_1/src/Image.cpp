@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Texture.h"
+#include "Image.h"
 
-Texture::Texture(const std::string& path)
+Image::Image(const std::string& path)
 	:m_RenderID(0), m_LocalBuffer(0), m_Width(0), m_Height(0), m_BytesPerPixel(0)
 {
 	stbi_set_flip_vertically_on_load(1);
@@ -20,14 +20,14 @@ Texture::Texture(const std::string& path)
 	Unbind();
 }
 
-Texture::~Texture()
+Image::~Image()
 {
 	if (m_LocalBuffer)
 		stbi_image_free(m_LocalBuffer);
 	GLCALL(glDeleteTextures(1, &m_RenderID));
 }
 
-void Texture::Bind(unsigned int slot /*= 0*/) const
+void Image::Bind(unsigned int slot /*= 0*/) const
 {
 	GLCALL(glActiveTexture(GL_TEXTURE0 + slot));
 	GLCALL(glBindTexture(GL_TEXTURE_2D, m_RenderID));
@@ -35,7 +35,7 @@ void Texture::Bind(unsigned int slot /*= 0*/) const
 	//glBindTextureUnit(GLuint slot, GLuint textureId); OpenGL 4.5 support
 }
 
-void Texture::Unbind() const
+void Image::Unbind() const
 {
 	GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
 }

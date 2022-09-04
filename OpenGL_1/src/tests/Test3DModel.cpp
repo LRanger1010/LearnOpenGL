@@ -78,7 +78,7 @@ namespace test {
 		m_Shader = std::make_unique<Shader>("texture");
 
 		m_Shader->Bind();
-		m_Tex = std::make_unique<Texture>("res/textures/sky.jpg");
+		m_Tex = std::make_unique<Image>("res/textures/sky.jpg");
 		m_Tex->Bind(0);
 		m_Shader->SetUniform1i("u_Texture", 0);
 	}

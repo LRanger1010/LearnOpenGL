@@ -125,6 +125,7 @@ void WindowsWindow::InitTest()
 	m_TestMenu->RegisterTest<test::Test3DModel>("3D Model");
 	m_TestMenu->RegisterTest<test::TestPhoneShading>("Blinn-Phong Shading");
 	m_TestMenu->RegisterTest<test::TestMultiLights>("Multi-Lights");
+	m_TestMenu->RegisterTest<test::TestModel>("Model");
 }
 
 void WindowsWindow::InitImGui()

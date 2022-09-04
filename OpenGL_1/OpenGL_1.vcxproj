@@ -91,13 +91,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;src/vendor;$(SolutionDir)Dependencies\GLFW\Include\GLFW;$(SolutionDir)Dependencies\GLEW\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src/vendor;$(SolutionDir)Dependencies\GLFW\Include\GLFW;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\assimp\include;</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32.lib;</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\Libs;$(SolutionDir)Dependencies\GLEW\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32.lib;assimp-vc142-mtd.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\Libs;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\assimp\lib;</AdditionalLibraryDirectories>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
@@ -107,11 +107,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;src/vendor;$(SolutionDir)Dependencies\GLFW\Include;$(SolutionDir)Dependencies\GLEW\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src/vendor;$(SolutionDir)Dependencies\GLFW\Include\GLFW;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\assimp\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\Libs;$(SolutionDir)Dependencies\GLEW\lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\Libs;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\assimp\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32.lib;assimp-vc142-mtd.lib;</AdditionalDependencies>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
@@ -123,15 +123,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;src/vendor;$(SolutionDir)Dependencies\GLFW\Include\GLFW;$(SolutionDir)Dependencies\GLEW\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src/vendor;$(SolutionDir)Dependencies\GLFW\Include\GLFW;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\assimp\include;</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\Libs;$(SolutionDir)Dependencies\GLEW\lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\Libs;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\assimp\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32.lib;assimp-vc142-mtd.lib;</AdditionalDependencies>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
@@ -143,13 +143,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;src/vendor;$(SolutionDir)Dependencies\GLFW\Include;$(SolutionDir)Dependencies\GLEW\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src/vendor;$(SolutionDir)Dependencies\GLFW\Include\GLFW;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\assimp\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\Libs;$(SolutionDir)Dependencies\GLEW\lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\Libs;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\assimp\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32.lib;assimp-vc142-mtd.lib;</AdditionalDependencies>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
@@ -163,6 +163,8 @@
     </ClCompile>
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Mesh.cpp" />
+    <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -175,9 +177,10 @@
     <ClCompile Include="src\tests\TestClearColor.cpp" />
     <ClCompile Include="src\tests\TestDynamicBatching.cpp" />
     <ClCompile Include="src\tests\TestMenu.cpp" />
+    <ClCompile Include="src\tests\TestModel.cpp" />
     <ClCompile Include="src\tests\TestMultiLights.cpp" />
     <ClCompile Include="src\tests\TestTexture2D.cpp" />
-    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -212,6 +215,8 @@
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Light.h" />
     <ClInclude Include="src\Material.h" />
+    <ClInclude Include="src\Mesh.h" />
+    <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\platform\WindowsWindow.h" />
     <ClInclude Include="src\Renderer.h" />
@@ -222,8 +227,10 @@
     <ClInclude Include="src\tests\TestClearColor.h" />
     <ClInclude Include="src\tests\TestDynamicBatching.h" />
     <ClInclude Include="src\tests\TestMenu.h" />
+    <ClInclude Include="src\tests\TestModel.h" />
     <ClInclude Include="src\tests\TestMultiLights.h" />
     <ClInclude Include="src\tests\TestTexture2D.h" />
+    <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_common.hpp" />
@@ -523,6 +530,9 @@
     <ClInclude Include="src\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\model\nanosuit\nanosuit.blend" />
+    <None Include="res\model\nanosuit\nanosuit.mtl" />
+    <None Include="res\shaders\Assimp.shader" />
     <None Include="res\shaders\basic.shader" />
     <None Include="res\shaders\batchTexture.shader" />
     <None Include="res\shaders\BlinnPhong.shader" />
@@ -666,10 +676,38 @@
     <None Include="src\vendor\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\model\nanosuit\arm_dif.png" />
+    <Image Include="res\model\nanosuit\arm_showroom_ddn.png" />
+    <Image Include="res\model\nanosuit\arm_showroom_spec.png" />
+    <Image Include="res\model\nanosuit\body_dif.png" />
+    <Image Include="res\model\nanosuit\body_showroom_ddn.png" />
+    <Image Include="res\model\nanosuit\body_showroom_spec.png" />
+    <Image Include="res\model\nanosuit\glass_ddn.png" />
+    <Image Include="res\model\nanosuit\glass_dif.png" />
+    <Image Include="res\model\nanosuit\hand_dif.png" />
+    <Image Include="res\model\nanosuit\hand_showroom_ddn.png" />
+    <Image Include="res\model\nanosuit\hand_showroom_spec.png" />
+    <Image Include="res\model\nanosuit\helmet_diff.png" />
+    <Image Include="res\model\nanosuit\helmet_showroom_ddn.png" />
+    <Image Include="res\model\nanosuit\helmet_showroom_spec.png" />
+    <Image Include="res\model\nanosuit\leg_dif.png" />
+    <Image Include="res\model\nanosuit\leg_showroom_ddn.png" />
+    <Image Include="res\model\nanosuit\leg_showroom_spec.png" />
     <Image Include="res\textures\cherno.jpg" />
     <Image Include="res\textures\container2.png" />
     <Image Include="res\textures\container2_specular.png" />
     <Image Include="res\textures\sky.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="res\model\nanosuit\nanosuit.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="res\model\nanosuit\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
