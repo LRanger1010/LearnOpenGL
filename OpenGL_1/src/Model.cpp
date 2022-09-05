@@ -128,19 +128,32 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType 
 unsigned int Model::TextureFromFile(const std::string& path)
 {
 	unsigned int id;
-	stbi_set_flip_vertically_on_load(1);
 	int width, height, bpp;
-	auto localBuffer = stbi_load(path.c_str(), &width, &height, &bpp, 4);
+	auto localBuffer = stbi_load(path.c_str(), &width, &height, &bpp, 0);
 
 	GLCALL(glGenTextures(1, &id));
 	GLCALL(glBindTexture(GL_TEXTURE_2D, id));
 
-	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
 
-	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, localBuffer));
+	GLenum format;
+	if (bpp == 1)
+	{
+		format = GL_RED;
+	}
+	else if (bpp == 3)
+	{
+		format = GL_RGB;
+	}
+	else if (bpp == 4)
+	{
+		format = GL_RGBA;
+	}
+	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, localBuffer));
+	GLCALL(glGenerateMipmap(GL_TEXTURE_2D));
 	GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
 
 	stbi_image_free(localBuffer);

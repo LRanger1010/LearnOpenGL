@@ -84,14 +84,15 @@ vec3 calcSpotLightCol(SpotLight light, vec3 norm, vec3 worldPos, vec3 viewDir);
 
 void main()
 {
-	vec3 norm = normalize(v_normal);
+	//vec3 norm = normalize(v_normal);
+	vec3 norm = normalize(vec3(texture(material.normal0, v_texCoords)) * 2.0 - 1.0);
 	vec3 viewDir = normalize(viewPos - v_worldPos);
 	vec3 fragColor = calcDirLightCol(dirLight, norm, viewDir);
-	for (int i = 0; i < pointLightCount; i++)
+	/*for (int i = 0; i < pointLightCount; i++)
 	{
 		fragColor += calcPointLightCol(pointLights[i], norm, v_worldPos, viewDir);
-	}
-	fragColor += calcSpotLightCol(spotLight, norm, v_worldPos, viewDir);
+	}*/
+	//fragColor += calcSpotLightCol(spotLight, norm, v_worldPos, viewDir);
 
 	color = vec4(fragColor, 1.0);
 };
