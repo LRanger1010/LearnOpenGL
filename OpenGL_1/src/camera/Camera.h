@@ -10,6 +10,7 @@ static bool isFirstMouse = true;
 static float lastX = 400.0f;
 static float lastY = 300.0f;
 static float mouseSensitivity = 0.05f;
+static glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
 
 glm::mat4 GetVP();
 glm::vec3 GetCameraPosition();

@@ -196,6 +196,14 @@ void WindowsWindow::ProcessInput()
 			fov = glm::clamp(fov, 1.0f, 45.0f);
 			m_CameraController->UpdateCameraFov(fov);
 		}
+		if (glfwGetKey(m_Window, GLFW_KEY_UP) == GLFW_PRESS)
+		{
+			m_CameraController->UpdateCameraPos(speed * camera->GetCameraUp());
+		}
+		if (glfwGetKey(m_Window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		{
+			m_CameraController->UpdateCameraPos(-speed * camera->GetCameraUp());
+		}
 	}
 }
 

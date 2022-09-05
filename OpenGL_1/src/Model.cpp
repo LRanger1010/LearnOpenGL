@@ -10,7 +10,7 @@ void Model::Draw(Shader& shader)
 {
 	for (unsigned int i = 0; i < m_Meshes.size(); i++)
 	{
-		m_Meshes[i].Draw(shader);
+		m_Meshes[i]->Draw(shader);
 	}
 }
 
@@ -32,8 +32,7 @@ void Model::ProcessNode(aiNode* node, const aiScene* scene)
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		auto mesh = scene->mMeshes[node->mMeshes[i]];
-		//m_Meshes.push_back(ProcessMesh(mesh, scene));
-		ProcessMesh(mesh, scene);
+		m_Meshes.push_back(ProcessMesh(mesh, scene));
 	}
 
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -42,7 +41,7 @@ void Model::ProcessNode(aiNode* node, const aiScene* scene)
 	}
 }
 
-void Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+std::unique_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
@@ -96,9 +95,10 @@ void Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 		textures.insert(textures.end(), diffuseList.begin(), diffuseList.end());
 		auto specularList = LoadMaterialTextures(mat, aiTextureType_SPECULAR, "specular");
 		textures.insert(textures.end(), specularList.begin(), specularList.end());
+		auto normalList = LoadMaterialTextures(mat, aiTextureType_HEIGHT, "normal");
+		textures.insert(textures.end(), normalList.begin(), normalList.end());
 	}
-	m_Meshes.push_back(Mesh(vertices, indices, textures));
-	//return Mesh(vertices, indices, textures);
+	return std::make_unique<Mesh>(vertices, indices, textures);
 }
 
 std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)
@@ -140,8 +140,10 @@ unsigned int Model::TextureFromFile(const std::string& path)
 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 
-	GLCALL((GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, localBuffer));
+	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, localBuffer));
 	GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+	stbi_image_free(localBuffer);
 
 	return id;
 }

@@ -63,6 +63,8 @@ void Camera::UpdateCameraDir(float pitch, float yaw)
 	float y = -glm::sin(glm::radians(pitch));
 	float z = -glm::cos(glm::radians(pitch)) * glm::cos(glm::radians(yaw));
 	SetCameraDir(x, y, z);
+	glm::vec3 camera_right = glm::normalize(glm::cross(Up, m_CameraDir));
+	m_CameraUp = glm::normalize(glm::cross(m_CameraDir, camera_right));
 	matrix_vp = GetMatrixVP();
 }
 

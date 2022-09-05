@@ -82,7 +82,6 @@ namespace test
 
 	void TestMultiLights::OnUpdate(float deltaTime)
 	{
-		//TODO:set spotLight's pos and dir
 		m_SpotLight.position = CAMERA_POS;
 		m_SpotLight.direction = CAMERA_DIR;
 

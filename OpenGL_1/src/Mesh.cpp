@@ -9,14 +9,6 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
 	SetMesh();
 }
 
-Mesh::Mesh(const Mesh& mesh)
-{
-	m_Vertices = mesh.GetVertices();
-	m_Indices = mesh.GetIndices();
-	m_Textures = mesh.GetTextures();
-	SetMesh();
-}
-
 Mesh::~Mesh()
 {
 
@@ -26,6 +18,7 @@ void Mesh::Draw(Shader& shader)
 {
 	unsigned int diffuseSlot = 0;
 	unsigned int specularSlot = 0;
+	unsigned int normalSlot = 0;
 	for (unsigned int i = 0; i < m_Textures.size(); i++)
 	{
 		//glGenTextures(1, &m_Textures[0].id);
@@ -35,7 +28,10 @@ void Mesh::Draw(Shader& shader)
 			name += std::to_string(diffuseSlot++);
 		else if (m_Textures[i].type == "specular")
 			name += std::to_string(specularSlot++);
+		else if (m_Textures[i].type == "normal")
+			name += std::to_string(normalSlot++);
 		shader.SetUniform1i(name, i);
+		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, m_Textures[i].id);
 	}
 	m_Renderer->Draw(*m_VAO, *m_IBO, shader);

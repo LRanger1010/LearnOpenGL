@@ -72,6 +72,8 @@ struct Material
 	sampler2D specular2;
 	sampler2D specular3;
 	sampler2D specular4;
+	sampler2D normal0;
+	sampler2D normal1;
 	float shininess;
 };
 uniform Material material;
