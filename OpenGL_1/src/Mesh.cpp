@@ -31,6 +31,9 @@ void Mesh::Draw(Shader& shader)
 		else if (m_Textures[i].type == "normal")
 			name += std::to_string(normalSlot++);
 		shader.SetUniform1i(name, i);
+		shader.SetUniform3fv("material.ambient", m_Textures[i].matAmbient);
+		shader.SetUniform3fv("material.diffuse", m_Textures[i].matDiffuse);
+		shader.SetUniform3fv("material.specular", m_Textures[i].matSpecular);
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, m_Textures[i].id);
 	}

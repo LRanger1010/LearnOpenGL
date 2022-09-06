@@ -74,12 +74,21 @@ namespace test
 	{
 		if (!m_IsModelImported)
 		{
+			if (ImGui::Button("nano suit"))
+			{
+				ImportModel(modelDir + "nanosuit/nanosuit.obj");
+			}
 			ImGui::InputText("Input a Model Path", m_ModelName, IM_ARRAYSIZE(m_ModelName));
 			if (ImGui::Button("Import Model"))
 			{
 				std::string path = modelDir + m_ModelName;
 				ImportModel(path);
 			}
+		}
+		else
+		{
+			ImGui::SliderFloat3("pointLight1 position", &m_PointLights[0].position.x, -20.0f, 20.0f);
+			ImGui::SliderFloat3("pointLight2 position", &m_PointLights[1].position.x, -20.0f, 20.0f);
 		}
 	}
 	void TestModel::ImportModel(const std::string& path)

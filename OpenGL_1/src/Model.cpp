@@ -118,6 +118,21 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType 
 			Texture texture;
 			texture.id = TextureFromFile(path);
 			texture.type = typeName;
+			aiColor3D materialAmbient(0.0f, 0.0f, 0.0f);
+			aiColor3D materialDiffuse(0.0f, 0.0f, 0.0f);
+			aiColor3D materialSpecular(0.0f, 0.0f, 0.0f);
+			mat->Get(AI_MATKEY_COLOR_AMBIENT, materialAmbient);
+			mat->Get(AI_MATKEY_COLOR_DIFFUSE, materialDiffuse);
+			mat->Get(AI_MATKEY_COLOR_SPECULAR, materialSpecular);
+			texture.matAmbient.x = materialAmbient.r;
+			texture.matAmbient.y = materialAmbient.g;
+			texture.matAmbient.z = materialAmbient.b;
+			texture.matDiffuse.x = materialDiffuse.r;
+			texture.matDiffuse.y = materialDiffuse.g;
+			texture.matDiffuse.z = materialDiffuse.b;
+			texture.matSpecular.x = materialSpecular.r;
+			texture.matSpecular.y = materialSpecular.g;
+			texture.matSpecular.z = materialSpecular.b;
 			textures.push_back(texture);
 			m_TextureLoaded[path] = texture;
 		}
