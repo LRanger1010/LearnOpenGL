@@ -7,7 +7,7 @@
 class Mesh
 {
 public:
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, glm::vec3 matAmbient, glm::vec3 matDiffuse, glm::vec3 matSpecular);
 	~Mesh();
 
 	inline std::vector<Vertex> GetVertices() const { return m_Vertices; }
@@ -19,6 +19,9 @@ private:
 	std::vector<Vertex> m_Vertices;
 	std::vector<unsigned int> m_Indices;
 	std::vector<Texture> m_Textures;
+	glm::vec3 m_MatAmbient;
+	glm::vec3 m_MatDiffuse;
+	glm::vec3 m_MatSpecular;
 	std::unique_ptr<VertexArray> m_VAO;
 	std::unique_ptr<VertexBuffer> m_VBO;
 	std::unique_ptr<IndexBuffer> m_IBO;

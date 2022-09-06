@@ -46,6 +46,9 @@ std::unique_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
+	glm::vec3 matAmbient(0.0f);
+	glm::vec3 matDiffuse(0.0f);
+	glm::vec3 matSpecular(0.0f);
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
 		Vertex vertex;
@@ -97,8 +100,24 @@ std::unique_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 		textures.insert(textures.end(), specularList.begin(), specularList.end());
 		auto normalList = LoadMaterialTextures(mat, aiTextureType_HEIGHT, "normal");
 		textures.insert(textures.end(), normalList.begin(), normalList.end());
+
+		aiColor3D materialAmbient(0.0f, 0.0f, 0.0f);
+		aiColor3D materialDiffuse(0.0f, 0.0f, 0.0f);
+		aiColor3D materialSpecular(0.0f, 0.0f, 0.0f);
+		mat->Get(AI_MATKEY_COLOR_AMBIENT, materialAmbient);
+		mat->Get(AI_MATKEY_COLOR_DIFFUSE, materialDiffuse);
+		mat->Get(AI_MATKEY_COLOR_SPECULAR, materialSpecular);
+		matAmbient.x = materialAmbient.r;
+		matAmbient.y = materialAmbient.g;
+		matAmbient.z = materialAmbient.b;
+		matDiffuse.x = materialDiffuse.r;
+		matDiffuse.y = materialDiffuse.g;
+		matDiffuse.z = materialDiffuse.b;
+		matSpecular.x = materialSpecular.r;
+		matSpecular.y = materialSpecular.g;
+		matSpecular.z = materialSpecular.b;
 	}
-	return std::make_unique<Mesh>(vertices, indices, textures);
+	return std::make_unique<Mesh>(vertices, indices, textures, matAmbient, matDiffuse, matSpecular);
 }
 
 std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)
@@ -118,21 +137,6 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType 
 			Texture texture;
 			texture.id = TextureFromFile(path);
 			texture.type = typeName;
-			aiColor3D materialAmbient(0.0f, 0.0f, 0.0f);
-			aiColor3D materialDiffuse(0.0f, 0.0f, 0.0f);
-			aiColor3D materialSpecular(0.0f, 0.0f, 0.0f);
-			mat->Get(AI_MATKEY_COLOR_AMBIENT, materialAmbient);
-			mat->Get(AI_MATKEY_COLOR_DIFFUSE, materialDiffuse);
-			mat->Get(AI_MATKEY_COLOR_SPECULAR, materialSpecular);
-			texture.matAmbient.x = materialAmbient.r;
-			texture.matAmbient.y = materialAmbient.g;
-			texture.matAmbient.z = materialAmbient.b;
-			texture.matDiffuse.x = materialDiffuse.r;
-			texture.matDiffuse.y = materialDiffuse.g;
-			texture.matDiffuse.z = materialDiffuse.b;
-			texture.matSpecular.x = materialSpecular.r;
-			texture.matSpecular.y = materialSpecular.g;
-			texture.matSpecular.z = materialSpecular.b;
 			textures.push_back(texture);
 			m_TextureLoaded[path] = texture;
 		}
