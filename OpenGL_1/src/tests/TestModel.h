@@ -19,10 +19,13 @@ namespace test
 		std::unique_ptr<Shader> m_Shader;
 		char m_ModelName[128];
 		bool m_IsModelImported;
+		glm::mat4 m_MatModel;
 		glm::mat4 m_MVP;
 		DirLight m_DirLight;
 		PointLight m_PointLights[2];
 		SpotLight m_SpotLight;
+		std::unique_ptr<Shader> m_StencilShader;
+		bool m_StencilTestOn;
 	private:
 		void ImportModel(const std::string& path);
 	};

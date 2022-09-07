@@ -7,9 +7,9 @@ namespace test
 	const static std::string modelDir = "res/model/";
 
 	TestModel::TestModel()
-		:m_ModelName(""), m_IsModelImported(false)
+		:m_ModelName(""), m_IsModelImported(false), m_StencilTestOn(false)
 	{
-
+		
 	}
 
 	TestModel::~TestModel()
@@ -53,10 +53,10 @@ namespace test
 			m_Shader->SetUniform3fv("spotLight.dir", m_SpotLight.direction);
 			m_Shader->SetUniform1f("spotLight.cutOff", m_SpotLight.cutOff);
 			m_Shader->SetUniform1f("spotLight.outterCutOff", m_SpotLight.outterCutOff);
-			glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians((float)glfwGetTime() * 30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			m_MVP = MATRIX_VP * model;
-			m_Shader->SetUniformMat4f("u_Model", model);
-			m_Shader->SetUniformMat4f("u_NormalMatrix", glm::transpose(glm::inverse(model)));
+			m_MatModel = glm::rotate(glm::mat4(1.0f), glm::radians((float)glfwGetTime() * 30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			m_MVP = MATRIX_VP * m_MatModel;
+			m_Shader->SetUniformMat4f("u_Model", m_MatModel);
+			m_Shader->SetUniformMat4f("u_NormalMatrix", glm::transpose(glm::inverse(m_MatModel)));
 			m_Shader->SetUniformMat4f("u_MVP", m_MVP);
 			m_Shader->SetUniform3fv("viewPos", CAMERA_POS);
 		}
@@ -66,7 +66,32 @@ namespace test
 	{
 		if (m_Model)
 		{
+			if (m_StencilTestOn)
+			{
+				GLCALL(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
+				GLCALL(glStencilMask(0xFF));
+				GLCALL(glStencilFunc(GL_ALWAYS, 1, 0xFF));
+			}
+
 			m_Model->Draw(*m_Shader);
+
+			if (m_StencilTestOn)
+			{
+				m_Shader->Unbind();
+				if (!m_StencilShader)
+				{
+					m_StencilShader = std::make_unique<Shader>("SingleColor");
+				}
+				m_MatModel = glm::scale(m_MatModel, glm::vec3(1.01f, 1.01f, 1.01f));
+				m_MVP = MATRIX_VP * m_MatModel;
+				m_StencilShader->Bind();
+				m_StencilShader->SetUniformMat4f("u_MVP", m_MVP);
+				GLCALL(glStencilMask(0x00));
+				GLCALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));
+				m_Model->Draw(*m_StencilShader);
+				GLCALL(glStencilMask(0xFF));
+				GLCALL(glStencilFunc(GL_ALWAYS, 0, 0xFF));
+			}
 		}
 	}
 
@@ -89,6 +114,10 @@ namespace test
 		{
 			ImGui::SliderFloat3("pointLight1 position", &m_PointLights[0].position.x, -20.0f, 20.0f);
 			ImGui::SliderFloat3("pointLight2 position", &m_PointLights[1].position.x, -20.0f, 20.0f);
+			if (ImGui::Button("Stencil Test"))
+			{
+				m_StencilTestOn = !m_StencilTestOn;
+			}
 		}
 	}
 	void TestModel::ImportModel(const std::string& path)

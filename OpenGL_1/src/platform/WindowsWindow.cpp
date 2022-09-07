@@ -101,6 +101,7 @@ void WindowsWindow::Init()
 	GLCALL(glEnable(GL_BLEND));
 	GLCALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 	GLCALL(glEnable(GL_DEPTH_TEST));
+	GLCALL(glEnable(GL_STENCIL_TEST));
 
 	InitImGui();
 	InitTest();
