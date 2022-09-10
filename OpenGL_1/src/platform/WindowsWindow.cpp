@@ -84,9 +84,16 @@ void WindowsWindow::Init()
 		return;
 	}
 	glfwMakeContextCurrent(m_Window);
-	glfwSetFramebufferSizeCallback(m_Window, WindowsWindow::framebuffer_size_callback);
-	/*glfwSetCursorPosCallback(m_Window, WindowsWindow::mouse_callback);
-	glfwSetScrollCallback(m_Window, WindowsWindow::scroll_callback);*/
+	glfwSetWindowUserPointer(m_Window, this);
+	glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
+		auto ww = (WindowsWindow*)glfwGetWindowUserPointer(window);
+		ww->OnWindowSizeCallback(width, height);
+	});
+	//glfwSetCursorPosCallback(m_Window, WindowsWindow::mouse_callback);
+	glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xoffset, double yoffset) {
+		auto ww = (WindowsWindow*)glfwGetWindowUserPointer(window);
+		ww->OnMouseScrollCallback(xoffset, yoffset);
+	});
 	SetVSync(true);
 
 	// glad: load all OpenGL function pointers
@@ -208,7 +215,7 @@ void WindowsWindow::ProcessInput()
 	}
 }
 
-void WindowsWindow::framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void WindowsWindow::OnWindowSizeCallback(int width, int height)
 {
 	glViewport(0, 0, width, height);
 }
@@ -238,14 +245,14 @@ void WindowsWindow::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	}
 }
 
-void WindowsWindow::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+void WindowsWindow::OnMouseScrollCallback(double xoffset, double yoffset)
 {
-	if (camera)
+	if (m_CameraController)
 	{
-		float fov = camera->GetCameraFov();
+		float fov = m_CameraController->GetCamera()->GetCameraFov();
 		if (fov >= 1.0f && fov <= 45.0f)
-			fov -= yoffset;
+			fov -= (float)yoffset;
 		fov = glm::clamp(fov, 1.0f, 45.0f);
-		camera->UpdateCameraFov(fov);
+		m_CameraController->UpdateCameraFov(fov);
 	}
 }

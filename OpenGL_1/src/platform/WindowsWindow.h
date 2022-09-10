@@ -16,9 +16,7 @@ public:
 	void SetVSync(bool enabled) override;
 	bool IsVSync() override;
 
-	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 	static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 private:
 	GLFWwindow* m_Window;
@@ -34,4 +32,6 @@ private:
 	void InitTest();
 	void InitImGui();
 	void ProcessInput();
+	void OnWindowSizeCallback(int width, int height);
+	void OnMouseScrollCallback(double xoffset, double yoffset);
 };
