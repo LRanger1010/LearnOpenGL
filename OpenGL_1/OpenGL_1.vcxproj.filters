@@ -105,6 +105,24 @@
     <ClCompile Include="src\tests\TestModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\FrameBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\geometry\Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\geometry\Quad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CubeMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\TestSkybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\geometry\Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\VertexBuffer.h">
@@ -1058,6 +1076,24 @@
     <ClInclude Include="src\tests\TestModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\FrameBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\geometry\Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\geometry\Quad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CubeMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\TestSkybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\geometry\Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\basic.shader" />
@@ -1477,6 +1513,12 @@
     <None Include="res\model\nanosuit\nanosuit.mtl" />
     <None Include="res\model\nanosuit\nanosuit.blend" />
     <None Include="res\shaders\SingleColor.shader" />
+    <None Include="res\shaders\Inversion.shader" />
+    <None Include="res\shaders\screen.shader" />
+    <None Include="res\shaders\Blur.shader" />
+    <None Include="res\shaders\EdgeDetection.shader" />
+    <None Include="res\shaders\Grayscale.shader" />
+    <None Include="res\shaders\Sharpen.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\sky.jpg">
@@ -1540,6 +1582,24 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\model\nanosuit\leg_showroom_spec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\skybox\back.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\skybox\bottom.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\skybox\front.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\skybox\left.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\skybox\right.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\skybox\top.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

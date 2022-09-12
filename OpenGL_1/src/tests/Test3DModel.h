@@ -1,7 +1,8 @@
 #pragma once
 #include "Test.h"
-#include "Renderer.h"
-#include "Image.h"
+#include "FrameBuffer.h"
+#include "geometry/Cube.h"
+#include "geometry/Quad.h"
 
 namespace test {
 	class Test3DModel : public Test
@@ -15,12 +16,8 @@ namespace test {
 		void OnGUI() override;
 
 	private:
-		Renderer m_Renderer;
-		VertexArray m_VAO;
-		std::unique_ptr<VertexBuffer> m_VBO;
-		std::unique_ptr<IndexBuffer> m_IBO;
-		std::unique_ptr<Shader> m_Shader;
-		std::unique_ptr<Image> m_Tex;
-		glm::mat4 m_MVP;
+		std::unique_ptr<FrameBuffer> m_FBO;
+		std::unique_ptr<Cube> m_Cube;
+		std::unique_ptr<Quad> m_Quad;
 	};
 }

@@ -157,6 +157,11 @@
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\camera\CameraController.cpp" />
+    <ClCompile Include="src\CubeMap.cpp" />
+    <ClCompile Include="src\FrameBuffer.cpp" />
+    <ClCompile Include="src\geometry\Cube.cpp" />
+    <ClCompile Include="src\geometry\Quad.cpp" />
+    <ClCompile Include="src\geometry\Skybox.cpp" />
     <ClCompile Include="src\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -179,6 +184,7 @@
     <ClCompile Include="src\tests\TestMenu.cpp" />
     <ClCompile Include="src\tests\TestModel.cpp" />
     <ClCompile Include="src\tests\TestMultiLights.cpp" />
+    <ClCompile Include="src\tests\TestSkybox.cpp" />
     <ClCompile Include="src\tests\TestTexture2D.cpp" />
     <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp">
@@ -212,6 +218,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera\Camera.h" />
+    <ClInclude Include="src\CubeMap.h" />
+    <ClInclude Include="src\FrameBuffer.h" />
+    <ClInclude Include="src\geometry\Cube.h" />
+    <ClInclude Include="src\geometry\Quad.h" />
+    <ClInclude Include="src\geometry\Skybox.h" />
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Light.h" />
     <ClInclude Include="src\Material.h" />
@@ -229,6 +240,7 @@
     <ClInclude Include="src\tests\TestMenu.h" />
     <ClInclude Include="src\tests\TestModel.h" />
     <ClInclude Include="src\tests\TestMultiLights.h" />
+    <ClInclude Include="src\tests\TestSkybox.h" />
     <ClInclude Include="src\tests\TestTexture2D.h" />
     <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\Texture.h" />
@@ -536,7 +548,13 @@
     <None Include="res\shaders\basic.shader" />
     <None Include="res\shaders\batchTexture.shader" />
     <None Include="res\shaders\BlinnPhong.shader" />
+    <None Include="res\shaders\Blur.shader" />
+    <None Include="res\shaders\EdgeDetection.shader" />
+    <None Include="res\shaders\Grayscale.shader" />
+    <None Include="res\shaders\Inversion.shader" />
     <None Include="res\shaders\MultiLights.shader" />
+    <None Include="res\shaders\screen.shader" />
+    <None Include="res\shaders\Sharpen.shader" />
     <None Include="res\shaders\SingleColor.shader" />
     <None Include="res\shaders\texture.shader" />
     <None Include="src\vendor\glm\detail\func_common.inl" />
@@ -698,6 +716,12 @@
     <Image Include="res\textures\container2.png" />
     <Image Include="res\textures\container2_specular.png" />
     <Image Include="res\textures\sky.jpg" />
+    <Image Include="res\textures\skybox\back.jpg" />
+    <Image Include="res\textures\skybox\bottom.jpg" />
+    <Image Include="res\textures\skybox\front.jpg" />
+    <Image Include="res\textures\skybox\left.jpg" />
+    <Image Include="res\textures\skybox\right.jpg" />
+    <Image Include="res\textures\skybox\top.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="res\model\nanosuit\nanosuit.obj">

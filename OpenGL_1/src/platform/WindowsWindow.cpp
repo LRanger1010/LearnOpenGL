@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "WindowsWindow.h"
 
-static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 Window* Window::Create(const WindowProp& prop)
 {
@@ -90,9 +89,19 @@ void WindowsWindow::Init()
 		ww->OnWindowSizeCallback(width, height);
 	});
 	//glfwSetCursorPosCallback(m_Window, WindowsWindow::mouse_callback);
+	glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods) {
+		ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
+	});
 	glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xoffset, double yoffset) {
 		auto ww = (WindowsWindow*)glfwGetWindowUserPointer(window);
 		ww->OnMouseScrollCallback(xoffset, yoffset);
+		ImGui_ImplGlfw_ScrollCallback(window, xoffset, yoffset);
+	});
+	glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+		ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
+	});
+	glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int c) {
+		ImGui_ImplGlfw_CharCallback(window, c);
 	});
 	SetVSync(true);
 
@@ -139,7 +148,7 @@ void WindowsWindow::InitTest()
 void WindowsWindow::InitImGui()
 {
 	ImGui::CreateContext();
-	ImGui_ImplGlfwGL3_Init(m_Window, true);
+	ImGui_ImplGlfwGL3_Init(m_Window, false);
 	ImGui::StyleColorsDark();
 }
 
