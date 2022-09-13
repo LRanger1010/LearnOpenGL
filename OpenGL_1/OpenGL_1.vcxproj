@@ -556,6 +556,7 @@
     <None Include="res\shaders\screen.shader" />
     <None Include="res\shaders\Sharpen.shader" />
     <None Include="res\shaders\SingleColor.shader" />
+    <None Include="res\shaders\Skybox.shader" />
     <None Include="res\shaders\texture.shader" />
     <None Include="src\vendor\glm\detail\func_common.inl" />
     <None Include="src\vendor\glm\detail\func_common_simd.inl" />

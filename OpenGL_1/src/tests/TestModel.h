@@ -2,6 +2,7 @@
 #include "Test.h"
 #include "Model.h"
 #include "Light.h"
+#include "geometry/Skybox.h"
 
 namespace test
 {
@@ -26,6 +27,7 @@ namespace test
 		SpotLight m_SpotLight;
 		std::unique_ptr<Shader> m_StencilShader;
 		bool m_StencilTestOn;
+		std::unique_ptr<Skybox> m_Skybox;
 	private:
 		void ImportModel(const std::string& path);
 	};

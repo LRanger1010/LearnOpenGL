@@ -16,8 +16,8 @@ CubeMap::CubeMap(std::vector<std::string> paths)
 	unsigned char* buffer = nullptr;
 	for (int i = 0; i < paths.size(); i++)
 	{
-		buffer = stbi_load(paths[i].c_str(), &m_Width, &m_Height, &m_BytesPerPixel, 4);
-		GLCALL(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer));
+		buffer = stbi_load(paths[i].c_str(), &m_Width, &m_Height, &m_BytesPerPixel, 0);
+		GLCALL(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, buffer));
 		stbi_image_free(buffer);
 	}
 	buffer = nullptr;

@@ -6,6 +6,16 @@ glm::mat4 GetVP()
 	return matrix_vp;
 }
 
+glm::mat4 GetMatrixView()
+{
+	return matrix_view;
+}
+
+glm::mat4 GetMatrixProj()
+{
+	return matrix_proj;
+}
+
 Camera::Camera()
 	:m_Fov(45.0f), m_Aspect((float)800/(float)600), m_Near(0.1f), m_Far(100.0f)
 {

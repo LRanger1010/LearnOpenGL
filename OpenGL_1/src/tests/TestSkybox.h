@@ -10,6 +10,10 @@ namespace test {
 		TestSkybox();
 		~TestSkybox();
 
+		void OnUpdate(float deltaTime) override;
+		void OnRender() override;
+		void OnGUI() override;
+
 	private:
 		std::unique_ptr<Cube> m_Cube;
 		std::unique_ptr<Skybox> m_Skybox;

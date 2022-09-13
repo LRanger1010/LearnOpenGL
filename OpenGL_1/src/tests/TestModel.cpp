@@ -9,7 +9,7 @@ namespace test
 	TestModel::TestModel()
 		:m_ModelName(""), m_IsModelImported(false), m_StencilTestOn(false)
 	{
-		
+		m_Skybox = std::make_unique<Skybox>();
 	}
 
 	TestModel::~TestModel()
@@ -19,6 +19,10 @@ namespace test
 
 	void TestModel::OnUpdate(float deltaTime)
 	{
+		if (m_Skybox)
+		{
+			m_Skybox->Update();
+		}
 		if (m_IsModelImported)
 		{
 			m_SpotLight.position = CAMERA_POS;
@@ -92,6 +96,12 @@ namespace test
 				GLCALL(glStencilMask(0xFF));
 				GLCALL(glStencilFunc(GL_ALWAYS, 0, 0xFF));
 			}
+		}
+
+		if (m_Skybox)
+		{
+			m_Skybox->BindTexture(0);
+			m_Skybox->Draw();
 		}
 	}
 

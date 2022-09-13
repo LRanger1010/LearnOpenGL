@@ -1519,6 +1519,7 @@
     <None Include="res\shaders\EdgeDetection.shader" />
     <None Include="res\shaders\Grayscale.shader" />
     <None Include="res\shaders\Sharpen.shader" />
+    <None Include="res\shaders\Skybox.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\sky.jpg">

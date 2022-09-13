@@ -22,22 +22,22 @@ static const float vertices[] = {
 	-1.0f,  1.0f,  1.0f,
 
 	//bottom
-	-1.0f, -1.0f, -1.0f,
 	-1.0f, -1.0f,  1.0f,
-	 1.0f, -1.0f, -1.0f,
 	 1.0f, -1.0f,  1.0f,
+	 1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f, -1.0f,
 
 	//front
+	 1.0f, -1.0f,  1.0f,
 	-1.0f, -1.0f,  1.0f,
 	-1.0f,  1.0f,  1.0f,
 	 1.0f,  1.0f,  1.0f,
-	 1.0f, -1.0f,  1.0f,
 
 	//back
-	-1.0f,  1.0f, -1.0f,
 	-1.0f, -1.0f, -1.0f,
 	 1.0f, -1.0f, -1.0f,
 	 1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
 };
 
 static const unsigned int MaxQuadCount = 6;
@@ -53,7 +53,7 @@ static const std::vector<std::string> paths = {
 	"res/textures/skybox/back.jpg"
 };
 
-#define DEFAULT_CUBEMAP_SHADER "texture"
+#define DEFAULT_CUBEMAP_SHADER "Skybox"
 
 Skybox::Skybox()
 {
@@ -81,6 +81,7 @@ Skybox::Skybox()
 	m_IBO = std::make_unique<IndexBuffer>(indice, MaxIndexCount);
 	m_Shader = std::make_unique<Shader>(DEFAULT_CUBEMAP_SHADER);
 	m_CubeMap = std::make_unique<CubeMap>(paths);
+	BindTexture(0);
 }
 
 Skybox::~Skybox()
@@ -90,10 +91,22 @@ Skybox::~Skybox()
 
 void Skybox::Update()
 {
-
+	m_Shader->Bind();
+	glm::mat4 view = glm::mat4(glm::mat3(MATRIX_VIEW));
+	m_MVP = MATRIX_PROJ * view;
+	m_Shader->SetUniformMat4f("u_MVP", m_MVP);
 }
 
 void Skybox::Draw()
 {
+	GLCALL(glDepthFunc(GL_LEQUAL));
+	m_Renderer.Draw(m_VAO, *m_IBO, *m_Shader);
+	GLCALL(glDepthFunc(GL_LESS));
+}
 
+void Skybox::BindTexture(unsigned int slot /*= 0*/)
+{
+	m_Shader->Bind();
+	m_CubeMap->Bind(slot);
+	m_Shader->SetUniform1i("u_CubeMap", slot);
 }

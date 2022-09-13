@@ -1,9 +1,13 @@
 #pragma once
 #define MATRIX_VP GetVP()
+#define MATRIX_VIEW GetMatrixView()
+#define MATRIX_PROJ GetMatrixProj()
 #define CAMERA_POS GetCameraPosition()
 #define CAMERA_DIR GetCameraDirection()
 
 static glm::mat4 matrix_vp;
+static glm::mat4 matrix_view;
+static glm::mat4 matrix_proj;
 static float pitch = 0;
 static float yaw = 0;
 static bool isFirstMouse = true;
@@ -13,6 +17,8 @@ static float mouseSensitivity = 0.05f;
 static glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
 
 glm::mat4 GetVP();
+glm::mat4 GetMatrixView();
+glm::mat4 GetMatrixProj();
 glm::vec3 GetCameraPosition();
 glm::vec3 GetCameraDirection();
 
@@ -26,6 +32,8 @@ public:
 	{
 		glm::mat4 view = glm::lookAt(m_CameraPos, m_CameraPos + m_CameraDir, m_CameraUp);
 		glm::mat4 projection = glm::perspective(glm::radians(m_Fov), m_Aspect, m_Near, m_Far);
+		matrix_view = view;
+		matrix_proj = projection;
 		return projection * view;
 	}
 	inline glm::vec3 GetCameraPos() const { return m_CameraPos; }
