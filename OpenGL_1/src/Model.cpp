@@ -146,6 +146,7 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType 
 
 unsigned int Model::TextureFromFile(const std::string& path)
 {
+	stbi_set_flip_vertically_on_load(GL_FALSE);
 	unsigned int id;
 	int width, height, bpp;
 	auto localBuffer = stbi_load(path.c_str(), &width, &height, &bpp, 0);
