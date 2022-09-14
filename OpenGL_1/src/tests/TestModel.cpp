@@ -7,7 +7,7 @@ namespace test
 	const static std::string modelDir = "res/model/";
 
 	TestModel::TestModel()
-		:m_ModelName(""), m_IsModelImported(false), m_StencilTestOn(false)
+		:m_ModelName(""), m_IsModelImported(false), m_StencilTestOn(false), m_Reflection(false), m_Refraction(false)
 	{
 		m_Skybox = std::make_unique<Skybox>();
 	}
@@ -25,38 +25,53 @@ namespace test
 		}
 		if (m_IsModelImported)
 		{
-			m_SpotLight.position = CAMERA_POS;
-			m_SpotLight.direction = CAMERA_DIR;
+			if (m_Reflection)
+			{
+				m_Shader->Bind();
+				m_Shader->SetUniform1i("u_Skybox", 0);
+			}
+			else if (m_Refraction)
+			{
+				m_Shader->Bind();
+				m_Shader->SetUniform1i("u_Skybox", 0);
+				m_Shader->SetUniform1f("u_refractive_index", 1.0f / 1.52f);
+			}
+			else
+			{
+				m_SpotLight.position = CAMERA_POS;
+				m_SpotLight.direction = CAMERA_DIR;
 
-			m_Shader->Bind();
-			m_Shader->SetUniform3fv("dirLight.ambient", m_DirLight.ambient);
-			m_Shader->SetUniform3fv("dirLight.diffuse", m_DirLight.diffuse);
-			m_Shader->SetUniform3fv("dirLight.specular", m_DirLight.specular);
-			m_Shader->SetUniform3fv("dirLight.dir", m_DirLight.direction);
+				m_Shader->Bind();
+				m_Shader->SetUniform3fv("dirLight.ambient", m_DirLight.ambient);
+				m_Shader->SetUniform3fv("dirLight.diffuse", m_DirLight.diffuse);
+				m_Shader->SetUniform3fv("dirLight.specular", m_DirLight.specular);
+				m_Shader->SetUniform3fv("dirLight.dir", m_DirLight.direction);
 
-			m_Shader->SetUniform3fv("pointLights[0].ambient", m_PointLights[0].ambient);
-			m_Shader->SetUniform3fv("pointLights[0].diffuse", m_PointLights[0].diffuse);
-			m_Shader->SetUniform3fv("pointLights[0].specular", m_PointLights[0].specular);
-			m_Shader->SetUniform3fv("pointLights[0].pos", m_PointLights[0].position);
-			m_Shader->SetUniform1f("pointLights[0].constant", m_PointLights[0].constant);
-			m_Shader->SetUniform1f("pointLights[0].linear", m_PointLights[0].linear);
-			m_Shader->SetUniform1f("pointLights[0].quadratic", m_PointLights[0].quadratic);
+				m_Shader->SetUniform3fv("pointLights[0].ambient", m_PointLights[0].ambient);
+				m_Shader->SetUniform3fv("pointLights[0].diffuse", m_PointLights[0].diffuse);
+				m_Shader->SetUniform3fv("pointLights[0].specular", m_PointLights[0].specular);
+				m_Shader->SetUniform3fv("pointLights[0].pos", m_PointLights[0].position);
+				m_Shader->SetUniform1f("pointLights[0].constant", m_PointLights[0].constant);
+				m_Shader->SetUniform1f("pointLights[0].linear", m_PointLights[0].linear);
+				m_Shader->SetUniform1f("pointLights[0].quadratic", m_PointLights[0].quadratic);
 
-			m_Shader->SetUniform3fv("pointLights[1].ambient", m_PointLights[1].ambient);
-			m_Shader->SetUniform3fv("pointLights[1].diffuse", m_PointLights[1].diffuse);
-			m_Shader->SetUniform3fv("pointLights[1].specular", m_PointLights[1].specular);
-			m_Shader->SetUniform3fv("pointLights[1].pos", m_PointLights[1].position);
-			m_Shader->SetUniform1f("pointLights[1].constant", m_PointLights[1].constant);
-			m_Shader->SetUniform1f("pointLights[1].linear", m_PointLights[1].linear);
-			m_Shader->SetUniform1f("pointLights[1].quadratic", m_PointLights[1].quadratic);
+				m_Shader->SetUniform3fv("pointLights[1].ambient", m_PointLights[1].ambient);
+				m_Shader->SetUniform3fv("pointLights[1].diffuse", m_PointLights[1].diffuse);
+				m_Shader->SetUniform3fv("pointLights[1].specular", m_PointLights[1].specular);
+				m_Shader->SetUniform3fv("pointLights[1].pos", m_PointLights[1].position);
+				m_Shader->SetUniform1f("pointLights[1].constant", m_PointLights[1].constant);
+				m_Shader->SetUniform1f("pointLights[1].linear", m_PointLights[1].linear);
+				m_Shader->SetUniform1f("pointLights[1].quadratic", m_PointLights[1].quadratic);
 
-			m_Shader->SetUniform3fv("spotLight.ambient", m_SpotLight.ambient);
-			m_Shader->SetUniform3fv("spotLight.diffuse", m_SpotLight.diffuse);
-			m_Shader->SetUniform3fv("spotLight.specular", m_SpotLight.specular);
-			m_Shader->SetUniform3fv("spotLight.pos", m_SpotLight.position);
-			m_Shader->SetUniform3fv("spotLight.dir", m_SpotLight.direction);
-			m_Shader->SetUniform1f("spotLight.cutOff", m_SpotLight.cutOff);
-			m_Shader->SetUniform1f("spotLight.outterCutOff", m_SpotLight.outterCutOff);
+				m_Shader->SetUniform3fv("spotLight.ambient", m_SpotLight.ambient);
+				m_Shader->SetUniform3fv("spotLight.diffuse", m_SpotLight.diffuse);
+				m_Shader->SetUniform3fv("spotLight.specular", m_SpotLight.specular);
+				m_Shader->SetUniform3fv("spotLight.pos", m_SpotLight.position);
+				m_Shader->SetUniform3fv("spotLight.dir", m_SpotLight.direction);
+				m_Shader->SetUniform1f("spotLight.cutOff", m_SpotLight.cutOff);
+				m_Shader->SetUniform1f("spotLight.outterCutOff", m_SpotLight.outterCutOff);
+			}
+
 			m_MatModel = glm::rotate(glm::mat4(1.0f), glm::radians((float)glfwGetTime() * 30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			m_MVP = MATRIX_VP * m_MatModel;
 			m_Shader->SetUniformMat4f("u_Model", m_MatModel);
@@ -127,6 +142,36 @@ namespace test
 			if (ImGui::Button("Stencil Test"))
 			{
 				m_StencilTestOn = !m_StencilTestOn;
+			}
+			if (ImGui::Button("Reflection"))
+			{
+				m_Reflection = !m_Reflection;
+				m_Refraction = false;
+				if (m_Reflection)
+				{
+					m_Shader = nullptr;
+					m_Shader = std::make_unique<Shader>("Reflection");
+				}
+				else
+				{
+					m_Shader = nullptr;
+					m_Shader = std::make_unique<Shader>("Assimp");
+				}
+			}
+			if (ImGui::Button("Refraction"))
+			{
+				m_Refraction = !m_Refraction;
+				m_Reflection = false;
+				if (m_Refraction)
+				{
+					m_Shader = nullptr;
+					m_Shader = std::make_unique<Shader>("Refraction");
+				}
+				else
+				{
+					m_Shader = nullptr;
+					m_Shader = std::make_unique<Shader>("Assimp");
+				}
 			}
 		}
 	}

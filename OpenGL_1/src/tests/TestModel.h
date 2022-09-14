@@ -28,6 +28,8 @@ namespace test
 		std::unique_ptr<Shader> m_StencilShader;
 		bool m_StencilTestOn;
 		std::unique_ptr<Skybox> m_Skybox;
+		bool m_Reflection;
+		bool m_Refraction;
 	private:
 		void ImportModel(const std::string& path);
 	};

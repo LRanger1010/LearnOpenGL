@@ -553,6 +553,8 @@
     <None Include="res\shaders\Grayscale.shader" />
     <None Include="res\shaders\Inversion.shader" />
     <None Include="res\shaders\MultiLights.shader" />
+    <None Include="res\shaders\Reflection.shader" />
+    <None Include="res\shaders\Refraction.shader" />
     <None Include="res\shaders\screen.shader" />
     <None Include="res\shaders\Sharpen.shader" />
     <None Include="res\shaders\SingleColor.shader" />
