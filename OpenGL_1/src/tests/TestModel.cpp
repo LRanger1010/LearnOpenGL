@@ -7,7 +7,7 @@ namespace test
 	const static std::string modelDir = "res/model/";
 
 	TestModel::TestModel()
-		:m_ModelName(""), m_IsModelImported(false), m_StencilTestOn(false), m_Reflection(false), m_Refraction(false)
+		:m_ModelName(""), m_IsModelImported(false), m_StencilTestOn(false), m_Reflection(false), m_Refraction(false), m_VisualNormal(false)
 	{
 		m_Skybox = std::make_unique<Skybox>();
 	}
@@ -111,6 +111,20 @@ namespace test
 				GLCALL(glStencilMask(0xFF));
 				GLCALL(glStencilFunc(GL_ALWAYS, 0, 0xFF));
 			}
+			
+			if (m_VisualNormal)
+			{
+				m_Shader->Unbind();
+				if (!m_VisualNormalShader)
+				{
+					m_VisualNormalShader = std::make_unique<Shader>("VisualNormal");
+				}
+				m_VisualNormalShader->Bind();
+				m_VisualNormalShader->SetUniformMat4f("u_Model", m_MatModel);
+				m_VisualNormalShader->SetUniformMat4f("u_View", MATRIX_VIEW);
+				m_VisualNormalShader->SetUniformMat4f("u_Projection", MATRIX_PROJ);
+				m_Model->Draw(*m_VisualNormalShader);
+			}
 		}
 
 		if (m_Skybox)
@@ -172,6 +186,10 @@ namespace test
 					m_Shader = nullptr;
 					m_Shader = std::make_unique<Shader>("Assimp");
 				}
+			}
+			if (ImGui::Button("VisualNormal"))
+			{
+				m_VisualNormal = !m_VisualNormal;
 			}
 		}
 	}

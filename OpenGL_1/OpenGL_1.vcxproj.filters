@@ -1522,6 +1522,7 @@
     <None Include="res\shaders\Skybox.shader" />
     <None Include="res\shaders\Reflection.shader" />
     <None Include="res\shaders\Refraction.shader" />
+    <None Include="res\shaders\VisualNormal.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\sky.jpg">

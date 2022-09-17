@@ -560,6 +560,7 @@
     <None Include="res\shaders\SingleColor.shader" />
     <None Include="res\shaders\Skybox.shader" />
     <None Include="res\shaders\texture.shader" />
+    <None Include="res\shaders\VisualNormal.shader" />
     <None Include="src\vendor\glm\detail\func_common.inl" />
     <None Include="src\vendor\glm\detail\func_common_simd.inl" />
     <None Include="src\vendor\glm\detail\func_exponential.inl" />

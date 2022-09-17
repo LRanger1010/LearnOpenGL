@@ -4,6 +4,7 @@ struct ShaderSource
 {
 	std::string vertexShaderSource;
 	std::string fragmentShaderSource;
+	std::string geometryShaderSource;
 };
 
 class Shader
@@ -26,7 +27,7 @@ private:
 	unsigned int m_RenderID;
 	mutable std::unordered_map<std::string, int> m_uniformLocationMap;
 
-	unsigned int m_CreateShader(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);
+	unsigned int m_CreateShader(const std::string& vertexShaderSource, const std::string& fragmentShaderSource, const std::string& geometryShaderSource);
 	ShaderSource m_ParseShader(const std::string& filepath);
 	unsigned int m_CompileShader(unsigned int type, const std::string& source);
 	ShaderSource m_FindShader(const std::string& shaderName);

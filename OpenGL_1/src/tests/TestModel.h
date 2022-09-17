@@ -30,6 +30,8 @@ namespace test
 		std::unique_ptr<Skybox> m_Skybox;
 		bool m_Reflection;
 		bool m_Refraction;
+		bool m_VisualNormal;
+		std::unique_ptr<Shader> m_VisualNormalShader;
 	private:
 		void ImportModel(const std::string& path);
 	};
