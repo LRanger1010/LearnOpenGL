@@ -123,6 +123,9 @@
     <ClCompile Include="src\geometry\Skybox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\TestGPUInstancing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\VertexBuffer.h">
@@ -1094,6 +1097,9 @@
     <ClInclude Include="src\geometry\Skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\tests\TestGPUInstancing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\basic.shader" />
@@ -1523,6 +1529,8 @@
     <None Include="res\shaders\Reflection.shader" />
     <None Include="res\shaders\Refraction.shader" />
     <None Include="res\shaders\VisualNormal.shader" />
+    <None Include="res\model\planet\planet.mtl" />
+    <None Include="res\model\rock\rock.mtl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\sky.jpg">
@@ -1606,9 +1614,17 @@
     <Image Include="res\textures\skybox\top.jpg">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\model\planet\planet_Quom1200.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\model\rock\Rock-Texture-Surface.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Object Include="res\model\nanosuit\nanosuit.obj" />
+    <Object Include="res\model\planet\planet.obj" />
+    <Object Include="res\model\rock\rock.obj" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\model\nanosuit\LICENSE.txt" />

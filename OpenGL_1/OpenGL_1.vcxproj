@@ -181,6 +181,7 @@
     <ClCompile Include="src\tests\TestBatchRenderingTexture2D.cpp" />
     <ClCompile Include="src\tests\TestClearColor.cpp" />
     <ClCompile Include="src\tests\TestDynamicBatching.cpp" />
+    <ClCompile Include="src\tests\TestGPUInstancing.cpp" />
     <ClCompile Include="src\tests\TestMenu.cpp" />
     <ClCompile Include="src\tests\TestModel.cpp" />
     <ClCompile Include="src\tests\TestMultiLights.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="src\tests\TestBatchRenderingTexture2D.h" />
     <ClInclude Include="src\tests\TestClearColor.h" />
     <ClInclude Include="src\tests\TestDynamicBatching.h" />
+    <ClInclude Include="src\tests\TestGPUInstancing.h" />
     <ClInclude Include="src\tests\TestMenu.h" />
     <ClInclude Include="src\tests\TestModel.h" />
     <ClInclude Include="src\tests\TestMultiLights.h" />
@@ -544,6 +546,8 @@
   <ItemGroup>
     <None Include="res\model\nanosuit\nanosuit.blend" />
     <None Include="res\model\nanosuit\nanosuit.mtl" />
+    <None Include="res\model\planet\planet.mtl" />
+    <None Include="res\model\rock\rock.mtl" />
     <None Include="res\shaders\Assimp.shader" />
     <None Include="res\shaders\basic.shader" />
     <None Include="res\shaders\batchTexture.shader" />
@@ -716,6 +720,8 @@
     <Image Include="res\model\nanosuit\leg_dif.png" />
     <Image Include="res\model\nanosuit\leg_showroom_ddn.png" />
     <Image Include="res\model\nanosuit\leg_showroom_spec.png" />
+    <Image Include="res\model\planet\planet_Quom1200.png" />
+    <Image Include="res\model\rock\Rock-Texture-Surface.jpg" />
     <Image Include="res\textures\cherno.jpg" />
     <Image Include="res\textures\container2.png" />
     <Image Include="res\textures\container2_specular.png" />
@@ -729,6 +735,18 @@
   </ItemGroup>
   <ItemGroup>
     <Object Include="res\model\nanosuit\nanosuit.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="res\model\planet\planet.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="res\model\rock\rock.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
