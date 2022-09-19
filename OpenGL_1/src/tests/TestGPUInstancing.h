@@ -16,5 +16,7 @@ namespace test {
 	private:
 		std::unique_ptr<Model> m_Planet;
 		std::unique_ptr<Model> m_Rock;
+		std::unique_ptr<Shader> m_Shader;
+		std::vector<glm::mat4> m_ModelMatrices;
 	};
 }
