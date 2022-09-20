@@ -21,6 +21,7 @@ in vec3 v_worldPos;
 uniform vec3 objectColor;
 uniform vec3 lightColor;
 uniform vec3 viewPos;
+uniform bool isBlinn;
 
 struct Light
 {
@@ -51,7 +52,16 @@ void main()
 
 	vec3 viewDir = normalize(viewPos - v_worldPos);
 	vec3 reflectDir = reflect(-lightDir, norm);
-	float spec = pow(max(dot(reflectDir, viewDir), 0), material.shininess);
+	vec3 halfDir = normalize(lightDir + viewDir);
+	float spec = 0;
+	if (isBlinn)
+	{
+		spec = pow(max(dot(halfDir, norm), 0), material.shininess);
+	}
+	else
+	{
+		spec = pow(max(dot(reflectDir, viewDir), 0), material.shininess / 4);
+	}
 	vec3 specular = spec * light.specular * material.specular;
 
 	vec3 fragColor = ambient + diffuse + specular;

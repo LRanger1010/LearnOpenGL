@@ -44,6 +44,7 @@ namespace test
 	};
 
 	TestPhoneShading::TestPhoneShading()
+		:m_IsBlinn(false)
 	{
 		m_VBO = std::make_unique<VertexBuffer>(vertices, sizeof(vertices));
 		{
@@ -92,6 +93,7 @@ namespace test
 		m_Shader->SetUniformMat4f("u_Model", model);
 		m_Shader->SetUniformMat4f("u_MVP", m_MVP);
 		m_Shader->SetUniform3fv("viewPos", CAMERA_POS);
+		m_Shader->SetUniform1i("isBlinn", m_IsBlinn);
 	}
 
 	void TestPhoneShading::OnRender()
@@ -108,6 +110,8 @@ namespace test
 		ImGui::ColorEdit3("light ambient", &m_Light.ambient.x);
 		ImGui::ColorEdit3("light diffuse", &m_Light.diffuse.x);
 		ImGui::ColorEdit3("light specular", &m_Light.specular.x);
+
+		if (ImGui::Checkbox("blinn", &m_IsBlinn));
 	}
 
 }
