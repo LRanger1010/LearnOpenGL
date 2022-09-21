@@ -3,3 +3,6 @@
 
 #Document
 OpenGL_1.VC.VC.opendb
+
+#File
+*.user

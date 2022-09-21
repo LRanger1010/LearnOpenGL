@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "TestGPUInstancing.h"
+#include "camera/Camera.h"
 #include <stdlib.h>
 
 namespace test {
@@ -12,10 +13,10 @@ namespace test {
 
 	TestGPUInstancing::TestGPUInstancing()
 	{
-		srand(glfwGetTime());
+		srand((unsigned int)glfwGetTime());
 		m_Planet = std::make_unique<Model>(planetPath);
 		m_Rock = std::make_unique<Model>(rockPath);
-		m_Shader = std::make_unique<Shader>("Assimp");
+		m_Shader = std::make_unique<Shader>("GPUInstancing");
 		for (unsigned int i = 0; i < amount; i++)
 		{
 			float angle = (float)i / (float)amount * 360.0f;
@@ -30,7 +31,7 @@ namespace test {
 			float scale = (rand() % 21) / 100.0f + 0.05f;
 			model = glm::scale(model, glm::vec3(scale));
 
-			float rotAngle = rand() % 360;
+			float rotAngle = (float)(rand() % 360);
 			model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
 			m_ModelMatrices.emplace_back(model);
 		}
@@ -49,12 +50,49 @@ namespace test {
 	void TestGPUInstancing::OnRender()
 	{
 		m_Shader->Bind();
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -3.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(4.0f));
+		m_Shader->SetUniformMat4f("u_Model", model);
+		m_Shader->SetUniformMat4f("u_View", MATRIX_VIEW);
+		m_Shader->SetUniformMat4f("u_Proj", MATRIX_PROJ);
+		m_Shader->SetUniformMat4f("u_NormalMatrix", glm::transpose(glm::inverse(model)));
+		m_Shader->SetUniform3fv("u_ViewPos", CAMERA_POS);
+		m_Shader->SetUniform3fv("dirLight.ambient", m_DirLight.ambient);
+		m_Shader->SetUniform3fv("dirLight.diffuse", m_DirLight.diffuse);
+		m_Shader->SetUniform3fv("dirLight.specular", m_DirLight.specular);
+		m_Shader->SetUniform3fv("dirLight.dir", m_DirLight.direction);
 
+		m_Shader->SetUniform3fv("pointLights[0].ambient", m_PointLights[0].ambient);
+		m_Shader->SetUniform3fv("pointLights[0].diffuse", m_PointLights[0].diffuse);
+		m_Shader->SetUniform3fv("pointLights[0].specular", m_PointLights[0].specular);
+		m_Shader->SetUniform3fv("pointLights[0].pos", m_PointLights[0].position);
+		m_Shader->SetUniform1f("pointLights[0].constant", m_PointLights[0].constant);
+		m_Shader->SetUniform1f("pointLights[0].linear", m_PointLights[0].linear);
+		m_Shader->SetUniform1f("pointLights[0].quadratic", m_PointLights[0].quadratic);
+
+		m_Shader->SetUniform3fv("pointLights[1].ambient", m_PointLights[1].ambient);
+		m_Shader->SetUniform3fv("pointLights[1].diffuse", m_PointLights[1].diffuse);
+		m_Shader->SetUniform3fv("pointLights[1].specular", m_PointLights[1].specular);
+		m_Shader->SetUniform3fv("pointLights[1].pos", m_PointLights[1].position);
+		m_Shader->SetUniform1f("pointLights[1].constant", m_PointLights[1].constant);
+		m_Shader->SetUniform1f("pointLights[1].linear", m_PointLights[1].linear);
+		m_Shader->SetUniform1f("pointLights[1].quadratic", m_PointLights[1].quadratic);
+
+		m_Planet->Draw(*m_Shader);
+
+		for (unsigned int i = 0; i < amount; i++)
+		{
+			glm::mat4 rockModel = m_ModelMatrices[i];
+			m_Shader->SetUniformMat4f("u_Model", rockModel);
+			m_Shader->SetUniformMat4f("u_NormalMatrix", glm::transpose(glm::inverse(rockModel)));
+			m_Rock->Draw(*m_Shader);
+		}
 	}
 
 	void TestGPUInstancing::OnGUI()
 	{
-
+		ImGui::SliderFloat3("pointLight1 position", &m_PointLights[0].position.x, -20.0f, 20.0f);
+		ImGui::SliderFloat3("pointLight2 position", &m_PointLights[1].position.x, -20.0f, 20.0f);
 	}
 
 }

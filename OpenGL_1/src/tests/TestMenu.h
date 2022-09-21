@@ -8,6 +8,7 @@
 #include "TestPhongShading.h"
 #include "TestMultiLights.h"
 #include "TestModel.h"
+#include "TestGPUInstancing.h"
 
 namespace test {
 	class TestMenu : public Test

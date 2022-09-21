@@ -143,6 +143,7 @@ void WindowsWindow::InitTest()
 	m_TestMenu->RegisterTest<test::TestPhoneShading>("Blinn-Phong Shading");
 	m_TestMenu->RegisterTest<test::TestMultiLights>("Multi-Lights");
 	m_TestMenu->RegisterTest<test::TestModel>("Model");
+	m_TestMenu->RegisterTest<test::TestGPUInstancing>("GPU Instancing");
 }
 
 void WindowsWindow::InitImGui()

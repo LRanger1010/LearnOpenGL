@@ -1,6 +1,7 @@
 #pragma once
 #include "Test.h"
 #include "Model.h"
+#include "Light.h"
 
 namespace test {
 	class TestGPUInstancing : public Test
@@ -18,5 +19,7 @@ namespace test {
 		std::unique_ptr<Model> m_Rock;
 		std::unique_ptr<Shader> m_Shader;
 		std::vector<glm::mat4> m_ModelMatrices;
+		DirLight m_DirLight;
+		PointLight m_PointLights[2];
 	};
 }

@@ -1531,6 +1531,7 @@
     <None Include="res\shaders\VisualNormal.shader" />
     <None Include="res\model\planet\planet.mtl" />
     <None Include="res\model\rock\rock.mtl" />
+    <None Include="res\shaders\GPUInstancing.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\sky.jpg">

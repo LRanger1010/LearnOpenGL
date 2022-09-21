@@ -9,6 +9,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
 	m_MatAmbient = matAmbient;
 	m_MatDiffuse = matDiffuse;
 	m_MatSpecular = matSpecular;
+	m_Shininess = 32.0f;
 	SetMesh();
 }
 
@@ -26,6 +27,7 @@ void Mesh::Draw(Shader& shader)
 	shader.SetUniform3fv("material.ambient", m_MatAmbient);
 	shader.SetUniform3fv("material.diffuse", m_MatDiffuse);
 	shader.SetUniform3fv("material.specular", m_MatSpecular);
+	shader.SetUniform1f("material.shininess", m_Shininess);
 	for (unsigned int i = 0; i < m_Textures.size(); i++)
 	{
 		std::string name = "material." + m_Textures[i].type;

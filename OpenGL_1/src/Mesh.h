@@ -22,6 +22,7 @@ private:
 	glm::vec3 m_MatAmbient;
 	glm::vec3 m_MatDiffuse;
 	glm::vec3 m_MatSpecular;
+	float m_Shininess;
 	std::unique_ptr<VertexArray> m_VAO;
 	std::unique_ptr<VertexBuffer> m_VBO;
 	std::unique_ptr<IndexBuffer> m_IBO;
