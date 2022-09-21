@@ -25,6 +25,7 @@ namespace test
 		glm::mat4 m_MVP;
 		Material m_Material;
 		PointLight m_Light;
+		bool m_IsBlinn;
 	};
 }
 
