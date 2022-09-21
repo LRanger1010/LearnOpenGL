@@ -10,6 +10,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
 	m_MatDiffuse = matDiffuse;
 	m_MatSpecular = matSpecular;
 	m_Shininess = 32.0f;
+	m_AttribPointer = 0;
 	SetMesh();
 }
 
@@ -44,19 +45,24 @@ void Mesh::Draw(Shader& shader)
 	m_Renderer->Draw(*m_VAO, *m_IBO, shader);
 }
 
+void Mesh::AddVertexAttrib(const VertexBuffer& vb, const VertexBufferLayout& layout)
+{
+	m_VAO->AddBuffer(vb, layout, m_AttribPointer++, 1);
+}
+
 void Mesh::SetMesh()
 {
 	m_VAO = std::make_unique<VertexArray>();
 	m_VBO = std::make_unique<VertexBuffer>(&m_Vertices[0], m_Vertices.size() * sizeof(Vertex));
 	m_IBO = std::make_unique<IndexBuffer>(&m_Indices[0], m_Indices.size());
 	m_Renderer = std::make_unique<Renderer>();
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Position));
+	glEnableVertexAttribArray(m_AttribPointer);
+	glVertexAttribPointer(m_AttribPointer++, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Position));
 
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Normal));
+	glEnableVertexAttribArray(m_AttribPointer);
+	glVertexAttribPointer(m_AttribPointer++, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Normal));
 
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexCoord));
+	glEnableVertexAttribArray(m_AttribPointer);
+	glVertexAttribPointer(m_AttribPointer++, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexCoord));
 
 }

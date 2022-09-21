@@ -14,6 +14,7 @@ public:
 	inline std::vector<unsigned int> GetIndices() const { return m_Indices; }
 	inline std::vector<Texture> GetTextures() const { return m_Textures; }
 	void Draw(Shader& shader);
+	void AddVertexAttrib(const VertexBuffer& vb, const VertexBufferLayout& layout);
 
 private:
 	std::vector<Vertex> m_Vertices;
@@ -27,6 +28,7 @@ private:
 	std::unique_ptr<VertexBuffer> m_VBO;
 	std::unique_ptr<IndexBuffer> m_IBO;
 	std::unique_ptr<Renderer> m_Renderer;
+	unsigned int m_AttribPointer;
 private:
 	void SetMesh();
 };
