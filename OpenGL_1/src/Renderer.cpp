@@ -41,6 +41,14 @@ void Renderer::Draw(const VertexArray& va, const Shader& shader) const
 	GLCALL(glDrawArrays(GL_TRIANGLES, 0, 3));
 }
 
+void Renderer::DrawInstanced(const VertexArray& va, const IndexBuffer& ib, const Shader& shader, unsigned int instanceCount) const
+{
+	va.Bind();
+	ib.Bind();
+	shader.Bind();
+	GLCALL(glDrawElementsInstanced(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, 0, instanceCount));
+}
+
 void Renderer::Clear(float v0, float v1, float v2, float v3) const
 {
 	glClearColor(v0, v1, v2, v3);

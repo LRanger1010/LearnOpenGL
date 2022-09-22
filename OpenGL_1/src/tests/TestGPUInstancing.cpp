@@ -16,7 +16,8 @@ namespace test {
 		srand((unsigned int)glfwGetTime());
 		m_Planet = std::make_unique<Model>(planetPath);
 		m_Rock = std::make_unique<Model>(rockPath);
-		m_Shader = std::make_unique<Shader>("GPUInstancing");
+		m_Shader = std::make_unique<Shader>("NormalLight");
+		m_InstancedShader = std::make_unique<Shader>("GPUInstancing");
 		for (unsigned int i = 0; i < amount; i++)
 		{
 			float angle = (float)i / (float)amount * 360.0f;
@@ -35,6 +36,7 @@ namespace test {
 			model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
 			m_ModelMatrices.emplace_back(model);
 		}
+
 	}
 
 	TestGPUInstancing::~TestGPUInstancing()
@@ -79,14 +81,15 @@ namespace test {
 		m_Shader->SetUniform1f("pointLights[1].quadratic", m_PointLights[1].quadratic);
 
 		m_Planet->Draw(*m_Shader);
-
-		for (unsigned int i = 0; i < amount; i++)
+		m_Rock->DrawInstanced(*m_InstancedShader, amount);
+		
+		/*for (unsigned int i = 0; i < amount; i++)
 		{
 			glm::mat4 rockModel = m_ModelMatrices[i];
 			m_Shader->SetUniformMat4f("u_Model", rockModel);
 			m_Shader->SetUniformMat4f("u_NormalMatrix", glm::transpose(glm::inverse(rockModel)));
 			m_Rock->Draw(*m_Shader);
-		}
+		}*/
 	}
 
 	void TestGPUInstancing::OnGUI()

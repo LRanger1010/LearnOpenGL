@@ -21,28 +21,14 @@ Mesh::~Mesh()
 
 void Mesh::Draw(Shader& shader)
 {
-	unsigned int diffuseSlot = 0;
-	unsigned int specularSlot = 0;
-	unsigned int normalSlot = 0;
-	shader.Bind();
-	shader.SetUniform3fv("material.ambient", m_MatAmbient);
-	shader.SetUniform3fv("material.diffuse", m_MatDiffuse);
-	shader.SetUniform3fv("material.specular", m_MatSpecular);
-	shader.SetUniform1f("material.shininess", m_Shininess);
-	for (unsigned int i = 0; i < m_Textures.size(); i++)
-	{
-		std::string name = "material." + m_Textures[i].type;
-		if (m_Textures[i].type == "diffuse")
-			name += std::to_string(diffuseSlot++);
-		else if (m_Textures[i].type == "specular")
-			name += std::to_string(specularSlot++);
-		else if (m_Textures[i].type == "normal")
-			name += std::to_string(normalSlot++);
-		shader.SetUniform1i(name, i);
-		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, m_Textures[i].id);
-	}
+	BindTextures(shader);
 	m_Renderer->Draw(*m_VAO, *m_IBO, shader);
+}
+
+void Mesh::DrawInstanced(Shader& shader, unsigned int instanceCount)
+{
+	BindTextures(shader);
+	m_Renderer->DrawInstanced(*m_VAO, *m_IBO, shader, instanceCount);
 }
 
 void Mesh::AddVertexAttrib(const VertexBuffer& vb, const VertexBufferLayout& layout)
@@ -65,4 +51,29 @@ void Mesh::SetMesh()
 	glEnableVertexAttribArray(m_AttribPointer);
 	glVertexAttribPointer(m_AttribPointer++, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexCoord));
 
+}
+
+void Mesh::BindTextures(Shader& shader)
+{
+	unsigned int diffuseSlot = 0;
+	unsigned int specularSlot = 0;
+	unsigned int normalSlot = 0;
+	shader.Bind();
+	shader.SetUniform3fv("material.ambient", m_MatAmbient);
+	shader.SetUniform3fv("material.diffuse", m_MatDiffuse);
+	shader.SetUniform3fv("material.specular", m_MatSpecular);
+	shader.SetUniform1f("material.shininess", m_Shininess);
+	for (unsigned int i = 0; i < m_Textures.size(); i++)
+	{
+		std::string name = "material." + m_Textures[i].type;
+		if (m_Textures[i].type == "diffuse")
+			name += std::to_string(diffuseSlot++);
+		else if (m_Textures[i].type == "specular")
+			name += std::to_string(specularSlot++);
+		else if (m_Textures[i].type == "normal")
+			name += std::to_string(normalSlot++);
+		shader.SetUniform1i(name, i);
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, m_Textures[i].id);
+	}
 }

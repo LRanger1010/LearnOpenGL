@@ -19,6 +19,7 @@ public:
 
 	void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
 	void Draw(const VertexArray& va, const Shader& shader) const;
+	void DrawInstanced(const VertexArray& va, const IndexBuffer& ib, const Shader& shader, unsigned int instanceCount) const;
 	void Clear(float v0, float v1, float v2, float v3) const;
 
 private:

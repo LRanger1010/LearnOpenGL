@@ -12,6 +12,8 @@ public:
 	~Model();
 
 	void Draw(Shader& shader);
+	void DrawInstanced(Shader& shader, unsigned int instanceCount);
+	void BindVertexAttrib(const VertexBuffer& vb, const VertexBufferLayout& layout);
 
 private:
 	std::vector<std::unique_ptr<Mesh>> m_Meshes;

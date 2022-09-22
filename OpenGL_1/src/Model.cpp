@@ -14,6 +14,22 @@ void Model::Draw(Shader& shader)
 	}
 }
 
+void Model::DrawInstanced(Shader& shader, unsigned int instanceCount)
+{
+	for (unsigned int i = 0; i < m_Meshes.size(); i++)
+	{
+		m_Meshes[i]->DrawInstanced(shader, instanceCount);
+	}
+}
+
+void Model::BindVertexAttrib(const VertexBuffer& vb, const VertexBufferLayout& layout)
+{
+	for (unsigned int i = 0; i < m_Meshes.size(); i++)
+	{
+		m_Meshes[i]->AddVertexAttrib(vb, layout);
+	}
+}
+
 void Model::LoadModel(const std::string& path)
 {
 	Assimp::Importer importer;
