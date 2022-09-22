@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TestGPUInstancing.h"
 #include "camera/Camera.h"
+#include "VertexBufferLayout.h"
 #include <stdlib.h>
 
 namespace test {
@@ -36,7 +37,15 @@ namespace test {
 			model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
 			m_ModelMatrices.emplace_back(model);
 		}
-
+		m_ModelMatricesVBO = std::make_unique<VertexBuffer>(&m_ModelMatrices[0], m_ModelMatrices.size() * sizeof(glm::mat4));
+		{
+			VertexBufferLayout layout;
+			for (int i = 0; i < 4; i++)
+			{
+				layout.Push(GL_FLOAT, 4);
+			}
+			m_Rock->BindVertexAttrib(*m_ModelMatricesVBO, layout);
+		}
 	}
 
 	TestGPUInstancing::~TestGPUInstancing()

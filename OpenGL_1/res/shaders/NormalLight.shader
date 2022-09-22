@@ -3,18 +3,18 @@
 layout(location = 0) in vec4 position;
 layout(location = 1) in vec3 aNormal;
 layout(location = 2) in vec2 aTexCoords;
-layout(location = 3) in mat4 aInstanceMatrix;
 out vec3 v_normal;
 out vec3 v_worldPos;
 out vec2 v_texCoords;
+uniform mat4 u_Model;
+uniform mat4 u_NormalMatrix;
 uniform mat4 u_View;
 uniform mat4 u_Proj;
 void main()
 {
-	gl_Position = u_Proj * u_View * aInstanceMatrix * position;
-	v_worldPos = vec3(aInstanceMatrix * position);
-	mat3 normalMatrix = mat3(transpose(inverse(aInstanceMatrix)));
-	v_normal = normalMatrix * aNormal;
+	gl_Position = u_Proj * u_View * u_Model * position;
+	v_worldPos = vec3(u_Model * position);
+	v_normal = mat3(u_NormalMatrix) * aNormal;
 	v_texCoords = aTexCoords;
 };
 

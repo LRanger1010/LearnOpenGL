@@ -1532,6 +1532,7 @@
     <None Include="res\model\planet\planet.mtl" />
     <None Include="res\model\rock\rock.mtl" />
     <None Include="res\shaders\GPUInstancing.shader" />
+    <None Include="res\shaders\NormalLight.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\sky.jpg">
