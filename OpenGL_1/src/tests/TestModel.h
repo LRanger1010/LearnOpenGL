@@ -3,6 +3,8 @@
 #include "Model.h"
 #include "Light.h"
 #include "geometry/Skybox.h"
+#include "FrameBuffer.h"
+#include "geometry/Quad.h"
 
 namespace test
 {
@@ -32,6 +34,9 @@ namespace test
 		bool m_Refraction;
 		bool m_VisualNormal;
 		std::unique_ptr<Shader> m_VisualNormalShader;
+		std::unique_ptr<FrameBuffer> m_MSFBO;
+		std::unique_ptr<FrameBuffer> m_IntermediateFBO;
+		std::unique_ptr<Quad> m_Quad;
 	private:
 		void ImportModel(const std::string& path);
 	};

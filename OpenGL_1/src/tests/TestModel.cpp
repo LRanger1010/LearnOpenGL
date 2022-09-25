@@ -10,6 +10,15 @@ namespace test
 		:m_ModelName(""), m_IsModelImported(false), m_StencilTestOn(false), m_Reflection(false), m_Refraction(false), m_VisualNormal(false)
 	{
 		m_Skybox = std::make_unique<Skybox>();
+		m_MSFBO = std::make_unique<FrameBuffer>(1200, 900);
+		m_MSFBO->AttachMultiSampleTextureColor(0, 4);
+		m_MSFBO->AttachMultiSampleRenderBuffer(4);
+		m_MSFBO->Unbind();
+		
+		m_IntermediateFBO = std::make_unique<FrameBuffer>(1200, 900);
+		m_IntermediateFBO->AttachTextureColor(0);
+		m_IntermediateFBO->AttachRenderBuffer();
+		m_IntermediateFBO->Unbind();
 	}
 
 	TestModel::~TestModel()
@@ -25,6 +34,10 @@ namespace test
 		}
 		if (m_IsModelImported)
 		{
+			if (m_Quad)
+			{
+				m_Quad->Update();
+			}
 			if (m_Reflection)
 			{
 				m_Shader->Bind();
@@ -85,6 +98,9 @@ namespace test
 	{
 		if (m_Model)
 		{
+			m_MSFBO->Bind();
+			GLCALL(glEnable(GL_DEPTH_TEST));
+			GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 			if (m_StencilTestOn)
 			{
 				GLCALL(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
@@ -125,6 +141,13 @@ namespace test
 				m_VisualNormalShader->SetUniformMat4f("u_Projection", MATRIX_PROJ);
 				m_Model->Draw(*m_VisualNormalShader);
 			}
+			FrameBuffer::BlitFramebuffer(*m_MSFBO, *m_IntermediateFBO);
+			m_MSFBO->Unbind();
+			GLCALL(glDisable(GL_DEPTH_TEST));
+			GLCALL(glClear(GL_COLOR_BUFFER_BIT));
+			unsigned int textureId = m_IntermediateFBO->GetTextureColorBuffer();
+			m_Quad->BindTexture(textureId, 0);
+			m_Quad->Draw();
 		}
 
 		if (m_Skybox)
@@ -141,6 +164,7 @@ namespace test
 			if (ImGui::Button("nano suit"))
 			{
 				ImportModel(modelDir + "nanosuit/nanosuit.obj");
+				m_Quad = std::make_unique<Quad>();
 			}
 			ImGui::InputText("Input a Model Path", m_ModelName, IM_ARRAYSIZE(m_ModelName));
 			if (ImGui::Button("Import Model"))

@@ -21,18 +21,18 @@ FrameBuffer::~FrameBuffer()
 	GLCALL(glDeleteFramebuffers(1, &m_RenderID));
 }
 
-void FrameBuffer::Bind() const
+void FrameBuffer::Bind(GLenum target/*= GL_FRAMEBUFFER*/) const
 {
-	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, m_RenderID));
+	GLCALL(glBindFramebuffer(target, m_RenderID));
 }
 
-void FrameBuffer::Unbind() const
+void FrameBuffer::Unbind(GLenum target/*= GL_FRAMEBUFFER*/) const
 {
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		std::cout << "Error: FrameBuffer is not complete!" << std::endl;
 	}
-	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+	GLCALL(glBindFramebuffer(target, 0));
 }
 
 void FrameBuffer::AttachTextureColor(unsigned int slot)
@@ -46,6 +46,15 @@ void FrameBuffer::AttachTextureColor(unsigned int slot)
 	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr));
 	GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
 	GLCALL(glFramebufferTexture2D(GL_FRAMEBUFFER, AttachmentEnum[slot], GL_TEXTURE_2D, m_TextureColorBuffer, 0));
+}
+
+void FrameBuffer::AttachMultiSampleTextureColor(unsigned int slot, unsigned int samples)
+{
+	GLCALL(glGenTextures(1, &m_TextureColorBuffer));
+	GLCALL(glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_TextureColorBuffer));
+	GLCALL(glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, GL_RGBA, m_Width, m_Height, GL_TRUE));
+	GLCALL(glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0));
+	GLCALL(glFramebufferTexture2D(GL_FRAMEBUFFER, AttachmentEnum[slot], GL_TEXTURE_2D_MULTISAMPLE, m_TextureColorBuffer, 0));
 }
 
 void FrameBuffer::AttachTextureDepth()
@@ -87,4 +96,26 @@ void FrameBuffer::AttachRenderBuffer()
 	GLCALL(glBindRenderbuffer(GL_RENDERBUFFER, m_RBO));
 	GLCALL(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_Width, m_Height));
 	GLCALL(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO));
+}
+
+void FrameBuffer::AttachMultiSampleRenderBuffer(unsigned int samples)
+{
+	GLCALL(glGenRenderbuffers(1, &m_RBO));
+	GLCALL(glBindRenderbuffer(GL_RENDERBUFFER, m_RBO));
+	GLCALL(glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_DEPTH24_STENCIL8, m_Width, m_Height));
+	GLCALL(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO));
+}
+
+void FrameBuffer::BlitFramebuffer(const FrameBuffer& src, const FrameBuffer& dst)
+{
+	GLCALL(glBindFramebuffer(GL_READ_FRAMEBUFFER, src.GetID()));
+	GLCALL(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, dst.GetID()));
+	GLCALL(glBlitFramebuffer(0, 0, src.GetWidth(), src.GetHeight(), 0, 0, dst.GetWidth(), dst.GetHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST));
+}
+
+void FrameBuffer::BlitFramebuffer(const FrameBuffer& src)
+{
+	GLCALL(glBindFramebuffer(GL_READ_FRAMEBUFFER, src.GetID()));
+	GLCALL(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0));
+	GLCALL(glBlitFramebuffer(0, 0, src.GetWidth(), src.GetHeight(), 0, 0, src.GetWidth(), src.GetHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST));
 }

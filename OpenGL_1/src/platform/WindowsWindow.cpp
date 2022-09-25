@@ -75,6 +75,7 @@ void WindowsWindow::Init()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	//glfwWindowHint(GLFW_SAMPLES, 4);
 	m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Name.c_str(), NULL, NULL);
 	if (m_Window == NULL)
 	{
