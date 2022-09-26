@@ -37,7 +37,9 @@ namespace test
 		std::unique_ptr<FrameBuffer> m_MSFBO;
 		std::unique_ptr<FrameBuffer> m_IntermediateFBO;
 		std::unique_ptr<Quad> m_Quad;
+		bool m_MSAAOn;
 	private:
 		void ImportModel(const std::string& path);
+		void DrawSkybox();
 	};
 }

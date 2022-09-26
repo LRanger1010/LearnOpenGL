@@ -96,11 +96,15 @@ namespace test
 
 	void TestModel::OnRender()
 	{
+		GLCALL(glEnable(GL_DEPTH_TEST));
 		if (m_Model)
 		{
-			m_MSFBO->Bind();
-			GLCALL(glEnable(GL_DEPTH_TEST));
-			GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+			if (m_MSAAOn)
+			{
+				m_MSFBO->Bind();
+				GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+			}
+
 			if (m_StencilTestOn)
 			{
 				GLCALL(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
@@ -141,20 +145,22 @@ namespace test
 				m_VisualNormalShader->SetUniformMat4f("u_Projection", MATRIX_PROJ);
 				m_Model->Draw(*m_VisualNormalShader);
 			}
-			FrameBuffer::BlitFramebuffer(*m_MSFBO, *m_IntermediateFBO);
-			m_MSFBO->Unbind();
-			GLCALL(glDisable(GL_DEPTH_TEST));
-			GLCALL(glClear(GL_COLOR_BUFFER_BIT));
-			unsigned int textureId = m_IntermediateFBO->GetTextureColorBuffer();
-			m_Quad->BindTexture(textureId, 0);
-			m_Quad->Draw();
-		}
 
-		if (m_Skybox)
-		{
-			m_Skybox->BindTexture(0);
-			m_Skybox->Draw();
+			DrawSkybox();
+
+			if (m_MSAAOn)
+			{
+				FrameBuffer::BlitFramebuffer(*m_MSFBO, *m_IntermediateFBO);
+				m_MSFBO->Unbind();
+				GLCALL(glDisable(GL_DEPTH_TEST));
+				GLCALL(glClear(GL_COLOR_BUFFER_BIT));
+				unsigned int textureId = m_IntermediateFBO->GetTextureColorBuffer();
+				m_Quad->BindTexture(textureId, 0);
+				m_Quad->Draw();
+			}
 		}
+		else
+			DrawSkybox();
 	}
 
 	void TestModel::OnGUI()
@@ -215,6 +221,7 @@ namespace test
 			{
 				m_VisualNormal = !m_VisualNormal;
 			}
+			ImGui::Checkbox("MSAA On", &m_MSAAOn);
 		}
 	}
 	void TestModel::ImportModel(const std::string& path)
@@ -222,5 +229,14 @@ namespace test
 		m_Model = std::make_unique<Model>(path);
 		m_Shader = std::make_unique<Shader>("Assimp");
 		m_IsModelImported = true;
+	}
+
+	void TestModel::DrawSkybox()
+	{
+		if (m_Skybox)
+		{
+			m_Skybox->BindTexture(0);
+			m_Skybox->Draw();
+		}
 	}
 }
