@@ -9,6 +9,7 @@
 #include "TestMultiLights.h"
 #include "TestModel.h"
 #include "TestGPUInstancing.h"
+#include "TestShadowMap.h"
 
 namespace test {
 	class TestMenu : public Test

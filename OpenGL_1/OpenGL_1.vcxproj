@@ -160,6 +160,7 @@
     <ClCompile Include="src\CubeMap.cpp" />
     <ClCompile Include="src\FrameBuffer.cpp" />
     <ClCompile Include="src\geometry\Cube.cpp" />
+    <ClCompile Include="src\geometry\Plane.cpp" />
     <ClCompile Include="src\geometry\Quad.cpp" />
     <ClCompile Include="src\geometry\Skybox.cpp" />
     <ClCompile Include="src\glad.c">
@@ -185,6 +186,7 @@
     <ClCompile Include="src\tests\TestMenu.cpp" />
     <ClCompile Include="src\tests\TestModel.cpp" />
     <ClCompile Include="src\tests\TestMultiLights.cpp" />
+    <ClCompile Include="src\tests\TestShadowMap.cpp" />
     <ClCompile Include="src\tests\TestSkybox.cpp" />
     <ClCompile Include="src\tests\TestTexture2D.cpp" />
     <ClCompile Include="src\Image.cpp" />
@@ -222,6 +224,7 @@
     <ClInclude Include="src\CubeMap.h" />
     <ClInclude Include="src\FrameBuffer.h" />
     <ClInclude Include="src\geometry\Cube.h" />
+    <ClInclude Include="src\geometry\Plane.h" />
     <ClInclude Include="src\geometry\Quad.h" />
     <ClInclude Include="src\geometry\Skybox.h" />
     <ClInclude Include="src\IndexBuffer.h" />
@@ -242,6 +245,7 @@
     <ClInclude Include="src\tests\TestMenu.h" />
     <ClInclude Include="src\tests\TestModel.h" />
     <ClInclude Include="src\tests\TestMultiLights.h" />
+    <ClInclude Include="src\tests\TestShadowMap.h" />
     <ClInclude Include="src\tests\TestSkybox.h" />
     <ClInclude Include="src\tests\TestTexture2D.h" />
     <ClInclude Include="src\Image.h" />
@@ -552,6 +556,8 @@
     <None Include="res\shaders\basic.shader" />
     <None Include="res\shaders\batchTexture.shader" />
     <None Include="res\shaders\BlinnPhong.shader" />
+    <None Include="res\shaders\DepthMap.shader" />
+    <None Include="res\shaders\ShadowMap.shader" />
     <None Include="res\shaders\Blur.shader" />
     <None Include="res\shaders\EdgeDetection.shader" />
     <None Include="res\shaders\GPUInstancing.shader" />
@@ -734,6 +740,7 @@
     <Image Include="res\textures\skybox\left.jpg" />
     <Image Include="res\textures\skybox\right.jpg" />
     <Image Include="res\textures\skybox\top.jpg" />
+    <Image Include="res\textures\wood.png" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="res\model\nanosuit\nanosuit.obj">

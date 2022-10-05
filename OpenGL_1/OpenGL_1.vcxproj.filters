@@ -126,6 +126,12 @@
     <ClCompile Include="src\tests\TestGPUInstancing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\TestShadowMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\geometry\Plane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\VertexBuffer.h">
@@ -1100,6 +1106,12 @@
     <ClInclude Include="src\tests\TestGPUInstancing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\tests\TestShadowMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\geometry\Plane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\basic.shader" />
@@ -1533,6 +1545,8 @@
     <None Include="res\model\rock\rock.mtl" />
     <None Include="res\shaders\GPUInstancing.shader" />
     <None Include="res\shaders\NormalLight.shader" />
+    <None Include="res\shaders\ShadowMap.shader" />
+    <None Include="res\shaders\DepthMap.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\sky.jpg">
@@ -1620,6 +1634,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\model\rock\Rock-Texture-Surface.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\wood.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

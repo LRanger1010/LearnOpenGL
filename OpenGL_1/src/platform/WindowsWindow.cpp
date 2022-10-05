@@ -145,6 +145,7 @@ void WindowsWindow::InitTest()
 	m_TestMenu->RegisterTest<test::TestMultiLights>("Multi-Lights");
 	m_TestMenu->RegisterTest<test::TestModel>("Model");
 	m_TestMenu->RegisterTest<test::TestGPUInstancing>("GPU Instancing");
+	m_TestMenu->RegisterTest<test::TestShadowMap>("Shadow Map");
 }
 
 void WindowsWindow::InitImGui()

@@ -17,9 +17,11 @@ struct Light
 struct DirLight : Light
 {
 	glm::vec3 direction;
+	glm::mat4 view;
 	DirLight()
 	{
 		direction = glm::vec3(-0.2f, -1.0f, -0.3f);
+		view = glm::lookAt(-direction, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 };
 

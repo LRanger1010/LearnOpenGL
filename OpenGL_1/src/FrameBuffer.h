@@ -9,6 +9,7 @@ public:
 	~FrameBuffer();
 
 	inline unsigned int GetTextureColorBuffer() const { return m_TextureColorBuffer; }
+	inline unsigned int GetTextureDepthBuffer() const { return m_TextureDepthBuffer; }
 	inline unsigned int GetWidth() const { return m_Width; }
 	inline unsigned int GetHeight() const { return m_Height; }
 	inline unsigned int GetID() const { return m_RenderID; }
@@ -21,6 +22,7 @@ public:
 	void AttachTextureDepthStencil();
 	void AttachRenderBuffer();
 	void AttachMultiSampleRenderBuffer(unsigned int samples);
+	void SetBufferTarget(GLenum buffer);
 
 	static void BlitFramebuffer(const FrameBuffer& src, const FrameBuffer& dst);
 	static void BlitFramebuffer(const FrameBuffer& src);

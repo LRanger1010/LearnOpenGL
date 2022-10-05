@@ -68,6 +68,11 @@ void Shader::SetUniformMat4f(const std::string& name, glm::mat4 mat)
 	GLCALL(glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]));
 }
 
+std::unique_ptr<Shader> Shader::Find(const std::string& name)
+{
+	return std::make_unique<Shader>(name);
+}
+
 unsigned int Shader::m_CreateShader(const std::string& vertexShaderSource, const std::string& fragmentShaderSource, const std::string& geometryShaderSource)
 {
 	GLCALL(unsigned int program = glCreateProgram());

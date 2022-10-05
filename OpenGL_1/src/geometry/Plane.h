@@ -2,11 +2,11 @@
 #include "Renderer.h"
 #include "Image.h"
 
-class Cube
+class Plane
 {
 public:
-	Cube();
-	~Cube();
+	Plane();
+	~Plane();
 
 	inline Shader& GetShader() const { return *m_Shader; }
 	inline glm::mat4 GetModelMatrix() const { return m_Model; }

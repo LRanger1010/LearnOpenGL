@@ -23,6 +23,8 @@ public:
 	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
 	void SetUniformMat4f(const std::string& name, glm::mat4 mat);
 
+	static std::unique_ptr<Shader> Find(const std::string& name);
+
 private:
 	unsigned int m_RenderID;
 	mutable std::unordered_map<std::string, int> m_uniformLocationMap;
