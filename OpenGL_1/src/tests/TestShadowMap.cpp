@@ -49,12 +49,10 @@ namespace test {
 		m_DepthShader->SetUniformMat4f("u_LightMatrix", lightMatrix);
 
 		m_DepthShader->SetUniformMat4f("u_Model", m_Plane->GetModelMatrix());
-		m_Plane->ResetShader(m_DepthShader);
-		m_Plane->Draw();
+		m_Plane->Draw(*m_DepthShader);
 
 		m_DepthShader->SetUniformMat4f("u_Model", m_Cube->GetModelMatrix());
-		m_Cube->ResetShader(m_DepthShader);
-		m_Cube->Draw();
+		m_Cube->Draw(*m_DepthShader);
 
 		m_DepthFBO->Unbind();
 		GLCALL(glViewport(0, 0, 1200, 900));
@@ -73,18 +71,16 @@ namespace test {
 
 		m_ShadowShader->SetUniformMat4f("u_Model", m_Plane->GetModelMatrix());
 		m_ShadowShader->SetUniformMat4f("u_MVP", MATRIX_VP * m_Plane->GetModelMatrix());
-		m_Plane->ResetShader(m_ShadowShader);
-		m_Plane->BindTexture(0);
+		m_Plane->BindImage(0);
 		unsigned int depthTex = m_DepthFBO->GetTextureDepthBuffer();
-		m_Plane->BindTexture(depthTex, 1);
-		m_Plane->Draw();
+		m_Plane->Bind(depthTex, 1);
+		m_Plane->Draw(*m_ShadowShader);
 
 		m_ShadowShader->SetUniformMat4f("u_Model", m_Cube->GetModelMatrix());
 		m_ShadowShader->SetUniformMat4f("u_MVP", MATRIX_VP * m_Cube->GetModelMatrix());
-		m_Cube->ResetShader(m_ShadowShader);
-		m_Cube->BindTexture(0);
-		m_Cube->BindTexture(depthTex, 1);
-		m_Cube->Draw();
+		m_Cube->BindImage(0);
+		m_Cube->Bind(depthTex, 1);
+		m_Cube->Draw(*m_ShadowShader);
 	}
 
 	void TestShadowMap::OnGUI()

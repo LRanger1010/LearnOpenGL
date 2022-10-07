@@ -13,7 +13,6 @@ unsigned int indice[] = {
 	0, 1, 2,
 	2, 3, 0,
 };
-#define DEFAULT_QUAD_SHADER "screen"
 
 Quad::Quad()
 {
@@ -25,7 +24,6 @@ Quad::Quad()
 		m_VAO.AddBuffer(*m_VBO, layout);
 	}
 	m_IBO = std::make_unique<IndexBuffer>(indice, 6);
-	m_Shader = std::make_unique<Shader>(DEFAULT_QUAD_SHADER);
 }
 
 Quad::~Quad()
@@ -38,21 +36,7 @@ void Quad::Update()
 	
 }
 
-void Quad::Draw()
+void Quad::Draw(Shader& shader)
 {
-	m_Renderer.Draw(m_VAO, *m_IBO, *m_Shader);
-}
-
-void Quad::BindTexture(unsigned int textureId, unsigned int slot)
-{
-	m_Shader->Bind();
-	GLCALL(glActiveTexture(GL_TEXTURE0 + slot));
-	GLCALL(glBindTexture(GL_TEXTURE_2D, textureId));
-	m_Shader->SetUniform1i("u_Texture", slot);
-}
-
-void Quad::ResetShader(const std::string& name)
-{
-	m_Shader = nullptr;
-	m_Shader = std::make_unique<Shader>(name);
+	m_Renderer.Draw(m_VAO, *m_IBO, shader);
 }

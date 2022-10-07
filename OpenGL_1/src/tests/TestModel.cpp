@@ -34,9 +34,9 @@ namespace test
 		}
 		if (m_IsModelImported)
 		{
-			if (m_Quad)
+			if (m_ScreenMask)
 			{
-				m_Quad->Update();
+				m_ScreenMask->Update();
 			}
 			if (m_Reflection)
 			{
@@ -155,8 +155,7 @@ namespace test
 				GLCALL(glDisable(GL_DEPTH_TEST));
 				GLCALL(glClear(GL_COLOR_BUFFER_BIT));
 				unsigned int textureId = m_IntermediateFBO->GetTextureColorBuffer();
-				m_Quad->BindTexture(textureId, 0);
-				m_Quad->Draw();
+				m_ScreenMask->Draw(textureId, 0);
 			}
 		}
 		else
@@ -170,7 +169,7 @@ namespace test
 			if (ImGui::Button("nano suit"))
 			{
 				ImportModel(modelDir + "nanosuit/nanosuit.obj");
-				m_Quad = std::make_unique<Quad>();
+				m_ScreenMask = std::make_unique<ScreenMask>();
 			}
 			ImGui::InputText("Input a Model Path", m_ModelName, IM_ARRAYSIZE(m_ModelName));
 			if (ImGui::Button("Import Model"))

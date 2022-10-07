@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Test3DModel.h"
+#include "camera/Camera.h"
 
 namespace test {
 
@@ -11,6 +12,8 @@ namespace test {
 		"Blur",
 		"EdgeDetection",
 	};
+
+#define CUBE_SHADER "texture"
 
 	Test3DModel::Test3DModel()
 	{
@@ -33,7 +36,7 @@ namespace test {
 		if (m_Cube)
 		{
 			m_Cube->Update();
-			m_Quad->Update();
+			m_ScreenMask->Update();
 		}
 	}
 
@@ -45,16 +48,18 @@ namespace test {
 			m_FBO->Bind();
 			GLCALL(glEnable(GL_DEPTH_TEST));
 			GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-			m_Cube->BindTexture(0);
-			m_Cube->Draw();
+			m_CubeShader->Bind();
+			m_CubeShader->SetUniform1i("u_Texture", 0);
+			m_CubeShader->SetUniformMat4f("u_MVP", MATRIX_VP * m_Cube->GetModelMatrix());
+			m_Cube->BindImage(0);
+			m_Cube->Draw(*m_CubeShader);
 
 			GLCALL(glViewport(0, 0, 1200, 900));
 			m_FBO->Unbind();
 			GLCALL(glDisable(GL_DEPTH_TEST));
 			GLCALL(glClear(GL_COLOR_BUFFER_BIT));
 			unsigned int textureId = m_FBO->GetTextureColorBuffer();
-			m_Quad->BindTexture(textureId, 0);
-			m_Quad->Draw();
+			m_ScreenMask->Draw(textureId, 0);
 		}
 	}
 
@@ -65,7 +70,8 @@ namespace test {
 			if (ImGui::Button("Cube"))
 			{
 				m_Cube = std::make_unique<Cube>();
-				m_Quad = std::make_unique<Quad>();
+				m_ScreenMask = std::make_unique<ScreenMask>();
+				m_CubeShader = Shader::Find(CUBE_SHADER);
 			}
 		}
 		else
@@ -76,7 +82,7 @@ namespace test {
 			{
 				if (ImGui::Button(PostProcessList[i].c_str()))
 				{
-					m_Quad->ResetShader(PostProcessList[i]);
+					m_ScreenMask->SetShader(PostProcessList[i]);
 				}
 			}
 			ImGui::Separator();

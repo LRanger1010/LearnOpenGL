@@ -176,6 +176,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\platform\WindowsWindow.cpp" />
+    <ClCompile Include="src\postProcess\ScreenMask.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\tests\Test3DModel.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="src\CubeMap.h" />
     <ClInclude Include="src\FrameBuffer.h" />
     <ClInclude Include="src\geometry\Cube.h" />
+    <ClInclude Include="src\geometry\Geometry.h" />
     <ClInclude Include="src\geometry\Plane.h" />
     <ClInclude Include="src\geometry\Quad.h" />
     <ClInclude Include="src\geometry\Skybox.h" />
@@ -234,6 +236,7 @@
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\platform\WindowsWindow.h" />
+    <ClInclude Include="src\postProcess\ScreenMask.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\tests\Test.h" />

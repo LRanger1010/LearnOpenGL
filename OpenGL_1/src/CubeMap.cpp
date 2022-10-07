@@ -4,6 +4,7 @@
 CubeMap::CubeMap(std::vector<std::string> paths)
 	:m_RenderID(0), m_Width(0), m_Height(0), m_BytesPerPixel(0)
 {
+	stbi_set_flip_vertically_on_load(GL_FALSE);
 	GLCALL(glGenTextures(1, &m_RenderID));
 	GLCALL(glBindTexture(GL_TEXTURE_CUBE_MAP, m_RenderID));
 

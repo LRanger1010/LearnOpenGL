@@ -2,7 +2,7 @@
 #include "Test.h"
 #include "FrameBuffer.h"
 #include "geometry/Cube.h"
-#include "geometry/Quad.h"
+#include "postProcess/ScreenMask.h"
 
 namespace test {
 	class Test3DModel : public Test
@@ -18,6 +18,7 @@ namespace test {
 	private:
 		std::unique_ptr<FrameBuffer> m_FBO;
 		std::unique_ptr<Cube> m_Cube;
-		std::unique_ptr<Quad> m_Quad;
+		std::unique_ptr<ScreenMask> m_ScreenMask;
+		std::unique_ptr<Shader> m_CubeShader;
 	};
 }

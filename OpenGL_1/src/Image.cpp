@@ -4,7 +4,7 @@
 Image::Image(const std::string& path)
 	:m_RenderID(0), m_LocalBuffer(0), m_Width(0), m_Height(0), m_BytesPerPixel(0)
 {
-	stbi_set_flip_vertically_on_load(1);
+	stbi_set_flip_vertically_on_load(GL_TRUE);
 	m_LocalBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BytesPerPixel, 4);
 
 	GLCALL(glGenTextures(1, &m_RenderID));

@@ -132,6 +132,9 @@
     <ClCompile Include="src\geometry\Plane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\postProcess\ScreenMask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\VertexBuffer.h">
@@ -1110,6 +1113,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\geometry\Plane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\postProcess\ScreenMask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\geometry\Geometry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
