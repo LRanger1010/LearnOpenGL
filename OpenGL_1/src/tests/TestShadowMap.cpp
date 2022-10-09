@@ -19,6 +19,7 @@ namespace test {
 
 		m_Plane = std::make_unique<Plane>();
 		m_Cube = std::make_unique<Cube>();
+		m_Cube->Rotate(glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
 		m_DirLight.direction = glm::vec3(2.0f, -4.0f, 1.0f);
 		m_DirLight.view = glm::lookAt(-m_DirLight.direction, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));

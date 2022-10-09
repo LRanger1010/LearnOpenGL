@@ -70,6 +70,7 @@ namespace test {
 			if (ImGui::Button("Cube"))
 			{
 				m_Cube = std::make_unique<Cube>();
+				m_Cube->Rotate(glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 				m_ScreenMask = std::make_unique<ScreenMask>();
 				m_CubeShader = Shader::Find(CUBE_SHADER);
 			}

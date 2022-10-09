@@ -67,7 +67,6 @@ Cube::Cube()
 
 	m_IBO = std::make_unique<IndexBuffer>(indice, MaxIndexCount);
 	m_Tex = std::make_unique<Image>(DEFAULT_CUBE_TEXTURE_PATH);
-	Rotate(glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 }
 
 Cube::~Cube()
