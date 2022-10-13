@@ -18,6 +18,7 @@ public:
 	void AttachTextureColor(unsigned int slot);
 	void AttachMultiSampleTextureColor(unsigned int slot, unsigned int samples);
 	void AttachTextureDepth();
+	void AttachCubeMapDepth(unsigned int cubeMapDepthBuffer);
 	void AttachTextureStencil();
 	void AttachTextureDepthStencil();
 	void AttachRenderBuffer();

@@ -70,6 +70,11 @@ void FrameBuffer::AttachTextureDepth()
 	GLCALL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_TextureDepthBuffer, 0));
 }
 
+void FrameBuffer::AttachCubeMapDepth(unsigned int cubeMapDepthBuffer)
+{
+	GLCALL(glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, cubeMapDepthBuffer, 0));
+}
+
 void FrameBuffer::AttachTextureStencil()
 {
 	GLCALL(glGenTextures(1, &m_TextureStencilBuffer));
