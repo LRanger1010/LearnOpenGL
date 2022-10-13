@@ -8,6 +8,7 @@ namespace test {
 	static const unsigned int SHADOW_HEIGHT = 1024;
 	static const std::string SHADOW_SHADER = "ShadowMap";
 	static const std::string DEPTH_SHADER = "DepthMap";
+	static const std::string DEPTH_CUBEMAP_SHADER = "DepthCubemap";
 
 	TestShadowMap::TestShadowMap()
 		:m_ShadowOn(false)
@@ -25,8 +26,17 @@ namespace test {
 		m_DirLight.view = glm::lookAt(-m_DirLight.direction, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		m_DirLightProj = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 7.5f);
 
-		m_DepthShader = std::make_shared<Shader>(DEPTH_SHADER);
-		m_ShadowShader = std::make_shared<Shader>(SHADOW_SHADER);
+		m_PointLightProj = glm::perspective(glm::radians(90.0f), 1200.0f / 900.0f, 1.0f, 25.0f);
+		m_ShadowTransforms.emplace_back(m_PointLightProj * glm::lookAt(m_PointLight.position, m_PointLight.position + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+		m_ShadowTransforms.emplace_back(m_PointLightProj * glm::lookAt(m_PointLight.position, m_PointLight.position + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+		m_ShadowTransforms.emplace_back(m_PointLightProj * glm::lookAt(m_PointLight.position, m_PointLight.position + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
+		m_ShadowTransforms.emplace_back(m_PointLightProj * glm::lookAt(m_PointLight.position, m_PointLight.position + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f)));
+		m_ShadowTransforms.emplace_back(m_PointLightProj * glm::lookAt(m_PointLight.position, m_PointLight.position + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+		m_ShadowTransforms.emplace_back(m_PointLightProj * glm::lookAt(m_PointLight.position, m_PointLight.position + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+
+		m_DepthShader = std::make_unique<Shader>(DEPTH_SHADER);
+		m_ShadowShader = std::make_unique<Shader>(SHADOW_SHADER);
+		m_DepthCubemapShader = std::make_unique<Shader>(DEPTH_CUBEMAP_SHADER);
 	}
 
 	TestShadowMap::~TestShadowMap()
@@ -54,6 +64,14 @@ namespace test {
 
 		m_DepthShader->SetUniformMat4f("u_Model", m_Cube->GetModelMatrix());
 		m_Cube->Draw(*m_DepthShader);
+		unsigned int depthTex = m_DepthFBO->GetTextureDepthBuffer();
+
+		GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
+		m_DepthCubemapShader->Bind();
+
+		m_Plane->Draw(*m_DepthCubemapShader);
+
+		m_Cube->Draw(*m_DepthCubemapShader);
 
 		m_DepthFBO->Unbind();
 		GLCALL(glViewport(0, 0, 1200, 900));
@@ -73,7 +91,6 @@ namespace test {
 		m_ShadowShader->SetUniformMat4f("u_Model", m_Plane->GetModelMatrix());
 		m_ShadowShader->SetUniformMat4f("u_MVP", MATRIX_VP * m_Plane->GetModelMatrix());
 		m_Plane->BindImage(0);
-		unsigned int depthTex = m_DepthFBO->GetTextureDepthBuffer();
 		m_Plane->Bind(depthTex, 1);
 		m_Plane->Draw(*m_ShadowShader);
 

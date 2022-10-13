@@ -18,12 +18,16 @@ namespace test {
 
 	private:
 		std::unique_ptr<FrameBuffer> m_DepthFBO;
-		std::shared_ptr<Shader> m_DepthShader;
-		std::shared_ptr<Shader> m_ShadowShader;
+		std::unique_ptr<Shader> m_DepthShader;
+		std::unique_ptr<Shader> m_DepthCubemapShader;
+		std::unique_ptr<Shader> m_ShadowShader;
 		std::unique_ptr<Plane> m_Plane;
 		std::unique_ptr<Cube> m_Cube;
 		DirLight m_DirLight;
 		glm::mat4 m_DirLightProj;
+		PointLight m_PointLight;
+		glm::mat4 m_PointLightProj;
+		std::vector<glm::mat4> m_ShadowTransforms;
 		bool m_ShadowOn;
 	};
 }
