@@ -80,7 +80,7 @@ Skybox::Skybox()
 
 	m_IBO = std::make_unique<IndexBuffer>(indice, MaxIndexCount);
 	m_Shader = std::make_unique<Shader>(DEFAULT_CUBEMAP_SHADER);
-	m_CubeMap = std::make_unique<CubeMap>(paths);
+	m_CubeMap = std::make_unique<CubeMap>(GL_RGB, paths);
 	BindTexture(0);
 }
 
