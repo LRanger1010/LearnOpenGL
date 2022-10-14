@@ -12,31 +12,33 @@ void main()
 #version 330 core
 layout(triangles) in;
 layout(triangles_strip, max_vertices = 18) out;
-in vec3 v_normal[];
-uniform mat4 u_Projection;
-const float MAGNITUDE = 0.4;
-
-void GenerateLine(int index)
-{
-	gl_Position = u_Projection * gl_in[index].gl_Position;
-	EmitVertex();
-	gl_Position = u_Projection * (gl_in[index].gl_Position + vec4(v_normal[index], 0.0) * MAGNITUDE);
-	EmitVertex();
-	EndPrimitive();
-};
+uniform mat4 lightMatrix[6];
+out vec4 v_worldPos;
 
 void main()
 {
-	GenerateLine(0);
-	GenerateLine(1);
-	GenerateLine(2);
+	for (int face = 0; face < 6; face++)
+	{
+		gl_Layer = face;
+		for (int i = 0; i < 3; i++)
+		{
+			v_worldPos = gl_in[i].gl_Position;
+			gl_Position = lightMatrix[face] * v_worldPos;
+			EmitVertex();
+		}
+		EndPrimitive();
+	}
 };
 
 #shader fragment
 #version 330 core
-
+in vec4 v_worldPos;
+uniform vec3 lightPos;
+uniform float farPlane;
 
 void main()
 {
-	
+	float distance = length(lightPos - v_worldPos.xyz);
+	distance = distance / farPlane;
+	gl_FragDepth = distance;
 };
