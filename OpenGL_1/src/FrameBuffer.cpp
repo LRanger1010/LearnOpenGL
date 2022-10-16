@@ -35,6 +35,18 @@ void FrameBuffer::Unbind(GLenum target/*= GL_FRAMEBUFFER*/) const
 	GLCALL(glBindFramebuffer(target, 0));
 }
 
+void FrameBuffer::CreateTextureDepth()
+{
+	GLCALL(glGenTextures(1, &m_TextureDepthBuffer));
+	GLCALL(glBindTexture(GL_TEXTURE_2D, m_TextureDepthBuffer));
+	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_Width, m_Height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, nullptr));
+	GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
+}
+
 void FrameBuffer::AttachTextureColor(unsigned int slot)
 {
 	GLCALL(glGenTextures(1, &m_TextureColorBuffer));
@@ -59,14 +71,6 @@ void FrameBuffer::AttachMultiSampleTextureColor(unsigned int slot, unsigned int 
 
 void FrameBuffer::AttachTextureDepth()
 {
-	GLCALL(glGenTextures(1, &m_TextureDepthBuffer));
-	GLCALL(glBindTexture(GL_TEXTURE_2D, m_TextureDepthBuffer));
-	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_Width, m_Height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, nullptr));
-	GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
 	GLCALL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_TextureDepthBuffer, 0));
 }
 

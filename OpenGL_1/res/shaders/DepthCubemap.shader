@@ -11,7 +11,7 @@ void main()
 #shader geometry
 #version 330 core
 layout(triangles) in;
-layout(triangles_strip, max_vertices = 18) out;
+layout(triangle_strip, max_vertices = 18) out;
 uniform mat4 lightMatrix[6];
 out vec4 v_worldPos;
 

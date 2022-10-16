@@ -28,6 +28,7 @@ in vec2 v_texCoords;
 in vec4 v_lightSpacePos;
 uniform vec3 u_ViewPos;
 uniform bool u_ShadowCast;
+uniform float farPlane;
 
 struct DirLight
 {
@@ -38,15 +39,28 @@ struct DirLight
 };
 uniform DirLight dirLight;
 
+struct PointLight
+{
+	vec3 pos;
+	float constant;
+	float linear;
+	float quadratic;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
+uniform PointLight pointLight;
+
 struct Material
 {
 	sampler2D diffuse;
 	sampler2D shadowMap;
+	sampler2D shadowCubemap;
 	float shininess;
 };
 uniform Material material;
 
-float generateShadow(vec3 lightDir, vec3 norm)
+float generateDirLightShadow(vec3 lightDir, vec3 norm)
 {
 	vec3 projCoords = v_lightSpacePos.xyz / v_lightSpacePos.w;
 	projCoords = projCoords * 0.5 + 0.5;
@@ -64,26 +78,66 @@ float generateShadow(vec3 lightDir, vec3 norm)
 	}
 	shadow /= 9.0;
 
-	
+
 	return shadow;
-}
+};
+
+float generatePointLightShadow(vec3 worldPos, vec3 lightPos, vec3 norm)
+{
+	vec3 lightDir = worldPos - lightPos;
+	float sampleDepth = texture(material.shadowCubemap, lightDir).r;
+	float curDepth = length(lightDir) / farPlane;
+	float bias = max(0.05 * (1.0 - dot(normalize(-lightDir), norm)), 0.005);
+	float shadow = curDepth - bias > sampleDepth ? 1.0 : 0.0;
+	return shadow;
+};
+
+vec3 calcDirLightCol(DirLight light, vec3 norm, vec3 viewDir, vec3 materialColor)
+{
+	vec3 ambient = light.ambient * materialColor;
+
+	vec3 lightDir = normalize(-light.dir);
+	float diff = max(dot(lightDir, norm), 0);
+	vec3 diffuse = diff * light.diffuse * materialColor;
+
+	vec3 halfDir = normalize(lightDir + viewDir);
+	float spec = pow(max(dot(halfDir, norm), 0), material.shininess);
+	vec3 specular = spec * light.specular * materialColor;
+
+	float shadow = u_ShadowCast ? generateDirLightShadow(lightDir, norm) : 0.0;
+	vec3 fragColor = ambient + (1.0 - shadow) * (diffuse + specular);
+	return fragColor;
+};
+
+vec3 calcPointLightCol(PointLight light, vec3 norm, vec3 worldPos, vec3 viewDir, vec3 materialColor)
+{
+	vec3 ambient = light.ambient * materialColor;
+
+	vec3 lightDir = normalize(light.pos - worldPos);
+	float diff = max(dot(lightDir, norm), 0);
+	vec3 diffuse = diff * light.diffuse * materialColor;
+
+	vec3 halfDir = normalize(lightDir + viewDir);
+	float spec = pow(max(dot(halfDir, norm), 0), material.shininess);
+	vec3 specular = spec * light.specular * materialColor;
+
+	float distance = length(light.pos - worldPos);
+	float atten = 1.0 / (light.constant + light.linear * distance + light.quadratic * distance * distance);
+	ambient *= atten;
+	diffuse *= atten;
+	specular *= atten;
+
+	float shadow = u_ShadowCast ? generatePointLightShadow(worldPos, light.pos, norm) : 0.0;
+	vec3 fragColor = ambient + (1.0 - shadow) * (diffuse + specular);
+	return fragColor;
+};
 
 void main()
 {
 	vec3 materialColor = vec3(texture(material.diffuse, v_texCoords));
-	vec3 ambient = dirLight.ambient * materialColor;
-
-	vec3 lightDir = normalize(-dirLight.dir);
 	vec3 norm = normalize(v_normal);
-	float diff = max(dot(lightDir, norm), 0);
-	vec3 diffuse = diff * dirLight.diffuse * materialColor;
-
 	vec3 viewDir = normalize(u_ViewPos - v_worldPos);
-	vec3 halfDir = normalize(lightDir + viewDir);
-	float spec = pow(max(dot(halfDir, norm), 0), material.shininess);
-	vec3 specular = spec * dirLight.specular * materialColor;
-
-	float shadow = u_ShadowCast ? generateShadow(lightDir, norm) : 0.0;
-	vec3 fragColor = ambient + (1.0 - shadow) * (diffuse + specular);
+	vec3 fragColor = calcDirLightCol(dirLight, norm, viewDir, materialColor);
+	fragColor += calcPointLightCol(pointLight, norm, v_worldPos, viewDir, materialColor);
 	color = vec4(fragColor, 1.0);
 };

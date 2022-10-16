@@ -15,6 +15,7 @@ public:
 	inline unsigned int GetID() const { return m_RenderID; }
 	void Bind(GLenum target = GL_FRAMEBUFFER) const;
 	void Unbind(GLenum target = GL_FRAMEBUFFER) const;
+	void CreateTextureDepth();
 	void AttachTextureColor(unsigned int slot);
 	void AttachMultiSampleTextureColor(unsigned int slot, unsigned int samples);
 	void AttachTextureDepth();

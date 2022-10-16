@@ -3,6 +3,7 @@
 #include "FrameBuffer.h"
 #include "geometry/Plane.h"
 #include "geometry/Cube.h"
+#include "CubeMap.h"
 #include "Light.h"
 
 namespace test {
@@ -23,11 +24,13 @@ namespace test {
 		std::unique_ptr<Shader> m_ShadowShader;
 		std::unique_ptr<Plane> m_Plane;
 		std::unique_ptr<Cube> m_Cube;
+		std::unique_ptr<CubeMap> m_DepthCubemap;
 		DirLight m_DirLight;
 		glm::mat4 m_DirLightProj;
 		PointLight m_PointLight;
 		glm::mat4 m_PointLightProj;
 		std::vector<glm::mat4> m_ShadowTransforms;
 		bool m_ShadowOn;
+		float m_FarPlane;
 	};
 }
