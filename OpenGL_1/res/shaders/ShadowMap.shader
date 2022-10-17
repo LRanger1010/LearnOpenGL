@@ -28,7 +28,7 @@ in vec2 v_texCoords;
 in vec4 v_lightSpacePos;
 uniform vec3 u_ViewPos;
 uniform bool u_ShadowCast;
-uniform float farPlane;
+uniform float u_FarPlane;
 
 struct DirLight
 {
@@ -55,7 +55,7 @@ struct Material
 {
 	sampler2D diffuse;
 	sampler2D shadowMap;
-	sampler2D shadowCubemap;
+	samplerCube shadowCubemap;
 	float shininess;
 };
 uniform Material material;
@@ -86,7 +86,7 @@ float generatePointLightShadow(vec3 worldPos, vec3 lightPos, vec3 norm)
 {
 	vec3 lightDir = worldPos - lightPos;
 	float sampleDepth = texture(material.shadowCubemap, lightDir).r;
-	float curDepth = length(lightDir) / farPlane;
+	float curDepth = length(lightDir) / u_FarPlane;
 	float bias = max(0.05 * (1.0 - dot(normalize(-lightDir), norm)), 0.005);
 	float shadow = curDepth - bias > sampleDepth ? 1.0 : 0.0;
 	return shadow;

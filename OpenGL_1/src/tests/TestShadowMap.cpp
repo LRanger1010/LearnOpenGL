@@ -73,10 +73,10 @@ namespace test {
 		m_DepthCubemapShader->Bind();
 		for (unsigned int i = 0; i < 6; i++)
 		{
-			m_DepthCubemapShader->SetUniformMat4f("lightMatrix[" + std::to_string(i) + "]", m_ShadowTransforms[i]);
+			m_DepthCubemapShader->SetUniformMat4f("u_LightMatrix[" + std::to_string(i) + "]", m_ShadowTransforms[i]);
 		}
-		m_DepthCubemapShader->SetUniform3fv("lightPos", m_PointLight.position);
-		m_DepthCubemapShader->SetUniform1f("farPlane", m_FarPlane);
+		m_DepthCubemapShader->SetUniform3fv("u_LightPos", m_PointLight.position);
+		m_DepthCubemapShader->SetUniform1f("u_FarPlane", m_FarPlane);
 		m_DepthCubemapShader->SetUniformMat4f("u_Model", m_Plane->GetModelMatrix());
 		m_Plane->Draw(*m_DepthCubemapShader);
 		m_DepthCubemapShader->SetUniformMat4f("u_Model", m_Cube->GetModelMatrix());
@@ -104,26 +104,27 @@ namespace test {
 		m_ShadowShader->SetUniform1i("material.shadowMap", 1);
 		m_ShadowShader->SetUniform1i("material.shadowCubemap", 2);
 		m_ShadowShader->SetUniform1f("material.shininess", 32.0f);
-		m_ShadowShader->SetUniform1f("farPlane", m_FarPlane);
+		m_ShadowShader->SetUniform1f("u_FarPlane", m_FarPlane);
 
 		m_ShadowShader->SetUniformMat4f("u_Model", m_Plane->GetModelMatrix());
 		m_ShadowShader->SetUniformMat4f("u_MVP", MATRIX_VP * m_Plane->GetModelMatrix());
 		m_Plane->BindImage(0);
 		m_Plane->Bind(depthTex, 1);
-		m_Plane->Bind(cubemapDepthTex, 2);
+		m_Plane->BindTexture(GL_TEXTURE_CUBE_MAP, cubemapDepthTex, 2);
 		m_Plane->Draw(*m_ShadowShader);
 
 		m_ShadowShader->SetUniformMat4f("u_Model", m_Cube->GetModelMatrix());
 		m_ShadowShader->SetUniformMat4f("u_MVP", MATRIX_VP * m_Cube->GetModelMatrix());
 		m_Cube->BindImage(0);
 		m_Cube->Bind(depthTex, 1);
-		m_Cube->Bind(cubemapDepthTex, 2);
+		m_Cube->BindTexture(GL_TEXTURE_CUBE_MAP, cubemapDepthTex, 2);
 		m_Cube->Draw(*m_ShadowShader);
 	}
 
 	void TestShadowMap::OnGUI()
 	{
 		ImGui::Checkbox("Shadow Cast", &m_ShadowOn);
+		ImGui::SliderFloat3("pointLight position", &m_PointLight.position.x, -20.0f, 20.0f);
 	}
 
 }
