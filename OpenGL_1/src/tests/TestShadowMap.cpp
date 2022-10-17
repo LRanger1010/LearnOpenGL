@@ -10,6 +10,15 @@ namespace test {
 	static const std::string DEPTH_SHADER = "DepthMap";
 	static const std::string DEPTH_CUBEMAP_SHADER = "DepthCubemap";
 
+	static const glm::vec3 offsets[] = {
+		glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f),
+		glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f),
+		glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f),
+		glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f),
+		glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f),
+	};
+
 	TestShadowMap::TestShadowMap()
 		:m_ShadowOn(false), m_FarPlane(25.0f)
 	{
@@ -29,12 +38,10 @@ namespace test {
 
 		m_PointLight.position = glm::vec3(0.0f);
 		m_PointLightProj = glm::perspective(glm::radians(90.0f), 1200.0f / 900.0f, 1.0f, m_FarPlane);
-		m_ShadowTransforms.emplace_back(m_PointLightProj * glm::lookAt(m_PointLight.position, m_PointLight.position + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
-		m_ShadowTransforms.emplace_back(m_PointLightProj * glm::lookAt(m_PointLight.position, m_PointLight.position + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
-		m_ShadowTransforms.emplace_back(m_PointLightProj * glm::lookAt(m_PointLight.position, m_PointLight.position + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
-		m_ShadowTransforms.emplace_back(m_PointLightProj * glm::lookAt(m_PointLight.position, m_PointLight.position + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f)));
-		m_ShadowTransforms.emplace_back(m_PointLightProj * glm::lookAt(m_PointLight.position, m_PointLight.position + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
-		m_ShadowTransforms.emplace_back(m_PointLightProj * glm::lookAt(m_PointLight.position, m_PointLight.position + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+		for (unsigned int i = 0; i < 6; i++)
+		{
+			m_ShadowTransforms.emplace_back(m_PointLightProj * glm::lookAt(m_PointLight.position, m_PointLight.position + offsets[2 * i], offsets[2 * i + 1]));
+		}
 
 		m_DepthShader = std::make_unique<Shader>(DEPTH_SHADER);
 		m_ShadowShader = std::make_unique<Shader>(SHADOW_SHADER);
@@ -50,6 +57,10 @@ namespace test {
 	{
 		m_Plane->Update();
 		m_Cube->Update();
+		for (unsigned int i = 0; i < 6; i++)
+		{
+			m_ShadowTransforms[i] = m_PointLightProj * glm::lookAt(m_PointLight.position, m_PointLight.position + offsets[2 * i], offsets[2 * i + 1]);
+		}
 	}
 
 	void TestShadowMap::OnRender()
