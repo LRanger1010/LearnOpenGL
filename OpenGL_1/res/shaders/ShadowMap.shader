@@ -29,6 +29,13 @@ in vec4 v_lightSpacePos;
 uniform vec3 u_ViewPos;
 uniform bool u_ShadowCast;
 uniform float u_FarPlane;
+vec3 sampleDirections[20] = vec3[](
+	vec3(1, 1, 1), vec3(1, -1, 1), vec3(-1, -1, 1), vec3(-1, 1, 1),
+	vec3(1, 1, -1), vec3(1, -1, -1), vec3(-1, -1, -1), vec3(-1, 1, -1),
+	vec3(1, 1, 0), vec3(1, -1, 0), vec3(-1, -1, 0), vec3(-1, 1, 0),
+	vec3(1, 0, 1), vec3(-1, 0, 1), vec3(1, 0, -1), vec3(-1, 0, -1),
+	vec3(0, 1, 1), vec3(0, -1, 1), vec3(0, -1, -1), vec3(0, 1, -1)
+);
 
 struct DirLight
 {
@@ -85,10 +92,17 @@ float generateDirLightShadow(vec3 lightDir, vec3 norm)
 float generatePointLightShadow(vec3 worldPos, vec3 lightPos, vec3 norm)
 {
 	vec3 lightDir = worldPos - lightPos;
-	float sampleDepth = texture(material.shadowCubemap, lightDir).r;
+	float radius = (1.0 + length(u_ViewPos - worldPos) / u_FarPlane) / 25.0;
+	float shadow = 0.0;
 	float curDepth = length(lightDir) / u_FarPlane;
 	float bias = max(0.05 * (1.0 - dot(normalize(-lightDir), norm)), 0.005);
-	float shadow = curDepth - bias > sampleDepth ? 1.0 : 0.0;
+	int sampleNum = 20;
+	for (int i = 0; i < sampleNum; i++)
+	{
+		float sampleDepth = texture(material.shadowCubemap, lightDir + sampleDirections[i] * radius).r;
+		shadow += curDepth - bias > sampleDepth ? 1.0 : 0.0;
+	}
+	shadow /= float(sampleNum);
 	return shadow;
 };
 
