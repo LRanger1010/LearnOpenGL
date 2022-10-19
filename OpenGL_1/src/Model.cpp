@@ -93,9 +93,23 @@ std::unique_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 			texCoord.x = 0.0f;
 			texCoord.y = 0.0f;
 		}
+		glm::vec3 tangent;
+		if (mesh->HasTangentsAndBitangents())
+		{
+			tangent.x = mesh->mTangents[i].x;
+			tangent.y = mesh->mTangents[i].y;
+			tangent.z = mesh->mTangents[i].z;
+		}
+		else
+		{
+			tangent.x = 0.0f;
+			tangent.y = 0.0f;
+			tangent.z = 0.0f;
+		}
 		vertex.Position = pos;
 		vertex.Normal = norm;
 		vertex.TexCoord = texCoord;
+		vertex.Tangent = tangent;
 		vertices.push_back(vertex);
 	}
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++)

@@ -3,27 +3,39 @@
 layout(location = 0) in vec4 position;
 layout(location = 1) in vec3 aNormal;
 layout(location = 2) in vec2 aTexCoords;
-out vec3 v_normal;
+layout(location = 3) in vec3 aTangent;
 out vec3 v_worldPos;
 out vec2 v_texCoords;
+out vec3 v_tangentLightPos;
+out vec3 v_tangentViewPos;
+out vec3 v_tangentFragPos;
 uniform mat4 u_Model;
 uniform mat4 u_NormalMatrix;
 uniform mat4 u_MVP;
+uniform vec3 u_LightPos;
+uniform vec3 u_ViewPos;
 void main()
 {
 	gl_Position = u_MVP * position;
 	v_worldPos = vec3(u_Model * position);
-	v_normal = mat3(u_NormalMatrix) * aNormal;
 	v_texCoords = aTexCoords;
+	vec3 T = normalize(mat3(u_NormalMatrix) * aTangent);
+	vec3 N = normalize(mat3(u_NormalMatrix) * aNormal);
+	vec3 B = normalize(cross(N, T));
+	mat3 TBN = transpose(mat3(T, B, N));
+	v_tangentLightPos = TBN * u_LightPos;
+	v_tangentViewPos = TBN * u_ViewPos;
+	v_tangentFragPos = TBN * v_worldPos;
 };
 
 #shader fragment
 #version 330 core
 layout(location = 0) out vec4 color;
-in vec3 v_normal;
 in vec3 v_worldPos;
 in vec2 v_texCoords;
-uniform vec3 viewPos;
+in vec3 v_tangentLightPos;
+in vec3 v_tangentViewPos;
+in vec3 v_tangentFragPos;
 
 struct DirLight
 {
@@ -87,9 +99,8 @@ vec3 calcSpotLightCol(SpotLight light, vec3 norm, vec3 worldPos, vec3 viewDir);
 
 void main()
 {
-	//vec3 norm = normalize(v_normal);
 	vec3 norm = normalize(vec3(texture(material.normal0, v_texCoords)) * 2.0 - 1.0);
-	vec3 viewDir = normalize(viewPos - v_worldPos);
+	vec3 viewDir = normalize(v_tangentViewPos - v_tangentFragPos);
 	vec3 fragColor = calcDirLightCol(dirLight, norm, viewDir);
 	for (int i = 0; i < pointLightCount; i++)
 	{

@@ -51,6 +51,8 @@ void Mesh::SetMesh()
 	glEnableVertexAttribArray(m_AttribPointer);
 	glVertexAttribPointer(m_AttribPointer++, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexCoord));
 
+	glEnableVertexAttribArray(m_AttribPointer);
+	glVertexAttribPointer(m_AttribPointer++, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Tangent));
 }
 
 void Mesh::BindTextures(Shader& shader)
