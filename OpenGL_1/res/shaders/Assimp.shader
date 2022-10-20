@@ -4,39 +4,6 @@ layout(location = 0) in vec4 position;
 layout(location = 1) in vec3 aNormal;
 layout(location = 2) in vec2 aTexCoords;
 layout(location = 3) in vec3 aTangent;
-out vec3 v_worldPos;
-out vec2 v_texCoords;
-out vec3 v_tangentLightPos;
-out vec3 v_tangentViewPos;
-out vec3 v_tangentFragPos;
-uniform mat4 u_Model;
-uniform mat4 u_NormalMatrix;
-uniform mat4 u_MVP;
-uniform vec3 u_LightPos;
-uniform vec3 u_ViewPos;
-void main()
-{
-	gl_Position = u_MVP * position;
-	v_worldPos = vec3(u_Model * position);
-	v_texCoords = aTexCoords;
-	vec3 T = normalize(mat3(u_NormalMatrix) * aTangent);
-	vec3 N = normalize(mat3(u_NormalMatrix) * aNormal);
-	vec3 B = normalize(cross(N, T));
-	mat3 TBN = transpose(mat3(T, B, N));
-	v_tangentLightPos = TBN * u_LightPos;
-	v_tangentViewPos = TBN * u_ViewPos;
-	v_tangentFragPos = TBN * v_worldPos;
-};
-
-#shader fragment
-#version 330 core
-layout(location = 0) out vec4 color;
-in vec3 v_worldPos;
-in vec2 v_texCoords;
-in vec3 v_tangentLightPos;
-in vec3 v_tangentViewPos;
-in vec3 v_tangentFragPos;
-
 struct DirLight
 {
 	vec3 dir;
@@ -44,8 +11,6 @@ struct DirLight
 	vec3 diffuse;
 	vec3 specular;
 };
-uniform DirLight dirLight;
-
 struct PointLight
 {
 	vec3 pos;
@@ -56,9 +21,6 @@ struct PointLight
 	vec3 diffuse;
 	vec3 specular;
 };
-#define pointLightCount 2
-uniform PointLight pointLights[pointLightCount];
-
 struct SpotLight
 {
 	vec3 pos;
@@ -69,7 +31,53 @@ struct SpotLight
 	vec3 diffuse;
 	vec3 specular;
 };
-uniform SpotLight spotLight;
+#define pointLightCount 2
+out vec3 v_worldPos;
+out vec2 v_texCoords;
+out DirLight v_tangentDirLight;
+out PointLight v_tangentPointLights[pointLightCount];
+out SpotLight v_tangentSpotLight;
+out vec3 v_tangentViewPos;
+out vec3 v_tangentFragPos;
+uniform mat4 u_Model;
+uniform mat4 u_NormalMatrix;
+uniform mat4 u_MVP;
+uniform vec3 u_ViewPos;
+uniform DirLight u_DirLight;
+uniform PointLight u_PointLights[pointLightCount];
+uniform SpotLight u_SpotLight;
+
+void main()
+{
+	gl_Position = u_MVP * position;
+	v_worldPos = vec3(u_Model * position);
+	v_texCoords = aTexCoords;
+	vec3 T = normalize(mat3(u_NormalMatrix) * aTangent);
+	vec3 N = normalize(mat3(u_NormalMatrix) * aNormal);
+	vec3 B = normalize(cross(N, T));
+	mat3 inverseTBN = transpose(mat3(T, B, N));
+	v_tangentViewPos = inverseTBN * u_ViewPos;
+	v_tangentFragPos = inverseTBN * v_worldPos;
+	v_tangentDirLight = u_DirLight;
+	v_tangentDirLight.dir = inverseTBN * u_DirLight.dir;
+	for (int i = 0; i < pointLightCount; i++)
+	{
+		v_tangentPointLights[i] = u_PointLights[i];
+		v_tangentPointLights[i].pos = inverseTBN * u_PointLights[i].pos;
+	}
+	v_tangentSpotLight = u_SpotLight;
+	v_tangentSpotLight.pos = inverseTBN * u_SpotLight.pos;
+	v_tangentSpotLight.dir = inverseTBN * u_SpotLight.dir;
+};
+
+#shader fragment
+#version 330 core
+layout(location = 0) out vec4 color;
+in vec3 v_worldPos;
+in vec2 v_texCoords;
+in vec3 v_tangentLightPos;
+in vec3 v_tangentViewPos;
+in vec3 v_tangentFragPos;
 
 struct Material
 {
