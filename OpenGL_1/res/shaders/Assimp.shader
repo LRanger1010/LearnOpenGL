@@ -73,6 +73,34 @@ void main()
 #shader fragment
 #version 330 core
 layout(location = 0) out vec4 color;
+struct DirLight
+{
+	vec3 dir;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
+struct PointLight
+{
+	vec3 pos;
+	float constant;
+	float linear;
+	float quadratic;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
+struct SpotLight
+{
+	vec3 pos;
+	vec3 dir;
+	float cutOff;
+	float outterCutOff;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
+#define pointLightCount 2
 in vec3 v_worldPos;
 in vec2 v_texCoords;
 in DirLight v_tangentDirLight;
