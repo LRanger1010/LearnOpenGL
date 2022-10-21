@@ -54,6 +54,7 @@ void main()
 	v_texCoords = aTexCoords;
 	vec3 T = normalize(mat3(u_NormalMatrix) * aTangent);
 	vec3 N = normalize(mat3(u_NormalMatrix) * aNormal);
+	T = normalize(T - dot(T, N) * N);
 	vec3 B = normalize(cross(N, T));
 	mat3 inverseTBN = transpose(mat3(T, B, N));
 	v_tangentViewPos = inverseTBN * u_ViewPos;
