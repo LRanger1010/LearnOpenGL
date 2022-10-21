@@ -75,7 +75,9 @@ void main()
 layout(location = 0) out vec4 color;
 in vec3 v_worldPos;
 in vec2 v_texCoords;
-in vec3 v_tangentLightPos;
+in DirLight v_tangentDirLight;
+in PointLight v_tangentPointLights[pointLightCount];
+in SpotLight v_tangentSpotLight;
 in vec3 v_tangentViewPos;
 in vec3 v_tangentFragPos;
 
@@ -102,19 +104,19 @@ struct Material
 uniform Material material;
 
 vec3 calcDirLightCol(DirLight light, vec3 norm, vec3 viewDir);
-vec3 calcPointLightCol(PointLight light, vec3 norm, vec3 worldPos, vec3 viewDir);
-vec3 calcSpotLightCol(SpotLight light, vec3 norm, vec3 worldPos, vec3 viewDir);
+vec3 calcPointLightCol(PointLight light, vec3 norm, vec3 tangentFragPos, vec3 viewDir);
+vec3 calcSpotLightCol(SpotLight light, vec3 norm, vec3 tangentFragPos, vec3 viewDir);
 
 void main()
 {
 	vec3 norm = normalize(vec3(texture(material.normal0, v_texCoords)) * 2.0 - 1.0);
 	vec3 viewDir = normalize(v_tangentViewPos - v_tangentFragPos);
-	vec3 fragColor = calcDirLightCol(dirLight, norm, viewDir);
+	vec3 fragColor = calcDirLightCol(v_tangentDirLight, norm, viewDir);
 	for (int i = 0; i < pointLightCount; i++)
 	{
-		fragColor += calcPointLightCol(pointLights[i], norm, v_worldPos, viewDir);
+		fragColor += calcPointLightCol(v_tangentPointLights[i], norm, v_tangentFragPos, viewDir);
 	}
-	fragColor += calcSpotLightCol(spotLight, norm, v_worldPos, viewDir);
+	fragColor += calcSpotLightCol(v_tangentSpotLight, norm, v_tangentFragPos, viewDir);
 
 	color = vec4(fragColor, 1.0);
 };
@@ -134,10 +136,10 @@ vec3 calcDirLightCol(DirLight light, vec3 norm, vec3 viewDir)
 	return fragColor;
 }
 
-vec3 calcPointLightCol(PointLight light, vec3 norm, vec3 worldPos, vec3 viewDir)
+vec3 calcPointLightCol(PointLight light, vec3 norm, vec3 tangentFragPos, vec3 viewDir)
 {
 	vec3 ambient = light.ambient * vec3(texture(material.diffuse0, v_texCoords)) * material.ambient;
-	vec3 lightDir = normalize(light.pos - worldPos);
+	vec3 lightDir = normalize(light.pos - tangentFragPos);
 	float diff = max(dot(lightDir, norm), 0);
 	vec3 diffuse = diff * light.diffuse * vec3(texture(material.diffuse0, v_texCoords)) * material.diffuse;
 
@@ -145,7 +147,7 @@ vec3 calcPointLightCol(PointLight light, vec3 norm, vec3 worldPos, vec3 viewDir)
 	float spec = pow(max(dot(reflectDir, viewDir), 0), material.shininess);
 	vec3 specular = spec * light.specular * vec3(texture(material.specular0, v_texCoords)) * material.specular;
 
-	float distance = length(light.pos - worldPos);
+	float distance = length(light.pos - tangentFragPos);
 	float atten = 1.0 / (light.constant + light.linear * distance + light.quadratic * distance * distance);
 	ambient *= atten;
 	diffuse *= atten;
@@ -155,10 +157,10 @@ vec3 calcPointLightCol(PointLight light, vec3 norm, vec3 worldPos, vec3 viewDir)
 	return fragColor;
 }
 
-vec3 calcSpotLightCol(SpotLight light, vec3 norm, vec3 worldPos, vec3 viewDir)
+vec3 calcSpotLightCol(SpotLight light, vec3 norm, vec3 tangentFragPos, vec3 viewDir)
 {
 	vec3 ambient = light.ambient * vec3(texture(material.diffuse0, v_texCoords)) * material.ambient;
-	vec3 lightDir = normalize(light.pos - worldPos);
+	vec3 lightDir = normalize(light.pos - tangentFragPos);
 	float diff = max(dot(lightDir, norm), 0);
 	vec3 diffuse = diff * light.diffuse * vec3(texture(material.diffuse0, v_texCoords)) * material.diffuse;
 
