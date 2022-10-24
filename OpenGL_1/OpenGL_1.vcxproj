@@ -187,6 +187,7 @@
     <ClCompile Include="src\tests\TestMenu.cpp" />
     <ClCompile Include="src\tests\TestModel.cpp" />
     <ClCompile Include="src\tests\TestMultiLights.cpp" />
+    <ClCompile Include="src\tests\TestParallaxMapping.cpp" />
     <ClCompile Include="src\tests\TestShadowMap.cpp" />
     <ClCompile Include="src\tests\TestSkybox.cpp" />
     <ClCompile Include="src\tests\TestTexture2D.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="src\tests\TestMenu.h" />
     <ClInclude Include="src\tests\TestModel.h" />
     <ClInclude Include="src\tests\TestMultiLights.h" />
+    <ClInclude Include="src\tests\TestParallaxMapping.h" />
     <ClInclude Include="src\tests\TestShadowMap.h" />
     <ClInclude Include="src\tests\TestSkybox.h" />
     <ClInclude Include="src\tests\TestTexture2D.h" />
@@ -734,6 +736,9 @@
     <Image Include="res\model\nanosuit\leg_showroom_spec.png" />
     <Image Include="res\model\planet\planet_Quom1200.png" />
     <Image Include="res\model\rock\Rock-Texture-Surface.jpg" />
+    <Image Include="res\textures\bricks2.jpg" />
+    <Image Include="res\textures\bricks2_disp.jpg" />
+    <Image Include="res\textures\bricks2_normal.jpg" />
     <Image Include="res\textures\cherno.jpg" />
     <Image Include="res\textures\container2.png" />
     <Image Include="res\textures\container2_specular.png" />

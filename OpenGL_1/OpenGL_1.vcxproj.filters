@@ -135,6 +135,9 @@
     <ClCompile Include="src\postProcess\ScreenMask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\TestParallaxMapping.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\VertexBuffer.h">
@@ -1121,6 +1124,9 @@
     <ClInclude Include="src\geometry\Geometry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\tests\TestParallaxMapping.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\basic.shader" />
@@ -1647,6 +1653,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\textures\wood.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\bricks2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\bricks2_disp.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\bricks2_normal.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
