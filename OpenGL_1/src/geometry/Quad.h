@@ -9,6 +9,7 @@ public:
 
 	void Update() override;
 	void Draw(Shader& shader) override;
+	void SetMesh() override;
 
 private:
 	
