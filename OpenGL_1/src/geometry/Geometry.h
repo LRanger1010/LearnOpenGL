@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "Renderer.h"
 #include "Mesh.h"
+#include "Image.h"
 
 class Geometry
 {

@@ -14,6 +14,8 @@ unsigned int indice[] = {
 	2, 3, 0,
 };
 
+#define DEFAULT_QUAD_TEXTURE_PATH "res/textures/wood.png"
+
 Quad::Quad()
 {
 	/*m_VBO = std::make_unique<VertexBuffer>(vertices, sizeof(vertices));
@@ -126,6 +128,12 @@ void Quad::SetMesh()
 	{
 		indices.emplace_back(indice[i]);
 	}
+
+	Image img(DEFAULT_QUAD_TEXTURE_PATH);
+	Texture texture;
+	texture.id = img.GetRenderID();
+	texture.type = "diffuse";
+	textures.emplace_back(texture);
 
 	Mesh mesh(vertices, indices, textures, matAmbient, matDiffuse, matSpecular);
 	m_Meshes.emplace_back(mesh);

@@ -12,6 +12,7 @@ public:
 	void Unbind() const;
 	inline int GetWith() const { return m_Width; }
 	inline int GetHeight() const { return m_Height; }
+	inline unsigned int GetRenderID() const { return m_RenderID; }
 
 private:
 	unsigned int m_RenderID;
