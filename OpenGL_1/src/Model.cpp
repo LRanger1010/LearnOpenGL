@@ -10,7 +10,10 @@ void Model::Draw(Shader& shader)
 {
 	for (unsigned int i = 0; i < m_Meshes.size(); i++)
 	{
-		m_Meshes[i]->Draw(shader);
+		m_Materials[i].SetShader(shader);
+		m_Materials[i].BindTexture();
+		//m_Meshes[i]->Draw(shader);
+		m_Renderer->Draw(*m_Meshes[i], m_Materials[i]);
 	}
 }
 
@@ -18,7 +21,10 @@ void Model::DrawInstanced(Shader& shader, unsigned int instanceCount)
 {
 	for (unsigned int i = 0; i < m_Meshes.size(); i++)
 	{
-		m_Meshes[i]->DrawInstanced(shader, instanceCount);
+		m_Materials[i].SetShader(shader);
+		m_Materials[i].BindTexture();
+		//m_Meshes[i]->DrawInstanced(shader, instanceCount);
+		m_Renderer->DrawInstanced(*m_Meshes[i], m_Materials[i], instanceCount);
 	}
 }
 
@@ -62,6 +68,7 @@ std::unique_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
+	Material material;
 	glm::vec3 matAmbient(0.0f);
 	glm::vec3 matDiffuse(0.0f);
 	glm::vec3 matSpecular(0.0f);
@@ -146,8 +153,12 @@ std::unique_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 		matSpecular.x = materialSpecular.r;
 		matSpecular.y = materialSpecular.g;
 		matSpecular.z = materialSpecular.b;
+
+		material.SetMaterialData(matAmbient, matDiffuse, matSpecular);
+		material.SetTexture(textures);
 	}
-	return std::make_unique<Mesh>(vertices, indices, textures, matAmbient, matDiffuse, matSpecular);
+	m_Materials.push_back(material);
+	return std::make_unique<Mesh>(vertices, indices);
 }
 
 std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)

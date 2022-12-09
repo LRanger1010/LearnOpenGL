@@ -1,7 +1,7 @@
 #pragma once
 #include "Test.h"
 #include "Renderer.h"
-#include "Material.h"
+#include "material/MaterialData.h"
 #include "Light.h"
 #include "Image.h"
 
@@ -26,7 +26,7 @@ namespace test
 		std::unique_ptr<Image> m_MainTex;
 		std::unique_ptr<Image> m_specTex;
 		glm::mat4 m_MVP;
-		Material m_Material;
+		MaterialData m_Material;
 		DirLight m_DirLight;
 		PointLight m_PointLights[2];
 		SpotLight m_SpotLight;

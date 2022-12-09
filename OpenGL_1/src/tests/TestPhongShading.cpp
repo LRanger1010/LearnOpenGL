@@ -111,7 +111,7 @@ namespace test
 		ImGui::ColorEdit3("light diffuse", &m_Light.diffuse.x);
 		ImGui::ColorEdit3("light specular", &m_Light.specular.x);
 
-		if (ImGui::Checkbox("blinn", &m_IsBlinn));
+		ImGui::Checkbox("blinn", &m_IsBlinn);
 	}
 
 }

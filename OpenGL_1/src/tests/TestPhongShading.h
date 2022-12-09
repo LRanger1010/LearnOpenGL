@@ -1,7 +1,7 @@
 #pragma once
 #include "Test.h"
 #include "Renderer.h"
-#include "Material.h"
+#include "material/MaterialData.h"
 #include "Light.h"
 
 namespace test
@@ -23,7 +23,7 @@ namespace test
 		std::unique_ptr<IndexBuffer> m_IBO;
 		std::unique_ptr<Shader> m_Shader;
 		glm::mat4 m_MVP;
-		Material m_Material;
+		MaterialData m_Material;
 		PointLight m_Light;
 		bool m_IsBlinn;
 	};

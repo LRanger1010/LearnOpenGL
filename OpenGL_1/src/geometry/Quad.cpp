@@ -44,7 +44,8 @@ void Quad::Draw(Shader& shader)
 	//m_Renderer.Draw(m_VAO, *m_IBO, shader);
 	for (unsigned int i = 0; i < m_Meshes.size(); i++)
 	{
-		m_Meshes[i].Draw(shader);
+		//m_Meshes[i]->Draw(shader);
+		m_Renderer.Draw(*m_Meshes[i], m_Materials[i]);
 	}
 }
 
@@ -53,9 +54,9 @@ void Quad::SetMesh()
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
-	glm::vec3 matAmbient(0.0f);
+	/*glm::vec3 matAmbient(0.0f);
 	glm::vec3 matDiffuse(0.0f);
-	glm::vec3 matSpecular(0.0f);
+	glm::vec3 matSpecular(0.0f);*/
 
 	glm::vec3 pos1(-1.0f, -1.0f, 0.0f);
 	glm::vec3 pos2(1.0f, -1.0f, 0.0f);
@@ -134,7 +135,9 @@ void Quad::SetMesh()
 	texture.id = img.GetRenderID();
 	texture.type = "diffuse";
 	textures.emplace_back(texture);
+	Material material;
+	material.SetTexture(textures);
+	m_Materials.emplace_back(material);
 
-	Mesh mesh(vertices, indices, textures, matAmbient, matDiffuse, matSpecular);
-	m_Meshes.emplace_back(mesh);
+	m_Meshes.emplace_back(std::make_unique<Mesh>(vertices, indices));
 }

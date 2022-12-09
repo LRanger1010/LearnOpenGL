@@ -138,6 +138,9 @@
     <ClCompile Include="src\tests\TestParallaxMapping.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\material\Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\VertexBuffer.h">
@@ -1061,7 +1064,7 @@
     <ClInclude Include="src\tests\TestPhongShading.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Material.h">
+    <ClInclude Include="src\material\MaterialData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Light.h">
@@ -1125,6 +1128,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\tests\TestParallaxMapping.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\material\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

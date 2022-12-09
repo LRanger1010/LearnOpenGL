@@ -45,7 +45,8 @@ protected:
 	std::unique_ptr<VertexBuffer> m_VBO;
 	std::unique_ptr<IndexBuffer> m_IBO;
 	glm::mat4 m_Model;
-	std::vector<Mesh> m_Meshes;
+	std::vector<std::unique_ptr<Mesh>> m_Meshes;
+	std::vector<Material> m_Materials;
 
 private:
 

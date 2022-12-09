@@ -1,6 +1,6 @@
 #pragma once
 
-struct Material
+struct MaterialData
 {
 	glm::vec3 ambient;
 	glm::vec3 diffuse;
@@ -9,7 +9,7 @@ struct Material
 	int mainTex;
 	int specTex;
 
-	Material()
+	MaterialData()
 	{
 		ambient = glm::vec3(1.0f, 1.0f, 1.0f);
 		diffuse = glm::vec3(1.0f, 1.0f, 1.0f);

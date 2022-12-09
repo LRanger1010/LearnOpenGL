@@ -1,20 +1,24 @@
 #pragma once
 #include "Vertex.h"
-#include "Renderer.h"
+#include "VertexArray.h"
+#include "IndexBuffer.h"
+//#include "Renderer.h"
 #include "Texture.h"
 
 class Mesh
 {
 public:
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, glm::vec3 matAmbient, glm::vec3 matDiffuse, glm::vec3 matSpecular);
+	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 	~Mesh();
 
 	inline std::vector<Vertex> GetVertices() const { return m_Vertices; }
 	inline std::vector<unsigned int> GetIndices() const { return m_Indices; }
 	inline std::vector<Texture> GetTextures() const { return m_Textures; }
-	void Draw(Shader& shader);
-	void DrawInstanced(Shader& shader, unsigned int instanceCount);
+	inline unsigned int GetIndexCount() const { return m_Indices.size(); }
+	/*void Draw(Shader& shader);
+	void DrawInstanced(Shader& shader, unsigned int instanceCount);*/
 	void AddVertexAttrib(const VertexBuffer& vb, const VertexBufferLayout& layout);
+	void Bind() const;
 
 private:
 	std::vector<Vertex> m_Vertices;
@@ -27,9 +31,9 @@ private:
 	std::unique_ptr<VertexArray> m_VAO;
 	std::unique_ptr<VertexBuffer> m_VBO;
 	std::unique_ptr<IndexBuffer> m_IBO;
-	std::unique_ptr<Renderer> m_Renderer;
+	//std::unique_ptr<Renderer> m_Renderer;
 	unsigned int m_AttribPointer;
 private:
 	void SetMesh();
-	void BindTextures(Shader& shader);
+	//void BindTextures(Shader& shader);
 };
