@@ -16,7 +16,7 @@ Material::~Material()
 
 }
 
-void Material::BindTexture()
+void Material::BindTextures()
 {
 	if (!m_Shader)
 		return;
@@ -42,6 +42,12 @@ void Material::BindTexture()
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, m_Textures[i].id);
 	}
+}
+
+void Material::BindTexture(unsigned int slot /*= 0*/)
+{
+	glActiveTexture(GL_TEXTURE0 + slot);
+	glBindTexture(GL_TEXTURE_2D, m_Textures[slot].id);
 }
 
 void Material::SetMaterialData(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular)

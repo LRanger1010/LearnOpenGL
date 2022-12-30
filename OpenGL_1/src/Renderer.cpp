@@ -42,6 +42,7 @@ void Renderer::Draw(const VertexArray& va, const Shader& shader) const
 }
 
 void Renderer::Draw(const Mesh& mesh, const Material& mat) const
+
 {
 	mesh.Bind();
 	mat.BindShader();

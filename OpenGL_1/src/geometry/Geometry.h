@@ -14,7 +14,6 @@ public:
 	inline glm::mat4 GetModelMatrix() const { return m_Model; }
 	virtual void Update() = 0;
 	virtual void Draw(Shader& shader) = 0;
-	virtual void SetMesh() = 0;
 	virtual void Bind(unsigned int textureId, unsigned int slot = 0)
 	{
 		BindTexture(GL_TEXTURE_2D, textureId, slot);
@@ -45,8 +44,12 @@ protected:
 	std::unique_ptr<VertexBuffer> m_VBO;
 	std::unique_ptr<IndexBuffer> m_IBO;
 	glm::mat4 m_Model;
-	std::vector<std::unique_ptr<Mesh>> m_Meshes;
-	std::vector<Material> m_Materials;
+	std::unique_ptr<Mesh> m_Mesh;
+	Material m_Material;
+
+protected:
+	virtual void SetMesh() = 0;
+	virtual void SetMaterial() = 0;
 
 private:
 

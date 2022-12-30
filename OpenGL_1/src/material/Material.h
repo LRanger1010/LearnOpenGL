@@ -16,7 +16,8 @@ public:
 	void SetShader(const std::string& name);
 	void SetShader(Shader& shader);
 	void SetTexture(std::vector<Texture> textures);
-	void BindTexture();
+	void BindTextures();
+	void BindTexture(unsigned int slot = 0);
 	void BindShader() const;
 
 private:

@@ -9,7 +9,10 @@ public:
 
 	void Update() override;
 	void Draw(Shader& shader) override;
+	
+protected:
 	void SetMesh() override;
+	void SetMaterial() override;
 
 private:
 	

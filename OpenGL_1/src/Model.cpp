@@ -11,7 +11,7 @@ void Model::Draw(Shader& shader)
 	for (unsigned int i = 0; i < m_Meshes.size(); i++)
 	{
 		m_Materials[i].SetShader(shader);
-		m_Materials[i].BindTexture();
+		m_Materials[i].BindTextures();
 		//m_Meshes[i]->Draw(shader);
 		m_Renderer->Draw(*m_Meshes[i], m_Materials[i]);
 	}
@@ -22,7 +22,7 @@ void Model::DrawInstanced(Shader& shader, unsigned int instanceCount)
 	for (unsigned int i = 0; i < m_Meshes.size(); i++)
 	{
 		m_Materials[i].SetShader(shader);
-		m_Materials[i].BindTexture();
+		m_Materials[i].BindTextures();
 		//m_Meshes[i]->DrawInstanced(shader, instanceCount);
 		m_Renderer->DrawInstanced(*m_Meshes[i], m_Materials[i], instanceCount);
 	}
