@@ -1,6 +1,6 @@
 #pragma once
 #include "Geometry.h"
-#include "Image.h"
+//#include "Image.h"
 
 class Plane : public Geometry
 {
@@ -12,6 +12,10 @@ public:
 	void Draw(Shader& shader) override;
 	void BindImage(unsigned int slot = 0) override;
 
+protected:
+	void SetMesh() override;
+	void SetMaterial() override;
+
 private:
-	std::unique_ptr<Image> m_Tex;
+	//std::unique_ptr<Image> m_Tex;
 };

@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "Mesh.h"
 #include "material/Material.h"
+#include "Renderer.h"
 
 class Model
 {

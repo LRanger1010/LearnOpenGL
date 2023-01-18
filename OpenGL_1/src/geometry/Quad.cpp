@@ -68,31 +68,8 @@ void Quad::SetMesh()
 	glm::vec2 uv3(1.0f, 1.0f);
 	glm::vec2 uv4(0.0f, 1.0f);
 
-	glm::vec3 edge1 = pos2 - pos1;
-	glm::vec3 edge2 = pos3 - pos1;
-	glm::vec2 deltaUV1 = uv2 - uv1;
-	glm::vec2 deltaUV2 = uv3 - uv1;
-
-	float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
-
-	glm::vec3 tangent1;
-	tangent1.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
-	tangent1.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
-	tangent1.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
-	tangent1 = glm::normalize(tangent1);
-
-	edge1 = pos3 - pos1;
-	edge2 = pos4 - pos1;
-	deltaUV1 = uv3 - uv1;
-	deltaUV2 = uv4 - uv1;
-
-	f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
-
-	glm::vec3 tangent2;
-	tangent2.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
-	tangent2.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
-	tangent2.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
-	tangent2 = glm::normalize(tangent2);
+	glm::vec3 tangent1 = CalcTangent(pos1, pos2, pos3, uv1, uv2, uv3);
+	glm::vec3 tangent2 = CalcTangent(pos1, pos3, pos4, uv1, uv3, uv4);
 
 	Vertex vertex1;
 	vertex1.Position = pos1;
