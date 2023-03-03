@@ -3,7 +3,6 @@
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 //#include "Renderer.h"
-#include "Texture.h"
 
 class Mesh
 {
@@ -13,7 +12,6 @@ public:
 
 	inline std::vector<Vertex> GetVertices() const { return m_Vertices; }
 	inline std::vector<unsigned int> GetIndices() const { return m_Indices; }
-	inline std::vector<Texture> GetTextures() const { return m_Textures; }
 	inline unsigned int GetIndexCount() const { return m_Indices.size(); }
 	/*void Draw(Shader& shader);
 	void DrawInstanced(Shader& shader, unsigned int instanceCount);*/
@@ -23,7 +21,6 @@ public:
 private:
 	std::vector<Vertex> m_Vertices;
 	std::vector<unsigned int> m_Indices;
-	std::vector<Texture> m_Textures;
 	glm::vec3 m_MatAmbient;
 	glm::vec3 m_MatDiffuse;
 	glm::vec3 m_MatSpecular;

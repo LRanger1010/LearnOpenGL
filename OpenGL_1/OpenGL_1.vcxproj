@@ -192,7 +192,7 @@
     <ClCompile Include="src\tests\TestShadowMap.cpp" />
     <ClCompile Include="src\tests\TestSkybox.cpp" />
     <ClCompile Include="src\tests\TestTexture2D.cpp" />
-    <ClCompile Include="src\Image.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -255,7 +255,6 @@
     <ClInclude Include="src\tests\TestShadowMap.h" />
     <ClInclude Include="src\tests\TestSkybox.h" />
     <ClInclude Include="src\tests\TestTexture2D.h" />
-    <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_common.hpp" />

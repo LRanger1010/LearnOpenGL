@@ -47,17 +47,17 @@ void FrameBuffer::CreateTextureDepth()
 	GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
 }
 
-void FrameBuffer::AttachTextureColor(unsigned int slot)
+void FrameBuffer::AttachTextureColor(unsigned int texId, unsigned int slot)
 {
-	GLCALL(glGenTextures(1, &m_TextureColorBuffer));
+	/*GLCALL(glGenTextures(1, &m_TextureColorBuffer));
 	GLCALL(glBindTexture(GL_TEXTURE_2D, m_TextureColorBuffer));
 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr));
-	GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
-	GLCALL(glFramebufferTexture2D(GL_FRAMEBUFFER, AttachmentEnum[slot], GL_TEXTURE_2D, m_TextureColorBuffer, 0));
+	GLCALL(glBindTexture(GL_TEXTURE_2D, 0));*/
+	GLCALL(glFramebufferTexture2D(GL_FRAMEBUFFER, AttachmentEnum[slot], GL_TEXTURE_2D, texId, 0));
 }
 
 void FrameBuffer::AttachMultiSampleTextureColor(unsigned int slot, unsigned int samples)

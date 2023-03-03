@@ -20,7 +20,8 @@ namespace test {
 		GLCALL(glEnable(GL_CULL_FACE));
 
 		m_FBO = std::make_unique<FrameBuffer>(200, 150);
-		m_FBO->AttachTextureColor(0);
+		m_ScreenTex = std::make_unique<Texture>(200, 150, GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_RGBA);
+		m_FBO->AttachTextureColor(m_ScreenTex->GetRenderID(), 0);
 		m_FBO->AttachRenderBuffer();
 		m_FBO->Unbind();
 	}
@@ -51,15 +52,15 @@ namespace test {
 			m_CubeShader->Bind();
 			m_CubeShader->SetUniform1i("u_Texture", 0);
 			m_CubeShader->SetUniformMat4f("u_MVP", MATRIX_VP * m_Cube->GetModelMatrix());
-			m_Cube->BindImage(0);
+			//m_Cube->BindImage(0);
 			m_Cube->Draw(*m_CubeShader);
 
 			GLCALL(glViewport(0, 0, 1200, 900));
 			m_FBO->Unbind();
 			GLCALL(glDisable(GL_DEPTH_TEST));
 			GLCALL(glClear(GL_COLOR_BUFFER_BIT));
-			unsigned int textureId = m_FBO->GetTextureColorBuffer();
-			m_ScreenMask->Draw(textureId, 0);
+			//unsigned int textureId = m_FBO->GetTextureColorBuffer();
+			m_ScreenMask->Draw(*m_ScreenTex, 0);
 		}
 	}
 
@@ -73,6 +74,7 @@ namespace test {
 				m_Cube->Rotate(glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 				m_ScreenMask = std::make_unique<ScreenMask>();
 				m_CubeShader = Shader::Find(CUBE_SHADER);
+				m_Cube->GetMaterial().SetShader(*m_CubeShader);
 			}
 		}
 		else

@@ -12,10 +12,10 @@ public:
 	inline Shader& GetShader() const { return *m_Shader; }
 	void SetShader(const std::string& name);
 	void Update();
-	void BindTexture(unsigned int id, unsigned int slot = 0);
-	void Draw(unsigned int bindTexId, unsigned int bindSlot = 0);
+	//void BindTexture(unsigned int id, unsigned int slot = 0);
+	void Draw(Texture& tex, unsigned int bindSlot = 0);
 
 private:
 	std::unique_ptr<Quad> m_Mask;
-	std::unique_ptr<Shader> m_Shader;
+	std::shared_ptr<Shader> m_Shader;
 };

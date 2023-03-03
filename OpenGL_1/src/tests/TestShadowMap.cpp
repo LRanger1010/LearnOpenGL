@@ -119,15 +119,15 @@ namespace test {
 
 		m_ShadowShader->SetUniformMat4f("u_Model", m_Plane->GetModelMatrix());
 		m_ShadowShader->SetUniformMat4f("u_MVP", MATRIX_VP * m_Plane->GetModelMatrix());
-		m_Plane->BindImage(0);
-		m_Plane->Bind(depthTex, 1);
+		m_Plane->BindTexture(0);
+		m_Plane->BindTexture(depthTex, 1);
 		m_Plane->BindTexture(GL_TEXTURE_CUBE_MAP, cubemapDepthTex, 2);
 		m_Plane->Draw(*m_ShadowShader);
 
 		m_ShadowShader->SetUniformMat4f("u_Model", m_Cube->GetModelMatrix());
 		m_ShadowShader->SetUniformMat4f("u_MVP", MATRIX_VP * m_Cube->GetModelMatrix());
-		m_Cube->BindImage(0);
-		m_Cube->Bind(depthTex, 1);
+		m_Cube->BindTexture(0);
+		m_Cube->BindTexture(depthTex, 1);
 		m_Cube->BindTexture(GL_TEXTURE_CUBE_MAP, cubemapDepthTex, 2);
 		m_Cube->Draw(*m_ShadowShader);
 	}

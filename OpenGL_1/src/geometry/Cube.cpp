@@ -83,15 +83,15 @@ void Cube::Update()
 void Cube::Draw(Shader& shader)
 {
 	//m_Renderer.Draw(m_VAO, *m_IBO, shader);
-	m_Material.SetShader(shader);
-	m_Material.BindTextures();
+	//m_Material.SetShader(shader);
+	//m_Material.BindTextures();
 	m_Renderer.Draw(*m_Mesh, m_Material);
 }
 
-void Cube::BindImage(unsigned int slot /*= 0*/)
-{
-	m_Material.BindTexture(slot);
-}
+//void Cube::BindTexture(unsigned int slot /*= 0*/)
+//{
+//	m_Material.BindTexture(slot);
+//}
 
 void Cube::SetMesh()
 {
@@ -164,13 +164,10 @@ void Cube::SetMesh()
 void Cube::SetMaterial()
 {
 	std::vector<Texture> textures;
-	Image img(DEFAULT_CUBE_TEXTURE_PATH);
-	Texture texture;
-	texture.id = img.GetRenderID();
-	texture.type = "diffuse";
-	textures.emplace_back(texture);
+	textures.emplace_back(DEFAULT_CUBE_TEXTURE_PATH);
+	textures[0].SetType("diffuse");
 
-	m_Material.SetTexture(textures);
+	m_Material.SetTextures(textures);
 }
 
 void Cube::SetFace(std::vector<Vertex> &vertices, glm::vec3 pos1, glm::vec3 pos2, glm::vec3 pos3, glm::vec3 pos4, glm::vec2 uv1, glm::vec2 uv2, glm::vec2 uv3, glm::vec2 uv4, glm::vec3 normal)

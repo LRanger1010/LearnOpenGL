@@ -155,7 +155,7 @@ std::unique_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 		matSpecular.z = materialSpecular.b;
 
 		material.SetMaterialData(matAmbient, matDiffuse, matSpecular);
-		material.SetTexture(textures);
+		material.SetTextures(textures);
 	}
 	m_Materials.push_back(material);
 	return std::make_unique<Mesh>(vertices, indices);

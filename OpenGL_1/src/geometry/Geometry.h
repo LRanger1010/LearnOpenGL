@@ -2,7 +2,6 @@
 #include "pch.h"
 #include "Renderer.h"
 #include "Mesh.h"
-#include "Image.h"
 
 class Geometry
 {
@@ -14,16 +13,21 @@ public:
 	inline glm::mat4 GetModelMatrix() const { return m_Model; }
 	virtual void Update() = 0;
 	virtual void Draw(Shader& shader) = 0;
-	virtual void Bind(unsigned int textureId, unsigned int slot = 0)
+	void BindTexture(unsigned int slot)
+	{
+		m_Material.BindTexture(slot);
+	}
+	void BindTexture(unsigned int textureId, unsigned int slot)
 	{
 		BindTexture(GL_TEXTURE_2D, textureId, slot);
 	}
-	virtual void BindImage(unsigned int slot = 0) {};
-
-	void BindTexture(GLenum target, unsigned int textureId, unsigned int slot = 0)
+	void BindTexture(GLenum target, unsigned int textureId, unsigned int slot)
 	{
-		GLCALL(glActiveTexture(GL_TEXTURE0 + slot));
-		GLCALL(glBindTexture(target, textureId));
+		m_Material.BindTexture(target, textureId, slot);
+	}
+	void ResetTexture(Texture& tex, unsigned int slot)
+	{
+		m_Material.ResetTexture(tex, slot);
 	}
 	void Translate(glm::vec3 vec)
 	{
@@ -37,6 +41,8 @@ public:
 	{
 		m_Model = glm::scale(m_Model, vec);
 	}
+
+	Material& GetMaterial() { return m_Material; }
 
 protected:
 	Renderer m_Renderer;

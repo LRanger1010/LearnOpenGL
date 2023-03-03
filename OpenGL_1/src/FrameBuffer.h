@@ -16,7 +16,7 @@ public:
 	void Bind(GLenum target = GL_FRAMEBUFFER) const;
 	void Unbind(GLenum target = GL_FRAMEBUFFER) const;
 	void CreateTextureDepth();
-	void AttachTextureColor(unsigned int slot);
+	void AttachTextureColor(unsigned int texId, unsigned int slot);
 	void AttachMultiSampleTextureColor(unsigned int slot, unsigned int samples);
 	void AttachTextureDepth();
 	void AttachCubeMapDepth(unsigned int cubeMapDepthBuffer);

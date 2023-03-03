@@ -75,7 +75,7 @@ namespace test {
 	void TestTexture2D::m_CreateTexture(const std::string& path)
 	{
 		m_Shader->Bind();
-		m_Texture = std::make_unique<Image>(path);
+		m_Texture = std::make_unique<Texture>(path);
 		m_Texture->Bind(0);
 		m_Shader->SetUniform1i("u_Texture", 0);
 

@@ -61,11 +61,11 @@ void Plane::Draw(Shader& shader)
 	m_Renderer.Draw(*m_Mesh, m_Material);
 }
 
-void Plane::BindImage(unsigned int slot /*= 0*/)
-{
-	//m_Tex->Bind(slot);
-	m_Material.BindTexture(slot);
-}
+//void Plane::BindTexture(unsigned int slot /*= 0*/)
+//{
+//	//m_Tex->Bind(slot);
+//	m_Material.BindTexture(slot);
+//}
 
 void Plane::SetMesh()
 {
@@ -135,11 +135,11 @@ void Plane::SetMesh()
 void Plane::SetMaterial()
 {
 	std::vector<Texture> textures;
-	Image img(DEFAULT_PLANE_TEXTURE_PATH);
+	Texture img(DEFAULT_PLANE_TEXTURE_PATH);
 	Texture texture;
 	texture.id = img.GetRenderID();
 	texture.type = "diffuse";
 	textures.emplace_back(texture);
 
-	m_Material.SetTexture(textures);
+	m_Material.SetTextures(textures);
 }

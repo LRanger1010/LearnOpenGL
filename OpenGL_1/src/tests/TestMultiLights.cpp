@@ -69,8 +69,8 @@ namespace test
 
 		m_IBO = std::make_unique<IndexBuffer>(indice, MaxIndexCount);
 		m_Shader = std::make_unique<Shader>("MultiLights");
-		m_MainTex = std::make_unique<Image>("res/textures/container2.png");
-		m_specTex = std::make_unique<Image>("res/textures/container2_specular.png");
+		m_MainTex = std::make_unique<Texture>("res/textures/container2.png");
+		m_specTex = std::make_unique<Texture>("res/textures/container2_specular.png");
 		m_MainTex->Bind(m_Material.mainTex);
 		m_specTex->Bind(m_Material.specTex);
 	}

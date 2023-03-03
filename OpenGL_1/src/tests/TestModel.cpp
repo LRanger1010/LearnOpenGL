@@ -16,7 +16,8 @@ namespace test
 		m_MSFBO->Unbind();
 		
 		m_IntermediateFBO = std::make_unique<FrameBuffer>(1200, 900);
-		m_IntermediateFBO->AttachTextureColor(0);
+		m_IntermediateScreenTex = std::make_unique<Texture>(1200, 900, GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_RGBA);
+		m_IntermediateFBO->AttachTextureColor(m_IntermediateScreenTex->GetRenderID(), 0);
 		m_IntermediateFBO->AttachRenderBuffer();
 		m_IntermediateFBO->Unbind();
 	}
@@ -91,6 +92,30 @@ namespace test
 			m_Shader->SetUniformMat4f("u_NormalMatrix", glm::transpose(glm::inverse(m_MatModel)));
 			m_Shader->SetUniformMat4f("u_MVP", m_MVP);
 			m_Shader->SetUniform3fv("u_ViewPos", CAMERA_POS);
+			auto materials = m_Model->GetMaterials();
+			for (unsigned int i = 0; i < materials.size(); i++)
+			{
+				auto mat = materials[i];
+				m_Shader->SetUniform3fv("material.ambient", mat.GetAmbient());
+				m_Shader->SetUniform3fv("material.diffuse", mat.GetDiffuse());
+				m_Shader->SetUniform3fv("material.specular", mat.GetSpecular());
+				m_Shader->SetUniform1f("material.shininess", mat.GetShininess());
+				auto texes = mat.GetTextures();
+				unsigned int diffuseSlot = 0;
+				unsigned int specularSlot = 0;
+				unsigned int normalSlot = 0;
+				for (unsigned int i = 0; i < texes.size(); i++)
+				{
+					std::string name = "material." + texes[i].GetType();
+					if (texes[i].GetType() == "diffuse")
+						name += std::to_string(diffuseSlot++);
+					else if (texes[i].GetType() == "specular")
+						name += std::to_string(specularSlot++);
+					else if (texes[i].GetType() == "normal")
+						name += std::to_string(normalSlot++);
+					m_Shader->SetUniform1i(name, i);
+				}
+			}
 		}
 	}
 
@@ -154,8 +179,8 @@ namespace test
 				m_MSFBO->Unbind();
 				GLCALL(glDisable(GL_DEPTH_TEST));
 				GLCALL(glClear(GL_COLOR_BUFFER_BIT));
-				unsigned int textureId = m_IntermediateFBO->GetTextureColorBuffer();
-				m_ScreenMask->Draw(textureId, 0);
+				//unsigned int textureId = m_IntermediateFBO->GetTextureColorBuffer();
+				m_ScreenMask->Draw(*m_IntermediateScreenTex, 0);
 			}
 		}
 		else

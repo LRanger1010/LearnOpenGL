@@ -19,6 +19,7 @@ namespace test {
 		std::unique_ptr<FrameBuffer> m_FBO;
 		std::unique_ptr<Cube> m_Cube;
 		std::unique_ptr<ScreenMask> m_ScreenMask;
-		std::unique_ptr<Shader> m_CubeShader;
+		std::shared_ptr<Shader> m_CubeShader;
+		std::unique_ptr<Texture> m_ScreenTex;
 	};
 }

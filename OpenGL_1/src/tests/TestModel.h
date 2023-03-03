@@ -37,6 +37,7 @@ namespace test
 		std::unique_ptr<FrameBuffer> m_MSFBO;
 		std::unique_ptr<FrameBuffer> m_IntermediateFBO;
 		std::unique_ptr<ScreenMask> m_ScreenMask;
+		std::unique_ptr<Texture> m_IntermediateScreenTex;
 		bool m_MSAAOn;
 	private:
 		void ImportModel(const std::string& path);

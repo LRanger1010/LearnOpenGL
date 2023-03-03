@@ -74,8 +74,8 @@ namespace test {
 
 		m_Proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
 
-		m_Tex1 = std::make_unique<Image>("res/textures/cherno.jpg");
-		m_Tex2 = std::make_unique<Image>("res/textures/sky.jpg");
+		m_Tex1 = std::make_unique<Texture>("res/textures/cherno.jpg");
+		m_Tex2 = std::make_unique<Texture>("res/textures/sky.jpg");
 	}
 
 	TestDynamicBatching::~TestDynamicBatching()

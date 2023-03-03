@@ -1,7 +1,7 @@
 #pragma once
 #include "Test.h"
 #include "Renderer.h"
-#include "Image.h"
+#include "Texture.h"
 #include "Shader.h"
 
 namespace test {
@@ -21,8 +21,8 @@ namespace test {
 		std::unique_ptr<VertexBuffer> m_VBO;
 		std::unique_ptr<IndexBuffer> m_IBO;
 		std::unique_ptr<Shader> m_Shader;
-		std::unique_ptr<Image> m_Tex1;
-		std::unique_ptr<Image> m_Tex2;
+		std::unique_ptr<Texture> m_Tex1;
+		std::unique_ptr<Texture> m_Tex2;
 		glm::mat4 m_Proj;
 		float m_x = -2.0f;
 		float m_y = -1.5f;

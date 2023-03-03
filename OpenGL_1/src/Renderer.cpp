@@ -45,7 +45,8 @@ void Renderer::Draw(const Mesh& mesh, const Material& mat) const
 
 {
 	mesh.Bind();
-	mat.BindShader();
+	//mat.BindShader();
+	mat.Bind();
 	GLCALL(glDrawElements(GL_TRIANGLES, mesh.GetIndexCount(), GL_UNSIGNED_INT, 0));
 }
 
@@ -60,7 +61,8 @@ void Renderer::DrawInstanced(const VertexArray& va, const IndexBuffer& ib, const
 void Renderer::DrawInstanced(const Mesh& mesh, const Material& mat, unsigned int instanceCount) const
 {
 	mesh.Bind();
-	mat.BindShader();
+	//mat.BindShader();
+	mat.Bind();
 	GLCALL(glDrawElementsInstanced(GL_TRIANGLES, mesh.GetIndexCount(), GL_UNSIGNED_INT, 0, instanceCount));
 }
 

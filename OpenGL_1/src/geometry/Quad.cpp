@@ -43,7 +43,7 @@ void Quad::Update()
 void Quad::Draw(Shader& shader)
 {
 	//m_Renderer.Draw(m_VAO, *m_IBO, shader);
-	m_Material.SetShader(shader);
+	//m_Material.SetShader(shader);
 	m_Material.BindTextures();
 	m_Renderer.Draw(*m_Mesh, m_Material);
 }
@@ -111,11 +111,11 @@ void Quad::SetMesh()
 void Quad::SetMaterial()
 {
 	std::vector<Texture> textures;
-	Image img(DEFAULT_QUAD_TEXTURE_PATH);
+	Texture img(DEFAULT_QUAD_TEXTURE_PATH);
 	Texture texture;
 	texture.id = img.GetRenderID();
 	texture.type = "diffuse";
 	textures.emplace_back(texture);
 
-	m_Material.SetTexture(textures);
+	m_Material.SetTextures(textures);
 }

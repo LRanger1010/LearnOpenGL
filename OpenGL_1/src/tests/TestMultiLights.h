@@ -3,7 +3,7 @@
 #include "Renderer.h"
 #include "material/MaterialData.h"
 #include "Light.h"
-#include "Image.h"
+#include "Texture.h"
 
 namespace test
 {
@@ -23,8 +23,8 @@ namespace test
 		std::unique_ptr<VertexBuffer> m_VBO;
 		std::unique_ptr<IndexBuffer> m_IBO;
 		std::unique_ptr<Shader> m_Shader;
-		std::unique_ptr<Image> m_MainTex;
-		std::unique_ptr<Image> m_specTex;
+		std::unique_ptr<Texture> m_MainTex;
+		std::unique_ptr<Texture> m_specTex;
 		glm::mat4 m_MVP;
 		MaterialData m_Material;
 		DirLight m_DirLight;

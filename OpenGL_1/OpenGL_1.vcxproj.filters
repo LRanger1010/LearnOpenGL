@@ -39,7 +39,7 @@
     <ClCompile Include="src\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Image.cpp">
+    <ClCompile Include="src\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\vendor\stb_image\stb_image.cpp">
@@ -161,7 +161,7 @@
     <ClInclude Include="src\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Image.h">
+    <ClInclude Include="src\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\vendor\stb_image\stb_image.h">
@@ -1083,9 +1083,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Model.h">
